@@ -20,6 +20,10 @@ importers:
       astro:
         specifier: ^5.0.5
         version: 5.0.5(rollup@4.28.1)(typescript@5.7.2)
+    devDependencies:
+      typescript:
+        specifier: ^5.7.2
+        version: 5.7.2
 
 packages:
 

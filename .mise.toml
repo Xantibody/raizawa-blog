@@ -1,3 +1,4 @@
 [tools]
 node = '23.4.0'
+npm = "latest"
 "pnpm" = '10.9.2'

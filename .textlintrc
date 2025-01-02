@@ -1,10 +1,5 @@
 {
   "filters": {},
-  "plugins": {
-    "@textlint/markdown": {
-      "extensions": [".mdx"]
-    }
-  },
   "rules": {
     "preset-ja-technical-writing": {
       "ja-no-weak-phrase": false,

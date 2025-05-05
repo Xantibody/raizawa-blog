@@ -1,0 +1,7 @@
+baseURL = 'https://raizawa-blog.pages.dev'
+languageCode = 'en-us'
+title = 'R-Aizawa Blog'
+theme = 'paper'
+
+[params]
+github = "Xantibody"

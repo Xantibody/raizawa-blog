@@ -1,0 +1,34 @@
+
++++
+title: 'Textlintのmdx問題が解決した'
+description: 'デバッグ下手です'
+pubDate: '2025-01-02'
+heroImage: '/blog-placeholder-5.jpg'
+tags: ['tech']
++++
+なんとかなった。  
+原因はこれ。
+
+[textlint-plugin-markdown](https://www.npmjs.com/package/@textlint/textlint-plugin-markdown)  
+  
+これがmdxに対応していなく、そもそもtextlintが動いていなかった。  
+記載の通り、mdxの設定追加して解決。  
+```json
+{
+    "plugins": {
+        "@textlint/markdown": {
+            "extensions": [".mdx"]
+        }
+    }
+}
+```
+
+
+3日間ぐらいひっかかっていたが、これにて解決。  
+やはり周辺知識(Neivim, LSP, Lua, Plugin, Textlint)が浅いので当たりをつけるのたいへんだったな。  
+NeovimのfiletypeとかのAPIを漁ったりしてこれかな？ってなった。
+
+[Lua module: vim.filetype](https://neovim.io/doc/user/lua.html#vim.filetype.add())  
+  
+でも、`efm`に移行してみたり、いろんな設定変更、API読んだりしたから  
+Neovimのことちょっとわかった気がして良い気分になった、良かった。

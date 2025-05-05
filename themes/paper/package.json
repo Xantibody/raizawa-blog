@@ -1,0 +1,22 @@
+{
+  "name": "hugo-paper",
+  "version": "6.30.0",
+  "repository": "https://github.com/nanxiaobei/hugo-paper.git",
+  "author": "nanxiaobei <nanxiaobei@gmail.com>",
+  "license": "MIT",
+  "scripts": {
+    "dev:css": "npx @tailwindcss/cli -i ./assets/app.css -o ./assets/main.css --watch",
+    "dev:server": "hugo server --config exampleSite/hugo.toml --contentDir exampleSite/content --gc --buildDrafts --openBrowser",
+    "dev": "killall hugo & pnpm dev:css & pnpm dev:server",
+    "build:go": "cp exampleSite/go.default.mod exampleSite/go.mod",
+    "build:generate": "hugo --config exampleSite/hugo.toml --contentDir exampleSite/content --gc --minify",
+    "build": "pnpm build:go & pnpm build:generate"
+  },
+  "dependencies": {
+    "@tailwindcss/cli": "^4.0.12",
+    "@tailwindcss/typography": "^0.5.16",
+    "prettier": "^3.5.3",
+    "prettier-plugin-tailwindcss": "^0.6.11",
+    "tailwindcss": "^4.0.12"
+  }
+}

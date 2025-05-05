@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Tech on R-Aizawa Blog</title>
+    <link>http://localhost:1313/tags/tech/</link>
+    <description>Recent content in Tech on R-Aizawa Blog</description>
+    <generator>Hugo</generator>
+    <language>en-us</language>
+    <lastBuildDate>Thu, 02 Jan 2025 00:00:00 +0900</lastBuildDate>
+    <atom:link href="http://localhost:1313/tags/tech/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Textlintのmdx問題が解決した</title>
+      <link>http://localhost:1313/posts/2025-01-02/</link>
+      <pubDate>Thu, 02 Jan 2025 00:00:00 +0900</pubDate>
+      <guid>http://localhost:1313/posts/2025-01-02/</guid>
+      <description>&lt;p&gt;なんとかなった。&lt;br&gt;&#xA;原因はこれ。&lt;/p&gt;&#xA;&lt;p&gt;[textlint-plugin-markdown](https =//www.npmjs.com/package/@textlint/textlint-plugin-markdown)&lt;/p&gt;&#xA;&lt;p&gt;これがmdxに対応していなく、そもそもtextlintが動いていなかった。&lt;br&gt;&#xA;記載の通り、mdxの設定追加して解決。&lt;/p&gt;&#xA;&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-json&#34; data-lang=&#34;json&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;{&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    &lt;span style=&#34;color:#f92672&#34;&gt;&amp;#34;plugins&amp;#34;&lt;/span&gt; &lt;span style=&#34;color:#960050;background-color:#1e0010&#34;&gt;=&lt;/span&gt; {&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;        &lt;span style=&#34;color:#f92672&#34;&gt;&amp;#34;@textlint/markdown&amp;#34;&lt;/span&gt; &lt;span style=&#34;color:#960050;background-color:#1e0010&#34;&gt;=&lt;/span&gt; {&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;            &lt;span style=&#34;color:#f92672&#34;&gt;&amp;#34;extensions&amp;#34;&lt;/span&gt; &lt;span style=&#34;color:#960050;background-color:#1e0010&#34;&gt;=&lt;/span&gt; [&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;.mdx&amp;#34;&lt;/span&gt;]&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;        }&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    }&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;}&#xA;&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;3日間ぐらいひっかかっていたが、これにて解決。&lt;br&gt;&#xA;やはり周辺知識(Neivim, LSP, Lua, Plugin, Textlint)が浅いので当たりをつけるのたいへんだったな。&lt;br&gt;&#xA;NeovimのfiletypeとかのAPIを漁ったりしてこれかな？ってなった。&lt;/p&gt;&#xA;&lt;p&gt;[Lua module = vim.filetype](https =//neovim.io/doc/user/lua.html#vim.filetype.add())&lt;/p&gt;&#xA;&lt;p&gt;でも、&lt;code&gt;efm&lt;/code&gt;に移行してみたり、いろんな設定変更、API読んだりしたから&lt;br&gt;&#xA;Neovimのことちょっとわかった気がして良い気分になった、良かった。&lt;/p&gt;</description>
+    </item>
+  </channel>
+</rss>

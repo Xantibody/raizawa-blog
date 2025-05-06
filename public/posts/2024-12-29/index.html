@@ -31,14 +31,14 @@
 思いついたことをtimesでなくブログに集約したい思いで作ったので、全然Techしないかも。
 とりあえず簡単に書けるようにしたい。やりたい事は文章を書くことだしね。
 MDXもわからん、Astroもわからん、Neovim使えるさいこー。" />
-  <meta name="author" content="R-Aizawa Blog" /><link rel="preload stylesheet" as="style" href="http://localhost:1313/main.min.css" />
+  <meta name="author" content="Ryu Aizawa" /><link rel="preload stylesheet" as="style" href="http://localhost:1313/main.min.css" />
 
   
   <link rel="preload" as="image" href="http://localhost:1313/theme.png" />
 
   
 
-  <link rel="preload" as="image" href="http://localhost:1313/github.svg" />
+  <link rel="preload" as="image" href="http://localhost:1313/github.svg" /><link rel="preload" as="image" href="http://localhost:1313/rss.svg" />
 
   <script
     defer
@@ -137,6 +137,13 @@ MDXもわからん、Astroもわからん、Neovim使えるさいこー。" />
         target="_blank"
         rel="me"
       >github</a>
+      <a
+        class="h-7 w-7 text-[0px] [background:var(--url)_center_center/cover_no-repeat] lg:h-6 lg:w-6"
+        style="--url: url(./rss.svg)"
+        href="http://localhost:1313/index.xml"
+        target="_blank"
+        rel="alternate"
+      >rss</a>
     </nav>
   </div>
 </header>
@@ -156,13 +163,20 @@ MDXもわからん、Astroもわからん、Neovim使えるさいこー。</p>
 
   <footer class="mt-12 flex flex-wrap"><a
       class="mb-1.5 rounded-lg bg-black/[3%] px-5 py-1 no-underline hover:bg-black/[6%] ltr:mr-1.5 rtl:ml-1.5 dark:bg-white/[8%] dark:hover:bg-white/[12%]"
-      href="http://localhost:1313/tags/%E3%81%A4%E3%81%B6%E3%82%84%E3%81%8D"
-      >つぶやき</a
+      href="http://localhost:1313/tags/%E3%81%AB%E3%81%A3%E3%81%8D"
+      >にっき</a
     ></footer><nav
     class="mt-24 flex overflow-hidden rounded-xl bg-black/[3%] text-lg leading-[1.2]! *:flex *:w-1/2 *:items-center *:p-5 *:font-medium *:no-underline dark:bg-white/[8%] [&>*:hover]:bg-black/[2%] dark:[&>*:hover]:bg-white/[3%]"
   ><a class="ltr:pr-3 rtl:pl-3" href="http://localhost:1313/posts/2024-12-30/"
       ><span class="ltr:mr-1.5 rtl:ml-1.5">←</span><span>根性論と根性</span></a
-    ></nav></article></main><footer
+    ></nav><div class="mt-24" id="disqus_thread"></div>
+  <script>
+    const disqusShortname = 'YOUR_DISQUS_SHORTNAME';
+    const script = document.createElement('script');
+    script.src = 'https://' + disqusShortname + '.disqus.com/embed.js';
+    script.setAttribute('data-timestamp', +new Date());
+    document.head.appendChild(script);
+  </script></article></main><footer
   class="mx-auto flex h-[4.5rem] max-w-(--w) items-center px-8 text-xs tracking-wider uppercase opacity-60"
 >
   <div class="mr-auto">&copy;2025

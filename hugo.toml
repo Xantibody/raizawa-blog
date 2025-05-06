@@ -3,5 +3,17 @@ languageCode = 'en-us'
 title = 'R-Aizawa Blog'
 theme = 'paper'
 
+[services]
+  [services.disqus]
+    shortname = 'YOUR_DISQUS_SHORTNAME' 
+
 [params]
 github = "Xantibody"
+rss = true
+name = 'Ryu Aizawa'
+
+[outputs]
+  home = ['html', 'rss']
+  section = ['html', 'rss']
+  taxonomy = ['html']
+  term = ['html']

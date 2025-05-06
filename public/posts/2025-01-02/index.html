@@ -43,14 +43,14 @@ NeovimのfiletypeとかのAPIを漁ったりしてこれかな？ってなった
 [Lua module = vim.filetype](https =//neovim.io/doc/user/lua.html#vim.filetype.add())
 でも、efmに移行してみたり、いろんな設定変更、API読んだりしたから
 Neovimのことちょっとわかった気がして良い気分になった、良かった。" />
-  <meta name="author" content="R-Aizawa Blog" /><link rel="preload stylesheet" as="style" href="http://localhost:1313/main.min.css" />
+  <meta name="author" content="Ryu Aizawa" /><link rel="preload stylesheet" as="style" href="http://localhost:1313/main.min.css" />
 
   
   <link rel="preload" as="image" href="http://localhost:1313/theme.png" />
 
   
 
-  <link rel="preload" as="image" href="http://localhost:1313/github.svg" />
+  <link rel="preload" as="image" href="http://localhost:1313/github.svg" /><link rel="preload" as="image" href="http://localhost:1313/rss.svg" />
 
   <script
     defer
@@ -149,6 +149,13 @@ Neovimのことちょっとわかった気がして良い気分になった、�
         target="_blank"
         rel="me"
       >github</a>
+      <a
+        class="h-7 w-7 text-[0px] [background:var(--url)_center_center/cover_no-repeat] lg:h-6 lg:w-6"
+        style="--url: url(./rss.svg)"
+        href="http://localhost:1313/index.xml"
+        target="_blank"
+        rel="alternate"
+      >rss</a>
     </nav>
   </div>
 </header>
@@ -180,8 +187,12 @@ Neovimのことちょっとわかった気がして良い気分になった、�
 
   <footer class="mt-12 flex flex-wrap"><a
       class="mb-1.5 rounded-lg bg-black/[3%] px-5 py-1 no-underline hover:bg-black/[6%] ltr:mr-1.5 rtl:ml-1.5 dark:bg-white/[8%] dark:hover:bg-white/[12%]"
-      href="http://localhost:1313/tags/tech"
-      >tech</a
+      href="http://localhost:1313/tags/%E3%81%8E%E3%81%98%E3%82%85%E3%81%A4"
+      >ぎじゅつ</a
+    ><a
+      class="mb-1.5 rounded-lg bg-black/[3%] px-5 py-1 no-underline hover:bg-black/[6%] ltr:mr-1.5 rtl:ml-1.5 dark:bg-white/[8%] dark:hover:bg-white/[12%]"
+      href="http://localhost:1313/tags/vim"
+      >Vim</a
     ></footer><nav
     class="mt-24 flex overflow-hidden rounded-xl bg-black/[3%] text-lg leading-[1.2]! *:flex *:w-1/2 *:items-center *:p-5 *:font-medium *:no-underline dark:bg-white/[8%] [&>*:hover]:bg-black/[2%] dark:[&>*:hover]:bg-white/[3%]"
   ><a class="ltr:pr-3 rtl:pl-3" href="http://localhost:1313/posts/2025-01-03/"
@@ -190,7 +201,14 @@ Neovimのことちょっとわかった気がして良い気分になった、�
       class="justify-end pl-3 ltr:ml-auto rtl:mr-auto"
       href="http://localhost:1313/posts/2024-12-31/"
       ><span>最初で最後のVim初年度</span><span class="ltr:ml-1.5 rtl:mr-1.5">→</span></a
-    ></nav></article></main><footer
+    ></nav><div class="mt-24" id="disqus_thread"></div>
+  <script>
+    const disqusShortname = 'YOUR_DISQUS_SHORTNAME';
+    const script = document.createElement('script');
+    script.src = 'https://' + disqusShortname + '.disqus.com/embed.js';
+    script.setAttribute('data-timestamp', +new Date());
+    document.head.appendChild(script);
+  </script></article></main><footer
   class="mx-auto flex h-[4.5rem] max-w-(--w) items-center px-8 text-xs tracking-wider uppercase opacity-60"
 >
   <div class="mr-auto">&copy;2025

@@ -3,7 +3,8 @@
   "packages": [
     "go@1.24.1",
     "dart-sass@1.86.3",
-    "hugo@0.146.1"
+    "hugo@0.146.1",
+    "yazi@25.4.8"
   ],
   "shell": {
     "init_hook": [

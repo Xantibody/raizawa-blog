@@ -163,6 +163,54 @@
           "store_path": "/nix/store/zchv87pwsy5q53p9wg9vxlafqlsda3aw-hugo-0.146.1"
         }
       }
+    },
+    "yazi@25.4.8": {
+      "last_modified": "2025-05-06T08:06:31Z",
+      "resolved": "github:NixOS/nixpkgs/1cb1c02a6b1b7cf67e3d7731cbbf327a53da9679#yazi",
+      "source": "devbox-search",
+      "version": "25.4.8",
+      "systems": {
+        "aarch64-darwin": {
+          "outputs": [
+            {
+              "name": "out",
+              "path": "/nix/store/8a6zxiffgj36vmynia6vjqwnr381rg4c-yazi-25.4.8",
+              "default": true
+            }
+          ],
+          "store_path": "/nix/store/8a6zxiffgj36vmynia6vjqwnr381rg4c-yazi-25.4.8"
+        },
+        "aarch64-linux": {
+          "outputs": [
+            {
+              "name": "out",
+              "path": "/nix/store/wj120whbxhbs00c644y9p1l5li8ivzpd-yazi-25.4.8",
+              "default": true
+            }
+          ],
+          "store_path": "/nix/store/wj120whbxhbs00c644y9p1l5li8ivzpd-yazi-25.4.8"
+        },
+        "x86_64-darwin": {
+          "outputs": [
+            {
+              "name": "out",
+              "path": "/nix/store/l32xh2k2pr2dchmk369yxqsa25gpd4q5-yazi-25.4.8",
+              "default": true
+            }
+          ],
+          "store_path": "/nix/store/l32xh2k2pr2dchmk369yxqsa25gpd4q5-yazi-25.4.8"
+        },
+        "x86_64-linux": {
+          "outputs": [
+            {
+              "name": "out",
+              "path": "/nix/store/84d6nnnklivyha0g07kxxhagmv4d2qhw-yazi-25.4.8",
+              "default": true
+            }
+          ],
+          "store_path": "/nix/store/84d6nnnklivyha0g07kxxhagmv4d2qhw-yazi-25.4.8"
+        }
+      }
     }
   }
 }

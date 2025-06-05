@@ -52,7 +52,6 @@ Available options to `config.toml` or `hugo.toml`:
   mastodon = 'YOUR_MASTODON_LINK'           # e.g. 'https://mastodon.instance/@xxx'
   threads = '@YOUR_THREADS_ID'              # threads.net/@YOUR_THREADS_ID
   bluesky = 'YOUR_BLUESKY_ID'               # https://bsky.app/profile/YOUR_BLUESKY_ID
-  zenn = 'YOUR_ZENN_ID'                     # https://zenn.dev/YOUR_ZENN_ID
   rss = true                                # show rss icon
 
   # home page profile

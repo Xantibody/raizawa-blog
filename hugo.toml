@@ -9,6 +9,7 @@ theme = 'paper'
 
 [params]
 github = "Xantibody"
+zenn = "master_peace_36"
 rss = true
 name = 'Ryu Aizawa'
 

@@ -1,0 +1,34 @@
+template: template.png
+title:
+  start:
+    px: 113
+    py: 152
+  fgHexColor: "#F5F5DC"
+  fontSize: 70
+  fontStyle: Bold
+  maxWidth: 970
+  lineSpacing: 10
+category:
+  start:
+    px: 113
+    py: 90
+  fgHexColor: "#B3E5FC"
+  fontSize: 42
+  fontStyle: Regular
+info:
+  enabled: false
+tags:
+  start:
+    px: 750
+    py: 500
+  fgHexColor: "#000000"
+  bgHexColor: "#FFFFAA"
+  fontSize: 22
+  fontStyle: Medium
+  boxAlign: Light
+  boxSpacing: 6
+  boxPadding:
+    top: 6
+    right: 10
+    bottom: 6
+    left: 8

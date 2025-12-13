@@ -27,7 +27,7 @@
 
   <meta name="description" content="NixOSで指紋認証ができない問題、以前からどうしようかなーと思って再挑戦した。
 以前からの課題
-以前の話では指紋ようのドライバーがないとかそんなんだった気がするが、
+以前の話では指紋用のドライバーがないとかそんなんだった気がするが、
 NixOS自体の設定がぐちゃぐちゃだったため再度やりなおした。
 fprintdの設定
 機種: E14Gen6
@@ -39,7 +39,7 @@ fprintdの設定
       driver = pkgs.libfprint-2-tod1-goodix;
     };
   };
-これで以前問題だったdriverが動かない問題があっさり解決した
+これで以前問題だったドライバーが動かない問題があっさり解決した
 ChatGPTさいきょう
 fprintd-enrollの設定
 ここはNix関係なく、CLIで指紋を登録するところ
@@ -61,7 +61,7 @@ sudo fprintd-enroll
 
 typoがないか、参考資料をコピーして起動
 polkitが起動していないといけないらしいので確認
-security schemeではなくauthの直接設定を記述して動作確認
+securitスキーマではなくauthの直接設定を記述して動作確認
 
 全部動かず。。。意味わからん。。。
 sudo fprintdのsudo怪しくね?
@@ -79,7 +79,7 @@ sudo fprintd-list root
 
   
 
-  <link rel="preload" as="image" href="http://localhost:1313/github.svg" /><link rel="preload" as="image" href="http://localhost:1313/rss.svg" />
+  <link rel="preload" as="image" href="http://localhost:1313/github.svg" /><link rel="preload" as="image" href="http://localhost:1313/zenn.svg" /><link rel="preload" as="image" href="http://localhost:1313/rss.svg" />
 
   <script
     defer
@@ -97,7 +97,7 @@ sudo fprintd-list root
     href="http://localhost:1313/apple-touch-icon.png"
   />
 
-  <meta name="generator" content="Hugo 0.146.1">
+  <meta name="generator" content="Hugo 0.152.2">
 </head>
 <body
     class="bg-(--bg) text-black antialiased duration-200 ease-out [-webkit-tap-highlight-color:transparent] dark:text-white"
@@ -180,6 +180,13 @@ sudo fprintd-list root
       >github</a>
       <a
         class="h-7 w-7 text-[0px] [background:var(--url)_center_center/cover_no-repeat] lg:h-6 lg:w-6"
+        style="--url: url(./zenn.svg)"
+        href="https://zenn.dev/master_peace_36"
+        target="_blank"
+        rel="me"
+      >zenn</a>
+      <a
+        class="h-7 w-7 text-[0px] [background:var(--url)_center_center/cover_no-repeat] lg:h-6 lg:w-6"
         style="--url: url(./rss.svg)"
         href="http://localhost:1313/index.xml"
         target="_blank"
@@ -196,7 +203,7 @@ sudo fprintd-list root
 
   <section><p>NixOSで指紋認証ができない問題、以前からどうしようかなーと思って再挑戦した。</p>
 <h2 id="以前からの課題">以前からの課題</h2>
-<p>以前の話では指紋ようのドライバーがないとかそんなんだった気がするが、
+<p>以前の話では指紋用のドライバーがないとかそんなんだった気がするが、
 NixOS自体の設定がぐちゃぐちゃだったため再度やりなおした。</p>
 <h2 id="fprintdの設定">fprintdの設定</h2>
 <p>機種: E14Gen6</p>
@@ -208,7 +215,7 @@ NixOS自体の設定がぐちゃぐちゃだったため再度やりなおした
 </span></span><span style="display:flex;"><span>      driver <span style="color:#f92672">=</span> pkgs<span style="color:#f92672">.</span>libfprint-2-tod1-goodix;
 </span></span><span style="display:flex;"><span>    };
 </span></span><span style="display:flex;"><span>  };
-</span></span></code></pre></div><p>これで以前問題だったdriverが動かない問題があっさり解決した<br>
+</span></span></code></pre></div><p>これで以前問題だったドライバーが動かない問題があっさり解決した<br>
 ChatGPTさいきょう</p>
 <h2 id="fprintd-enrollの設定">fprintd-enrollの設定</h2>
 <p>ここはNix関係なく、CLIで指紋を登録するところ<br>
@@ -230,7 +237,7 @@ ChatGPTさいきょう</p>
 <ul>
 <li>typoがないか、参考資料をコピーして起動</li>
 <li>polkitが起動していないといけないらしいので確認</li>
-<li>security schemeではなくauthの直接設定を記述して動作確認</li>
+<li>securitスキーマではなくauthの直接設定を記述して動作確認</li>
 </ul>
 <p>全部動かず。。。意味わからん。。。</p>
 <h2 id="sudo-fprintdのsudo怪しくね">sudo fprintdのsudo怪しくね?</h2>
@@ -255,6 +262,16 @@ ChatGPTさいきょう</p>
 </span></span></span><span style="display:flex;"><span><span style="color:#e6db74">  &#39;&#39;</span>;
 </span></span></code></pre></div><p>こんな感じでwheel groupに入れてるなら通常起動を許可する雑な方法を提示された<br>
 藁にも縋る思いなので実行して無事設定に成功した</p>
+<h3 id="まとめ">まとめ</h3>
+<ul>
+<li>ドライバーの問題はなにごともなくfprintd-enrollまで動いた</li>
+<li>sudoで起動すると実行ユーザーでなくて、rootに保存されるので指紋の情報がない扱いっぽい</li>
+<li>polkitってやつがfprintdの実行権限をつかさどっているのでごにょごにょして許可したらユーザーに紐付く指紋情報が保存できた
+<ul>
+<li>ログインなどの設定が反映された</li>
+</ul>
+</li>
+</ul>
 <h2 id="おわりに">おわりに</h2>
 <p>現在、2025-05-07 06:42、中途半端な疲労で昼寝してしまって寝れずにこんなことしてしまった。<br>
 今日から仕事なんだよね、あーあ。<br>

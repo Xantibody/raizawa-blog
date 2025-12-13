@@ -45,6 +45,7 @@
           default = pkgs.mkShell {
             packages = with pkgs; [
               hugo
+              rumdl
               nodejs
               (textlint.withPackages [
                 textlint-rule-preset-ja-technical-writing

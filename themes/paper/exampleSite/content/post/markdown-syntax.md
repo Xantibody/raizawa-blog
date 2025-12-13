@@ -46,7 +46,7 @@ Itatur? Quiatae cullecum rem ent aut odis in re eossequodi nonsequ idebis ne sap
 
 The blockquote element represents content that is quoted from another source, optionally with a citation which must be within a `footer` or `cite` element, and optionally with in-line changes such as annotations and abbreviations.
 
-#### Blockquote without attribution
+### Blockquote without attribution
 
 > Tiam, ad mint andaepu dandae nostion secatur sequo quae.
 > **Note** that you can use _Markdown syntax_ within a blockquote.
@@ -67,7 +67,7 @@ Tables aren't part of the core Markdown spec, but Hugo supports supports them ou
 | Bob   | 27  |
 | Alice | 23  |
 
-#### Inline Markdown within tables
+### Inline Markdown within tables
 
 | Italics   | Bold     | Code   |
 | --------- | -------- | ------ |
@@ -75,20 +75,18 @@ Tables aren't part of the core Markdown spec, but Hugo supports supports them ou
 
 ## Code Blocks
 
-#### Code block with backticks
+### Code block with backticks
 
-```html
-<!doctype html>
-<html lang="en">
-  <head>
+    <!doctype html>
+    <html lang="en">
+    <head>
     <meta charset="utf-8" />
     <title>Example HTML5 Document</title>
-  </head>
-  <body>
+    </head>
+    <body>
     <p>Test</p>
-  </body>
-</html>
-```
+    </body>
+    </html>
 
 #### Code block indented with four spaces
 
@@ -121,7 +119,7 @@ Tables aren't part of the core Markdown spec, but Hugo supports supports them ou
 
 ## List Types
 
-#### Ordered List
+### Ordered List
 
 1. First item
 2. Second item

@@ -47,6 +47,7 @@
               hugo
               rumdl
               nodejs
+              textlint
               (textlint.withPackages [
                 textlint-rule-preset-ja-technical-writing
                 textlint-rule-prh

@@ -59,7 +59,8 @@
             shellHook = ''
               [ -f .textlintrc ] && unlink .textlintrc
               ln -s ${textlintrc} .textlintrc
-              $SHELL
+              export SHELL=${pkgs.fish}/bin/fish
+              exec "$SHELL"
             '';
           };
         }

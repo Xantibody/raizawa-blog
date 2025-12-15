@@ -27,9 +27,9 @@ Hugo themes: [themes.gohugo.io/hugo-paper](https://themes.gohugo.io/hugo-paper/)
 
 ## Overview
 
-![](./images/screenshot.png)
-![](./images/screenshot_dark.png)
-![](./images/pagespeed.png)
+![Screenshot image](./images/screenshot.png)
+![Screenshot Dark image](./images/screenshot_dark.png)
+![Pagespeed image](./images/pagespeed.png)
 
 ## Options
 

@@ -40,3 +40,10 @@ hugo.linux
 # direnv-nix
 .textlintrc
 .direnv/
+
+# HonoX / Vite
+.vite/
+*.local
+
+# bun
+bun.lockb

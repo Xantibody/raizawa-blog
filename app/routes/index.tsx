@@ -9,6 +9,14 @@ export default function Home() {
         <meta charSet="UTF-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
         <title>R-Aizawa Blog</title>
+        <meta name="description" content="R-Aizawaの技術ブログ" />
+        <meta property="og:title" content="R-Aizawa Blog" />
+        <meta property="og:description" content="R-Aizawaの技術ブログ" />
+        <meta property="og:type" content="website" />
+        <meta property="og:url" content="https://raizawa-blog.pages.dev" />
+        <meta property="og:site_name" content="R-Aizawa Blog" />
+        <meta name="twitter:card" content="summary" />
+        <link rel="alternate" type="application/rss+xml" title="R-Aizawa Blog" href="/feed.xml" />
         <style>{`
           body {
             max-width: 800px;

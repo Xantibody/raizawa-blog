@@ -4,11 +4,12 @@
   "type": "module",
   "private": true,
   "scripts": {
-    "dev": "bun run prebuild && vite",
-    "prebuild": "bun run scripts/build-posts.ts",
-    "build": "bun run prebuild && vite build",
+    "dev": "bun run build:content && vite",
+    "build": "bun run build:content && bun run build:bundle",
+    "build:content": "bun run scripts/build-posts.ts",
+    "build:bundle": "vite build",
     "preview": "vite preview",
-    "test": "bun run prebuild && vitest run"
+    "test": "bun run build:content && vitest run"
   },
   "devDependencies": {
     "@hono/vite-build": "^1.8.0",

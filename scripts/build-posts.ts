@@ -1,5 +1,5 @@
 /**
- * Pre-build script to generate posts data with rendered HTML.
+ * Build script to generate posts data with rendered HTML.
  * This runs before vite build to avoid bundling Shiki in the worker.
  */
 import { readdirSync, readFileSync, writeFileSync } from 'fs'
@@ -13,6 +13,7 @@ import {
   transformerNotationErrorLevel,
 } from '@shikijs/transformers'
 import type { ShikiTransformer } from 'shiki'
+import { fetchOGP, generateOGPCard } from '../app/lib/ogp'
 
 interface PostMeta {
   slug: string
@@ -27,6 +28,23 @@ interface Post {
   meta: PostMeta
   content: string
   html: string
+}
+
+function detectStandaloneURLs(markdown: string): string[] {
+  const urls: string[] = []
+  let match
+
+  const autolinkRegex = /^<(https?:\/\/[^\s>]+)>$/gm
+  while ((match = autolinkRegex.exec(markdown)) !== null) {
+    urls.push(match[1])
+  }
+
+  const standaloneRegex = /^(https?:\/\/[^\s]+)$/gm
+  while ((match = standaloneRegex.exec(markdown)) !== null) {
+    urls.push(match[1])
+  }
+
+  return [...new Set(urls)]
 }
 
 function transformerMetaTitle(): ShikiTransformer {
@@ -103,7 +121,26 @@ async function main() {
 
     if (meta.draft) continue
 
-    const html = md.render(content)
+    // Detect standalone URLs and fetch OGP
+    const urls = detectStandaloneURLs(content)
+    const ogpResults = await Promise.all(
+      urls.map(async (url) => ({
+        url,
+        ogp: await fetchOGP(url),
+      }))
+    )
+
+    // Replace standalone URLs with OGP cards
+    let processedContent = content
+    for (const { url, ogp } of ogpResults) {
+      const ogpCard = generateOGPCard(ogp)
+      const escapedUrl = url.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')
+      processedContent = processedContent
+        .replace(new RegExp(`^<${escapedUrl}>$`, 'gm'), ogpCard)
+        .replace(new RegExp(`^${escapedUrl}$`, 'gm'), ogpCard)
+    }
+
+    const html = md.render(processedContent)
     posts.push({ meta, content, html })
   }
 

@@ -2,9 +2,13 @@ name: Test
 
 on:
   push:
-    branches: [main, refactor_honox]
+    branches: [main]
   pull_request:
     branches: [main]
+
+concurrency:
+  group: test-${{ github.ref }}
+  cancel-in-progress: true
 
 jobs:
   test:

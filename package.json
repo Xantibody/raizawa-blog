@@ -11,7 +11,7 @@
     "test": "bun run prebuild && vitest run"
   },
   "devDependencies": {
-    "@hono/vite-cloudflare-pages": "^0.4.3",
+    "@hono/vite-build": "^1.8.0",
     "@hono/vite-dev-server": "^0.24.0",
     "@types/bun": "latest",
     "@types/js-yaml": "^4.0.9",

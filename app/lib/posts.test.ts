@@ -29,6 +29,7 @@ describe('posts', () => {
 
 describe('markdown rendering', () => {
   it('should render all posts without error', async () => {
+    // Shiki initialization can be slow in CI
     const posts = getAllPosts()
 
     for (const postMeta of posts) {
@@ -38,7 +39,7 @@ describe('markdown rendering', () => {
       // This should not throw
       await expect(renderMarkdown(post.content)).resolves.toBeDefined()
     }
-  })
+  }, 60000) // 60 second timeout for CI
 })
 
 describe('code blocks', () => {

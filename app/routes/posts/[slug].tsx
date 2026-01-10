@@ -76,6 +76,10 @@ export default createRoute((c) => {
           /* Line numbers for Shiki code blocks */
           pre.shiki {
             counter-reset: line;
+            overflow-x: auto;
+            padding: 1rem;
+            border-radius: 8px;
+            font-size: 0.9rem;
           }
           pre.shiki .line::before {
             counter-increment: line;
@@ -230,6 +234,13 @@ export default createRoute((c) => {
             .ogp-image {
               width: 100%;
               height: 180px;
+            }
+            /* Hide line numbers on mobile for better readability */
+            pre.shiki .line::before {
+              display: none;
+            }
+            pre.shiki {
+              font-size: 0.8rem;
             }
           }
         `}</style>

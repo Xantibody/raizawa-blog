@@ -45,5 +45,8 @@ hugo.linux
 .vite/
 *.local
 
+# Generated posts data
+app/lib/posts-data.ts
+
 # bun
 bun.lockb

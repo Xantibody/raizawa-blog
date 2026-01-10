@@ -4,10 +4,11 @@
   "type": "module",
   "private": true,
   "scripts": {
-    "dev": "vite",
-    "build": "vite build",
+    "dev": "bun run prebuild && vite",
+    "prebuild": "bun run scripts/build-posts.ts",
+    "build": "bun run prebuild && vite build",
     "preview": "vite preview",
-    "test": "vitest run"
+    "test": "bun run prebuild && vitest run"
   },
   "devDependencies": {
     "@hono/vite-cloudflare-pages": "^0.4.3",

@@ -1,8 +1,7 @@
 import { createRoute } from 'honox/factory'
 import { getPostBySlug } from '../../lib/posts'
-import { renderMarkdown } from '../../lib/markdown'
 
-export default createRoute(async (c) => {
+export default createRoute((c) => {
   const slug = c.req.param('slug')
   const post = getPostBySlug(slug)
 
@@ -10,7 +9,8 @@ export default createRoute(async (c) => {
     return c.notFound()
   }
 
-  const htmlContent = await renderMarkdown(post.content)
+  // Use pre-rendered HTML from build time
+  const htmlContent = post.html
 
   return c.render(
     <html>

@@ -9,18 +9,17 @@
     "build:content": "bun run scripts/build-posts.ts",
     "build:bundle": "vite build",
     "preview": "vite preview",
-    "test": "bun run build:content && vitest run"
+    "test": "bun run build:content && vitest run",
+    "typecheck": "tsgo --noEmit"
   },
   "devDependencies": {
     "@hono/vite-build": "^1.8.0",
     "@hono/vite-dev-server": "^0.24.0",
     "@types/bun": "latest",
     "@types/js-yaml": "^4.0.9",
+    "@typescript/native-preview": "^7.0.0-dev.20260109.1",
     "vite": "^7.3.1",
     "vitest": "^4.0.16"
-  },
-  "peerDependencies": {
-    "typescript": "^5"
   },
   "dependencies": {
     "@shikijs/markdown-it": "^3.21.0",

@@ -1,5 +1,3 @@
-import { readdirSync, readFileSync } from 'fs'
-import { join } from 'path'
 import * as yaml from 'js-yaml'
 
 export interface PostMeta {
@@ -11,9 +9,15 @@ export interface PostMeta {
   draft: boolean
 }
 
-const postsDirectory = join(process.cwd(), 'app/posts')
+export interface Post {
+  meta: PostMeta
+  content: string
+}
 
-function parseFrontmatter(fileContents: string): { data: any; content: string } {
+// Import all markdown files at build time using Vite's import.meta.glob
+const postFiles = import.meta.glob('../posts/*.md', { eager: true, query: '?raw', import: 'default' })
+
+function parseFrontmatter(fileContents: string): { data: Record<string, any>; content: string } {
   const frontmatterRegex = /^---\s*\n([\s\S]*?)\n---\s*\n([\s\S]*)$/
   const match = fileContents.match(frontmatterRegex)
 
@@ -27,48 +31,32 @@ function parseFrontmatter(fileContents: string): { data: any; content: string } 
   return { data, content }
 }
 
-export function getAllPosts(): PostMeta[] {
-  const fileNames = readdirSync(postsDirectory)
-  const posts = fileNames
-    .filter((fileName) => fileName.endsWith('.md'))
-    .map((fileName) => {
-      const slug = fileName.replace(/\.md$/, '')
-      const fullPath = join(postsDirectory, fileName)
-      const fileContents = readFileSync(fullPath, 'utf8')
-      const { data } = parseFrontmatter(fileContents)
+function parsePost(filePath: string, fileContents: string): Post {
+  const slug = filePath.replace('../posts/', '').replace('.md', '')
+  const { data, content } = parseFrontmatter(fileContents)
 
-      return {
-        slug,
-        title: data.title || slug,
-        date: data.date || '',
-        categories: data.categories || [],
-        tags: data.tags || [],
-        draft: data.draft || false,
-      } as PostMeta
-    })
-    .filter((post) => !post.draft)
-    .sort((a, b) => (a.date < b.date ? 1 : -1))
+  const meta: PostMeta = {
+    slug,
+    title: data.title || slug,
+    date: data.date || '',
+    categories: data.categories || [],
+    tags: data.tags || [],
+    draft: data.draft || false,
+  }
 
-  return posts
+  return { meta, content }
 }
 
-export function getPostBySlug(slug: string): { meta: PostMeta; content: string } | null {
-  try {
-    const fullPath = join(postsDirectory, `${slug}.md`)
-    const fileContents = readFileSync(fullPath, 'utf8')
-    const { data, content } = parseFrontmatter(fileContents)
+// Parse all posts at module load time (build time for Workers)
+const allPosts: Post[] = Object.entries(postFiles)
+  .map(([path, content]) => parsePost(path, content as string))
+  .filter((post) => !post.meta.draft)
+  .sort((a, b) => (a.meta.date < b.meta.date ? 1 : -1))
 
-    const meta: PostMeta = {
-      slug,
-      title: data.title || slug,
-      date: data.date || '',
-      categories: data.categories || [],
-      tags: data.tags || [],
-      draft: data.draft || false,
-    }
+export function getAllPosts(): PostMeta[] {
+  return allPosts.map((post) => post.meta)
+}
 
-    return { meta, content }
-  } catch {
-    return null
-  }
+export function getPostBySlug(slug: string): Post | null {
+  return allPosts.find((post) => post.meta.slug === slug) || null
 }

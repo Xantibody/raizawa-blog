@@ -1,10 +1,6 @@
 import { describe, it, expect } from 'vitest'
-import { readdirSync, readFileSync } from 'fs'
-import { join } from 'path'
 import { getAllPosts, getPostBySlug } from './posts'
 import { renderMarkdown } from './markdown'
-
-const postsDirectory = join(process.cwd(), 'app/posts')
 
 describe('posts', () => {
   it('should load all posts without error', () => {
@@ -33,37 +29,31 @@ describe('posts', () => {
 
 describe('markdown rendering', () => {
   it('should render all posts without error', async () => {
-    const files = readdirSync(postsDirectory).filter((f) => f.endsWith('.md'))
+    const posts = getAllPosts()
 
-    for (const file of files) {
-      const filePath = join(postsDirectory, file)
-      const content = readFileSync(filePath, 'utf-8')
-
-      // Extract content after frontmatter
-      const match = content.match(/^---\s*\n[\s\S]*?\n---\s*\n([\s\S]*)$/)
-      if (!match) continue
-
-      const markdownContent = match[1]
+    for (const postMeta of posts) {
+      const post = getPostBySlug(postMeta.slug)
+      if (!post) continue
 
       // This should not throw
-      await expect(renderMarkdown(markdownContent)).resolves.toBeDefined()
+      await expect(renderMarkdown(post.content)).resolves.toBeDefined()
     }
   })
 })
 
 describe('code blocks', () => {
   it('should not have uppercase language identifiers', () => {
-    const files = readdirSync(postsDirectory).filter((f) => f.endsWith('.md'))
+    const posts = getAllPosts()
     const issues: string[] = []
 
-    for (const file of files) {
-      const filePath = join(postsDirectory, file)
-      const content = readFileSync(filePath, 'utf-8')
+    for (const postMeta of posts) {
+      const post = getPostBySlug(postMeta.slug)
+      if (!post) continue
 
       // Find code blocks with uppercase language
-      const matches = content.matchAll(/```([A-Z][a-zA-Z]*)/g)
+      const matches = post.content.matchAll(/```([A-Z][a-zA-Z]*)/g)
       for (const match of matches) {
-        issues.push(`${file}: \`\`\`${match[1]} should be \`\`\`${match[1].toLowerCase()}`)
+        issues.push(`${postMeta.slug}: \`\`\`${match[1]} should be \`\`\`${match[1].toLowerCase()}`)
       }
     }
 

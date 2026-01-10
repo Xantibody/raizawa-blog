@@ -151,6 +151,15 @@ export default createRoute((c) => {
           article a:hover {
             text-decoration: underline;
           }
+          /* Inline code styling */
+          article code:not(pre code) {
+            background: #f0f0f0;
+            padding: 0.2rem 0.4rem;
+            border-radius: 4px;
+            font-family: ui-monospace, SFMono-Regular, Consolas, monospace;
+            font-size: 0.9em;
+            color: #e53e3e;
+          }
           .ogp-card {
             display: flex;
             border: 1px solid #ddd;

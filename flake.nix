@@ -32,21 +32,18 @@
                 no-exclamation-question-mark = false;
               };
               write-good = true;
-              prh = {
-                rulePaths = [
-                  "${pkgs.textlint-rule-prh}/lib/node_modules/textlint-rule-prh/node_modules/prh/prh-rules/media/techbooster.yml"
-                  "${pkgs.textlint-rule-prh}/lib/node_modules/textlint-rule-prh/node_modules/prh/prh-rules/media/WEB+DB_PRESS.yml"
-                ];
-              };
+              prh.rulePaths = [
+                "${pkgs.textlint-rule-prh}/lib/node_modules/textlint-rule-prh/node_modules/prh/prh-rules/media/techbooster.yml"
+                "${pkgs.textlint-rule-prh}/lib/node_modules/textlint-rule-prh/node_modules/prh/prh-rules/media/WEB+DB_PRESS.yml"
+              ];
             };
           };
         in
         {
           default = pkgs.mkShell {
             packages = with pkgs; [
-              hugo
-              rumdl
-              nodejs
+              bun
+              wrangler
               textlint
               (textlint.withPackages [
                 textlint-rule-preset-ja-technical-writing

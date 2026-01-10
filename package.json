@@ -1,0 +1,35 @@
+{
+  "name": "raizawa-blog",
+  "module": "index.ts",
+  "type": "module",
+  "private": true,
+  "scripts": {
+    "dev": "bun run build:content && vite",
+    "build": "bun run build:content && bun run build:bundle",
+    "build:content": "bun run scripts/build-posts.ts",
+    "build:bundle": "vite build",
+    "preview": "vite preview",
+    "test": "bun run build:content && vitest run"
+  },
+  "devDependencies": {
+    "@hono/vite-build": "^1.8.0",
+    "@hono/vite-dev-server": "^0.24.0",
+    "@types/bun": "latest",
+    "@types/js-yaml": "^4.0.9",
+    "vite": "^7.3.1",
+    "vitest": "^4.0.16"
+  },
+  "peerDependencies": {
+    "typescript": "^5"
+  },
+  "dependencies": {
+    "@shikijs/markdown-it": "^3.21.0",
+    "@shikijs/transformers": "^3.21.0",
+    "@types/markdown-it": "^14.1.2",
+    "hono": "^4.11.3",
+    "honox": "^0.1.53",
+    "js-yaml": "^4.1.1",
+    "markdown-it": "^14.1.0",
+    "shiki": "^3.21.0"
+  }
+}

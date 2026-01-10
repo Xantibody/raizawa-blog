@@ -40,3 +40,13 @@ hugo.linux
 # direnv-nix
 .textlintrc
 .direnv/
+
+# HonoX / Vite
+.vite/
+*.local
+
+# Generated posts data
+app/lib/posts-data.ts
+
+# bun
+bun.lockb

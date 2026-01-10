@@ -1,5 +1,5 @@
 ---
-date: 2026-01-06T02:29:18+09:00
+date: 2026-01-06 02:29
 title: template
 categories:
   - ぎじゅつ

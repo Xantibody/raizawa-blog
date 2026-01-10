@@ -1,3 +1,15 @@
+/**
+ * Vite plugin for markdown file HMR during local development.
+ *
+ * Purpose:
+ * - Watch app/posts/*.md files for changes
+ * - Automatically rebuild posts-data.ts when markdown files are modified
+ * - Trigger browser reload to reflect changes immediately
+ *
+ * Note:
+ * - This plugin only runs in dev mode (configureServer is not called during build)
+ * - Production builds use the standard build:content script before vite build
+ */
 import { spawn } from 'child_process'
 import type { Plugin } from 'vite'
 

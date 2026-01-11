@@ -1,3 +1,4 @@
+import type { Post } from "./types";
 import { describe, expect, it } from "vitest";
 import { getAllPosts, getPostBySlug } from "./posts";
 import { renderMarkdown } from "./markdown";
@@ -36,13 +37,12 @@ describe("markdown rendering", () => {
     // Shiki initialization can be slow in CI
     const posts = getAllPosts();
 
-    for (const postMeta of posts) {
-      const post = getPostBySlug(postMeta.slug);
-      if (post) {
-        // This should not throw
-        await expect(renderMarkdown(post.content)).resolves.toBeDefined();
-      }
-    }
+    const renderPromises = posts
+      .map((postMeta) => getPostBySlug(postMeta.slug))
+      .filter((post): post is Post => post !== null && post !== undefined)
+      .map((post) => expect(renderMarkdown(post.content)).resolves.toBeDefined());
+
+    await Promise.all(renderPromises);
   }, CI_TIMEOUT_MS);
 });
 

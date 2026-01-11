@@ -3,16 +3,16 @@ import { getAllPosts } from "./posts";
 
 const SITE_URL = "https://raizawa-blog.pages.dev";
 
-function escapeXml(str: string): string {
+const escapeXml = (str: string): string => {
   return str
     .replaceAll("&", "&amp;")
     .replaceAll("<", "&lt;")
     .replaceAll(">", "&gt;")
     .replaceAll('"', "&quot;")
     .replaceAll("'", "&apos;");
-}
+};
 
-function generateRssFeed(posts: ReturnType<typeof getAllPosts>): string {
+const generateRssFeed = (posts: ReturnType<typeof getAllPosts>): string => {
   const items = posts
     .slice(0, 20)
     .map((post) => {
@@ -38,7 +38,7 @@ function generateRssFeed(posts: ReturnType<typeof getAllPosts>): string {
 ${items}
   </channel>
 </rss>`;
-}
+};
 
 describe("RSS feed", () => {
   it("should generate valid XML structure", () => {

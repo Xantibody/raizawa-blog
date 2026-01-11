@@ -5,14 +5,14 @@ const SITE_URL = "https://raizawa-blog.pages.dev";
 const SITE_TITLE = "R-Aizawa Blog";
 const SITE_DESCRIPTION = "R-Aizawaの技術ブログ";
 
-function escapeXml(str: string): string {
+const escapeXml = (str: string): string => {
   return str
     .replaceAll("&", "&amp;")
     .replaceAll("<", "&lt;")
     .replaceAll(">", "&gt;")
     .replaceAll('"', "&quot;")
     .replaceAll("'", "&apos;");
-}
+};
 
 export default createRoute((c) => {
   const posts = getAllPosts();

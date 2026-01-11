@@ -10,12 +10,14 @@ import { fetchOGP, generateOGPCard } from "./ogp";
 
 // Custom transformer to add file name from meta string
 // Usage: ```ts title="filename.ts"
-function transformerMetaTitle(): ShikiTransformer {
+const transformerMetaTitle = (): ShikiTransformer => {
   return {
     name: "meta-title",
     pre(node) {
       const meta = this.options.meta?.__raw;
-      if (!meta) return;
+      if (!meta) {
+        return;
+      }
 
       const match = meta.match(/title=["']([^"']+)["']/);
       const title = match?.[1];
@@ -30,7 +32,7 @@ function transformerMetaTitle(): ShikiTransformer {
       }
     },
   };
-}
+};
 
 // Initialize markdown-it with Shiki
 const md = MarkdownIt({ html: true, breaks: true });
@@ -38,7 +40,7 @@ const md = MarkdownIt({ html: true, breaks: true });
 // Shiki plugin (initialized lazily)
 let shikiInitialized = false;
 
-async function initShiki() {
+const initShiki = async () => {
   if (!shikiInitialized) {
     md.use(
       await Shiki({
@@ -53,10 +55,10 @@ async function initShiki() {
     );
     shikiInitialized = true;
   }
-}
+};
 
 // Detect standalone URLs (on their own line only)
-function detectStandaloneURLs(markdown: string): string[] {
+const detectStandaloneURLs = (markdown: string): string[] => {
   const urls: string[] = [];
   let match;
 
@@ -64,20 +66,24 @@ function detectStandaloneURLs(markdown: string): string[] {
   const autolinkRegex = /^<(https?:\/\/[^\s>]+)>$/gm;
   while ((match = autolinkRegex.exec(markdown)) !== null) {
     const url = match[1];
-    if (url) urls.push(url);
+    if (url) {
+      urls.push(url);
+    }
   }
 
   // Match standalone URLs on their own line
   const standaloneRegex = /^(https?:\/\/[^\s]+)$/gm;
   while ((match = standaloneRegex.exec(markdown)) !== null) {
     const url = match[1];
-    if (url) urls.push(url);
+    if (url) {
+      urls.push(url);
+    }
   }
 
   return [...new Set(urls)]; // Remove duplicates
-}
+};
 
-export async function renderMarkdown(markdown: string): Promise<string> {
+export const renderMarkdown = async (markdown: string): Promise<string> => {
   await initShiki();
 
   // Detect all standalone URLs
@@ -86,8 +92,8 @@ export async function renderMarkdown(markdown: string): Promise<string> {
   // Fetch OGP data for all URLs in parallel
   const ogpResults = await Promise.all(
     urls.map(async (url) => ({
-      url,
       ogp: await fetchOGP(url),
+      url,
     })),
   );
 
@@ -103,4 +109,4 @@ export async function renderMarkdown(markdown: string): Promise<string> {
   }
 
   return md.render(processedMarkdown);
-}
+};

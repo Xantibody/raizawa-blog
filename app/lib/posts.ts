@@ -1,14 +1,15 @@
-// Re-export types
-export type { Post, PostMeta } from "./types";
 import type { Post, PostMeta } from "./types";
-
 // Import generated data (created by scripts/build-posts.ts)
 import { posts } from "./posts-data";
 
-export const getAllPosts = (): PostMeta[] => {
+const getAllPosts = (): PostMeta[] => {
   return posts.map((post) => post.meta);
 };
 
-export const getPostBySlug = (slug: string): Post | null => {
+const getPostBySlug = (slug: string): Post | null => {
   return posts.find((post) => post.meta.slug === slug) ?? null;
 };
+
+// Re-export types
+export type { Post, PostMeta } from "./types";
+export { getAllPosts, getPostBySlug };

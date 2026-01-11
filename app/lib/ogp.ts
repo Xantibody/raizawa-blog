@@ -1,4 +1,4 @@
-export interface OGPData {
+interface OGPData {
   url: string;
   title: string;
   description: string;
@@ -37,7 +37,7 @@ const extractMetaContent = (html: string, patterns: string[]): string | undefine
   return undefined;
 };
 
-export const fetchOGP = async (url: string): Promise<OGPData> => {
+const fetchOGP = async (url: string): Promise<OGPData> => {
   // Check cache
   const cached = ogpCache.get(url);
   if (cached && Date.now() - cached.timestamp < CACHE_DURATION) {
@@ -102,7 +102,7 @@ export const fetchOGP = async (url: string): Promise<OGPData> => {
   }
 };
 
-export const generateOGPCard = (ogp: OGPData): string => {
+const generateOGPCard = (ogp: OGPData): string => {
   const { description, image, siteName, title, url } = ogp;
 
   const imageHtml = image
@@ -111,3 +111,6 @@ export const generateOGPCard = (ogp: OGPData): string => {
 
   return `<a href="${url}" class="ogp-card" target="_blank" rel="noopener noreferrer">${imageHtml}<span class="ogp-content"><span class="ogp-title">${title || url}</span><span class="ogp-description">${description}</span><span class="ogp-site">${siteName}</span></span></a>`;
 };
+
+export type { OGPData };
+export { fetchOGP, generateOGPCard };

@@ -38,7 +38,9 @@ describe("markdown rendering", () => {
 
     for (const postMeta of posts) {
       const post = getPostBySlug(postMeta.slug);
-      if (!post) continue;
+      if (!post) {
+        continue;
+      }
 
       // This should not throw
       await expect(renderMarkdown(post.content)).resolves.toBeDefined();
@@ -53,7 +55,9 @@ describe("code blocks", () => {
 
     for (const postMeta of posts) {
       const post = getPostBySlug(postMeta.slug);
-      if (!post) continue;
+      if (!post) {
+        continue;
+      }
 
       // Find code blocks with uppercase language
       const matches = post.content.matchAll(/```([A-Z][a-zA-Z]*)/g);

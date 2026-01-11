@@ -3,8 +3,11 @@ import { getPostBySlug } from '../../lib/posts'
 
 export default createRoute((c) => {
   const slug = c.req.param('slug')
-  const post = getPostBySlug(slug)
+  if (!slug) {
+    return c.notFound()
+  }
 
+  const post = getPostBySlug(slug)
   if (!post) {
     return c.notFound()
   }

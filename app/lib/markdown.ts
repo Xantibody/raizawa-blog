@@ -18,8 +18,8 @@ function transformerMetaTitle(): ShikiTransformer {
       if (!meta) return
 
       const match = meta.match(/title=["']([^"']+)["']/)
-      if (match) {
-        const title = match[1]
+      const title = match?.[1]
+      if (title) {
         // Add title element before the code
         node.children.unshift({
           type: 'element',
@@ -63,13 +63,15 @@ function detectStandaloneURLs(markdown: string): string[] {
   // Match <URL> on its own line
   const autolinkRegex = /^<(https?:\/\/[^\s>]+)>$/gm
   while ((match = autolinkRegex.exec(markdown)) !== null) {
-    urls.push(match[1])
+    const url = match[1]
+    if (url) urls.push(url)
   }
 
   // Match standalone URLs on their own line
   const standaloneRegex = /^(https?:\/\/[^\s]+)$/gm
   while ((match = standaloneRegex.exec(markdown)) !== null) {
-    urls.push(match[1])
+    const url = match[1]
+    if (url) urls.push(url)
   }
 
   return [...new Set(urls)] // Remove duplicates

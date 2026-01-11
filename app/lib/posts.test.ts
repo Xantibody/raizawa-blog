@@ -54,7 +54,10 @@ describe('code blocks', () => {
       // Find code blocks with uppercase language
       const matches = post.content.matchAll(/```([A-Z][a-zA-Z]*)/g)
       for (const match of matches) {
-        issues.push(`${postMeta.slug}: \`\`\`${match[1]} should be \`\`\`${match[1].toLowerCase()}`)
+        const lang = match[1]
+        if (lang) {
+          issues.push(`${postMeta.slug}: \`\`\`${lang} should be \`\`\`${lang.toLowerCase()}`)
+        }
       }
     }
 

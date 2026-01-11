@@ -24,10 +24,10 @@ const transformerMetaTitle = (): ShikiTransformer => {
       if (title) {
         // Add title element before the code
         node.children.unshift({
-          type: "element",
-          tagName: "div",
-          properties: { class: "code-title" },
           children: [{ type: "text", value: title }],
+          properties: { class: "code-title" },
+          tagName: "div",
+          type: "element",
         });
       }
     },
@@ -35,7 +35,7 @@ const transformerMetaTitle = (): ShikiTransformer => {
 };
 
 // Initialize markdown-it with Shiki
-const md = MarkdownIt({ html: true, breaks: true });
+const md = MarkdownIt({ breaks: true, html: true });
 
 // Shiki plugin (initialized lazily)
 let shikiInitialized = false;

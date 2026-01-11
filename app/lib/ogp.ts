@@ -35,66 +35,81 @@ const extractMetaContent = (html: string, patterns: string[]): string | undefine
   return undefined;
 };
 
-const fetchOGP = async (url: string): Promise<OGPData> => {
-  // Check cache
+// Check cache and return cached data if valid
+const getCachedOGP = (url: string): OGPData | undefined => {
   const cached = ogpCache.get(url);
   if (cached && Date.now() - cached.timestamp < CACHE_DURATION) {
     return cached.data;
   }
+  return undefined;
+};
+
+// Fetch HTML content with timeout
+const fetchPageHTML = async (url: string): Promise<string> => {
+  const controller = new AbortController();
+  const timeoutId = setTimeout(() => controller.abort(), FETCH_TIMEOUT_MS);
+
+  const response = await fetch(url, {
+    headers: {
+      "User-Agent": "Mozilla/5.0 (compatible; OGPBot/1.0; +https://raizawa-blog.pages.dev)",
+    },
+    signal: controller.signal,
+  });
+
+  clearTimeout(timeoutId);
+
+  if (!response.ok) {
+    throw new Error(`HTTP ${response.status}`);
+  }
+
+  return response.text();
+};
+
+// Extract OGP data from HTML content
+const extractOGPFromHTML = (html: string, url: string): OGPData => {
+  const title =
+    extractMetaContent(html, ['property="og:title"', 'name="twitter:title"']) ??
+    html.match(/<title[^>]*>([^<]+)<\/title>/i)?.[REGEX_CAPTURE_GROUP_INDEX];
+
+  const description = extractMetaContent(html, [
+    'property="og:description"',
+    'name="twitter:description"',
+    'name="description"',
+  ]);
+
+  let image = extractMetaContent(html, ['property="og:image"', 'name="twitter:image"']);
+
+  // Resolve relative image URLs
+  if (image && !image.startsWith("http")) {
+    const baseUrl = new URL(url);
+    image = new URL(image, baseUrl.origin).toString();
+  }
+
+  const siteName = extractMetaContent(html, ['property="og:site_name"', 'name="twitter:site"']);
+
+  return createOGPData(url, { description, image, siteName, title });
+};
+
+// Cache OGP data and return it
+const cacheAndReturn = (url: string, ogpData: OGPData): OGPData => {
+  ogpCache.set(url, { data: ogpData, timestamp: Date.now() });
+  return ogpData;
+};
+
+const fetchOGP = async (url: string): Promise<OGPData> => {
+  // Check cache first
+  const cached = getCachedOGP(url);
+  if (cached) {
+    return cached;
+  }
 
   try {
-    // Fetch HTML with timeout
-    const controller = new AbortController();
-    const timeoutId = setTimeout(() => controller.abort(), FETCH_TIMEOUT_MS);
-
-    const response = await fetch(url, {
-      headers: {
-        "User-Agent": "Mozilla/5.0 (compatible; OGPBot/1.0; +https://raizawa-blog.pages.dev)",
-      },
-      signal: controller.signal,
-    });
-
-    clearTimeout(timeoutId);
-
-    if (!response.ok) {
-      throw new Error(`HTTP ${response.status}`);
-    }
-
-    const html = await response.text();
-
-    // Extract OGP and fallback meta tags using regex
-    const title =
-      extractMetaContent(html, ['property="og:title"', 'name="twitter:title"']) ??
-      html.match(/<title[^>]*>([^<]+)<\/title>/i)?.[REGEX_CAPTURE_GROUP_INDEX];
-
-    const description = extractMetaContent(html, [
-      'property="og:description"',
-      'name="twitter:description"',
-      'name="description"',
-    ]);
-
-    let image = extractMetaContent(html, ['property="og:image"', 'name="twitter:image"']);
-
-    // Resolve relative image URLs
-    if (image && !image.startsWith("http")) {
-      const baseUrl = new URL(url);
-      image = new URL(image, baseUrl.origin).toString();
-    }
-
-    const siteName = extractMetaContent(html, ['property="og:site_name"', 'name="twitter:site"']);
-
-    const ogpData = createOGPData(url, { description, image, siteName, title });
-
-    // Cache the result
-    ogpCache.set(url, { data: ogpData, timestamp: Date.now() });
-
-    return ogpData;
+    const html = await fetchPageHTML(url);
+    const ogpData = extractOGPFromHTML(html, url);
+    return cacheAndReturn(url, ogpData);
   } catch {
     // Return minimal OGP data on failure
-    const ogpData = createOGPData(url);
-    ogpCache.set(url, { data: ogpData, timestamp: Date.now() });
-
-    return ogpData;
+    return cacheAndReturn(url, createOGPData(url));
   }
 };
 

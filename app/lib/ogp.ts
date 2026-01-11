@@ -89,9 +89,7 @@ const fetchOGP = async (url: string): Promise<OGPData> => {
     ogpCache.set(url, { data: ogpData, timestamp: Date.now() });
 
     return ogpData;
-  } catch (error) {
-    console.error(`Failed to fetch OGP for ${url}:`, error);
-
+  } catch {
     // Return minimal OGP data on failure
     const ogpData = createOGPData(url);
     ogpCache.set(url, { data: ogpData, timestamp: Date.now() });

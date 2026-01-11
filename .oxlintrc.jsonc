@@ -164,6 +164,13 @@
       {
         "ignore": [-1, 0, 1]
       }
+    ],
+    // Sort imports - ignore declaration sort to avoid conflicts with syntax ordering
+    "sort-imports": [
+      "error",
+      {
+        "ignoreDeclarationSort": true
+      }
     ]
   },
   "overrides": [

@@ -7,7 +7,7 @@ const getAllPosts = (): PostMeta[] => {
 };
 
 const getPostBySlug = (slug: string): Post | null => {
-  return posts.find((post) => post.meta.slug === slug) ?? null;
+  return posts.find((post) => post.meta.slug === slug) ?? undefined;
 };
 
 // Re-export types

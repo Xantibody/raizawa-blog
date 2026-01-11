@@ -3,7 +3,7 @@ import { getAllPosts, getPostBySlug } from "./posts";
 import { renderMarkdown } from "./markdown";
 
 const MINIMUM_POSTS = 0;
-const CI_TIMEOUT_MS = 60000;
+const CI_TIMEOUT_MS = 60_000;
 const REGEX_CAPTURE_GROUP_INDEX = 1;
 
 describe("posts", () => {

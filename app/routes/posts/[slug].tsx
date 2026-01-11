@@ -18,7 +18,7 @@ export default createRoute((c) => {
   return c.render(
     <html>
       <head>
-        <meta charSet="UTF-8" />
+        <meta charSet="utf8" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
         <title>{post.meta.title} - R-Aizawa Blog</title>
         <meta name="description" content={`${post.meta.title} - R-Aizawa Blog`} />

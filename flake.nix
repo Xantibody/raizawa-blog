@@ -88,6 +88,7 @@
               bun
               oxlint
               oxfmt
+              nodejs-slim_24
               typescript-go
               wrangler
               textlint

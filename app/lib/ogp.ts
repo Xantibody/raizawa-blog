@@ -103,11 +103,14 @@ const fetchOGP = async (url: string): Promise<OGPData> => {
 const generateOGPCard = (ogp: OGPData): string => {
   const { description, image, siteName, title, url } = ogp;
 
-  const imageHtml = image
-    ? `<span class="ogp-image"><img src="${image}" alt="${title || url}" /></span>`
-    : `<span class="ogp-image ogp-noimage">NO IMAGE</span>`;
+  let imageHtml = `<span class="ogp-image ogp-noimage">NO IMAGE</span>`;
+  if (image) {
+    const altText = title || url;
+    imageHtml = `<span class="ogp-image"><img src="${image}" alt="${altText}" /></span>`;
+  }
 
-  return `<a href="${url}" class="ogp-card" target="_blank" rel="noopener noreferrer">${imageHtml}<span class="ogp-content"><span class="ogp-title">${title || url}</span><span class="ogp-description">${description}</span><span class="ogp-site">${siteName}</span></span></a>`;
+  const displayTitle = title || url;
+  return `<a href="${url}" class="ogp-card" target="_blank" rel="noopener noreferrer">${imageHtml}<span class="ogp-content"><span class="ogp-title">${displayTitle}</span><span class="ogp-description">${description}</span><span class="ogp-site">${siteName}</span></span></a>`;
 };
 
 export type { OGPData };

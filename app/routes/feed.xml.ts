@@ -7,14 +7,13 @@ const SITE_DESCRIPTION = "R-Aizawaの技術ブログ";
 const MAX_FEED_ITEMS = 20;
 const HTTP_OK = 200;
 
-const escapeXml = (str: string): string => {
-  return str
+const escapeXml = (str: string): string =>
+  str
     .replaceAll("&", "&amp;")
     .replaceAll("<", "&lt;")
     .replaceAll(">", "&gt;")
     .replaceAll('"', "&quot;")
     .replaceAll("'", "&apos;");
-};
 
 export default createRoute((c) => {
   const posts = getAllPosts();

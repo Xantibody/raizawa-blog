@@ -4,14 +4,13 @@ import { getAllPosts } from "./posts";
 const SITE_URL = "https://raizawa-blog.pages.dev";
 const MAX_FEED_ITEMS = 20;
 
-const escapeXml = (str: string): string => {
-  return str
+const escapeXml = (str: string): string =>
+  str
     .replaceAll("&", "&amp;")
     .replaceAll("<", "&lt;")
     .replaceAll(">", "&gt;")
     .replaceAll('"', "&quot;")
     .replaceAll("'", "&apos;");
-};
 
 const generateRssFeed = (posts: ReturnType<typeof getAllPosts>): string => {
   const items = posts

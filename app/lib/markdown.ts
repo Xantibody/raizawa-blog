@@ -12,29 +12,27 @@ const REGEX_CAPTURE_GROUP_INDEX = 1;
 
 // Custom transformer to add file name from meta string
 // Usage: ```ts title="filename.ts"
-const transformerMetaTitle = (): ShikiTransformer => {
-  return {
-    name: "meta-title",
-    pre(node) {
-      const meta = this.options.meta?.__raw;
-      if (!meta) {
-        return;
-      }
+const transformerMetaTitle = (): ShikiTransformer => ({
+  name: "meta-title",
+  pre(node) {
+    const meta = this.options.meta?.__raw;
+    if (!meta) {
+      return;
+    }
 
-      const match = meta.match(/title=["']([^"']+)["']/);
-      const title = match?.[REGEX_CAPTURE_GROUP_INDEX];
-      if (title) {
-        // Add title element before the code
-        node.children.unshift({
-          children: [{ type: "text", value: title }],
-          properties: { class: "code-title" },
-          tagName: "div",
-          type: "element",
-        });
-      }
-    },
-  };
-};
+    const match = meta.match(/title=["']([^"']+)["']/);
+    const title = match?.[REGEX_CAPTURE_GROUP_INDEX];
+    if (title) {
+      // Add title element before the code
+      node.children.unshift({
+        children: [{ type: "text", value: title }],
+        properties: { class: "code-title" },
+        tagName: "div",
+        type: "element",
+      });
+    }
+  },
+});
 
 // Initialize markdown-it with Shiki
 const md = MarkdownIt({ breaks: true, html: true });

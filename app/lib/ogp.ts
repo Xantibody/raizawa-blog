@@ -6,15 +6,13 @@ interface OGPData {
   siteName: string;
 }
 
-const createOGPData = (url: string, partial: Partial<OGPData> = {}): OGPData => {
-  return {
-    description: partial.description ?? "",
-    image: partial.image ?? "",
-    siteName: partial.siteName ?? "",
-    title: partial.title ?? "",
-    url,
-  };
-};
+const createOGPData = (url: string, partial: Partial<OGPData> = {}): OGPData => ({
+  description: partial.description ?? "",
+  image: partial.image ?? "",
+  siteName: partial.siteName ?? "",
+  title: partial.title ?? "",
+  url,
+});
 
 // In-memory cache for OGP data (expires after 1 hour)
 const ogpCache = new Map<string, { data: OGPData; timestamp: number }>();

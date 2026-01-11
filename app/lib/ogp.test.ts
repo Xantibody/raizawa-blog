@@ -1,15 +1,14 @@
-import { describe, it, expect } from "vitest";
-import { generateOGPCard } from "./ogp";
-import type { OGPData } from "./ogp";
+import { describe, expect, it } from "vitest";
+import { type OGPData, generateOGPCard } from "./ogp";
 
 describe("OGP card generation", () => {
   it("should generate card with all OGP data", () => {
     const ogp: OGPData = {
-      url: "https://example.com",
-      title: "Example Title",
       description: "Example description",
       image: "https://example.com/image.png",
       siteName: "Example Site",
+      title: "Example Title",
+      url: "https://example.com",
     };
 
     const html = generateOGPCard(ogp);
@@ -24,11 +23,11 @@ describe("OGP card generation", () => {
 
   it("should show NO IMAGE when image is missing", () => {
     const ogp: OGPData = {
-      url: "https://example.com",
-      title: "Example Title",
       description: "",
       image: "",
       siteName: "",
+      title: "Example Title",
+      url: "https://example.com",
     };
 
     const html = generateOGPCard(ogp);
@@ -39,11 +38,11 @@ describe("OGP card generation", () => {
 
   it("should use URL as title when title is missing", () => {
     const ogp: OGPData = {
-      url: "https://example.com/page",
-      title: "",
       description: "",
       image: "",
       siteName: "",
+      title: "",
+      url: "https://example.com/page",
     };
 
     const html = generateOGPCard(ogp);
@@ -53,11 +52,11 @@ describe("OGP card generation", () => {
 
   it("should include security attributes", () => {
     const ogp: OGPData = {
-      url: "https://example.com",
-      title: "Test",
       description: "",
       image: "",
       siteName: "",
+      title: "Test",
+      url: "https://example.com",
     };
 
     const html = generateOGPCard(ogp);

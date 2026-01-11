@@ -1,44 +1,46 @@
-import MarkdownIt from "markdown-it";
-import Shiki from "@shikijs/markdown-it";
+import { fetchOGP, generateOGPCard } from "./ogp";
 import {
   transformerNotationDiff,
-  transformerNotationHighlight,
   transformerNotationErrorLevel,
+  transformerNotationHighlight,
 } from "@shikijs/transformers";
-import type { ShikiTransformer } from "shiki";
-import { fetchOGP, generateOGPCard } from "./ogp";
+import Shiki from "@shikijs/markdown-it";
+import MarkdownIt from "markdown-it";
+import { type ShikiTransformer } from "shiki";
+
+const REGEX_CAPTURE_GROUP_INDEX = 1;
 
 // Custom transformer to add file name from meta string
 // Usage: ```ts title="filename.ts"
-function transformerMetaTitle(): ShikiTransformer {
-  return {
-    name: "meta-title",
-    pre(node) {
-      const meta = this.options.meta?.__raw;
-      if (!meta) return;
+const transformerMetaTitle = (): ShikiTransformer => ({
+  name: "meta-title",
+  pre(node) {
+    const meta = this.options.meta?.__raw;
+    if (!meta) {
+      return;
+    }
 
-      const match = meta.match(/title=["']([^"']+)["']/);
-      const title = match?.[1];
-      if (title) {
-        // Add title element before the code
-        node.children.unshift({
-          type: "element",
-          tagName: "div",
-          properties: { class: "code-title" },
-          children: [{ type: "text", value: title }],
-        });
-      }
-    },
-  };
-}
+    const match = meta.match(/title=["']([^"']+)["']/);
+    const title = match?.[REGEX_CAPTURE_GROUP_INDEX];
+    if (title) {
+      // Add title element before the code
+      node.children.unshift({
+        children: [{ type: "text", value: title }],
+        properties: { class: "code-title" },
+        tagName: "div",
+        type: "element",
+      });
+    }
+  },
+});
 
 // Initialize markdown-it with Shiki
-const md = MarkdownIt({ html: true, breaks: true });
+const md = MarkdownIt({ breaks: true, html: true });
 
 // Shiki plugin (initialized lazily)
 let shikiInitialized = false;
 
-async function initShiki() {
+const initShiki = async () => {
   if (!shikiInitialized) {
     md.use(
       await Shiki({
@@ -53,31 +55,34 @@ async function initShiki() {
     );
     shikiInitialized = true;
   }
-}
+};
 
 // Detect standalone URLs (on their own line only)
-function detectStandaloneURLs(markdown: string): string[] {
+const detectStandaloneURLs = (markdown: string): string[] => {
   const urls: string[] = [];
-  let match;
 
   // Match <URL> on its own line
   const autolinkRegex = /^<(https?:\/\/[^\s>]+)>$/gm;
-  while ((match = autolinkRegex.exec(markdown)) !== null) {
-    const url = match[1];
-    if (url) urls.push(url);
+  for (const match of markdown.matchAll(autolinkRegex)) {
+    const url = match[REGEX_CAPTURE_GROUP_INDEX];
+    if (url) {
+      urls.push(url);
+    }
   }
 
   // Match standalone URLs on their own line
   const standaloneRegex = /^(https?:\/\/[^\s]+)$/gm;
-  while ((match = standaloneRegex.exec(markdown)) !== null) {
-    const url = match[1];
-    if (url) urls.push(url);
+  for (const match of markdown.matchAll(standaloneRegex)) {
+    const url = match[REGEX_CAPTURE_GROUP_INDEX];
+    if (url) {
+      urls.push(url);
+    }
   }
 
   return [...new Set(urls)]; // Remove duplicates
-}
+};
 
-export async function renderMarkdown(markdown: string): Promise<string> {
+const renderMarkdown = async (markdown: string): Promise<string> => {
   await initShiki();
 
   // Detect all standalone URLs
@@ -86,8 +91,8 @@ export async function renderMarkdown(markdown: string): Promise<string> {
   // Fetch OGP data for all URLs in parallel
   const ogpResults = await Promise.all(
     urls.map(async (url) => ({
-      url,
       ogp: await fetchOGP(url),
+      url,
     })),
   );
 
@@ -95,12 +100,14 @@ export async function renderMarkdown(markdown: string): Promise<string> {
   let processedMarkdown = markdown;
   for (const { url, ogp } of ogpResults) {
     const ogpCard = generateOGPCard(ogp);
-    const escapedUrl = url.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+    const escapedUrl = url.replaceAll(/[.*+?^${}()|[\]\\]/g, String.raw`\$&`);
     // Replace only standalone URLs (on their own line)
     processedMarkdown = processedMarkdown
-      .replace(new RegExp(`^<${escapedUrl}>$`, "gm"), ogpCard)
-      .replace(new RegExp(`^${escapedUrl}$`, "gm"), ogpCard);
+      .replaceAll(new RegExp(`^<${escapedUrl}>$`, "gm"), ogpCard)
+      .replaceAll(new RegExp(`^${escapedUrl}$`, "gm"), ogpCard);
   }
 
   return md.render(processedMarkdown);
-}
+};
+
+export default renderMarkdown;

@@ -1,7 +1,7 @@
 import { describe, it, expect } from "vitest";
 import { readFileSync } from "fs";
 import { join } from "path";
-import { renderMarkdown } from "../app/lib/markdown";
+import renderMarkdown from "../app/lib/markdown";
 
 const fixturesDir = join(process.cwd(), "test/fixtures");
 

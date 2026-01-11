@@ -1,6 +1,6 @@
 // Shared type definitions for posts
 
-export interface PostMeta {
+interface PostMeta {
   slug: string;
   title: string;
   date: string;
@@ -9,8 +9,10 @@ export interface PostMeta {
   draft: boolean;
 }
 
-export interface Post {
+interface Post {
   meta: PostMeta;
   content: string;
   html: string;
 }
+
+export type { Post, PostMeta };

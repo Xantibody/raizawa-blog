@@ -195,7 +195,8 @@
       "rules": {
         "no-console": "off",
         "typescript/no-explicit-any": "warn",
-        "typescript/no-floating-promises": "warn"
+        "typescript/no-floating-promises": "warn",
+        "max-lines-per-function": "off"
       }
     },
     {

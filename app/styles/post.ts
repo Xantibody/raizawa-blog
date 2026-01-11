@@ -1,5 +1,5 @@
 // Post page specific styles
-export const postStyles = `
+const postStyles = `
   .back-link {
     color: #0066cc;
     text-decoration: none;
@@ -60,7 +60,7 @@ export const postStyles = `
   }
 `;
 
-export const codeBlockStyles = `
+const codeBlockStyles = `
   pre.shiki {
     counter-reset: line;
     overflow-x: auto;
@@ -111,7 +111,7 @@ export const codeBlockStyles = `
   }
 `;
 
-export const ogpCardStyles = `
+const ogpCardStyles = `
   .ogp-card {
     display: flex;
     border: 1px solid #ddd;
@@ -177,7 +177,7 @@ export const ogpCardStyles = `
   }
 `;
 
-export const mobileStyles = `
+const mobileStyles = `
   @media (max-width: 640px) {
     .ogp-card {
       flex-direction: column;
@@ -194,3 +194,5 @@ export const mobileStyles = `
     }
   }
 `;
+
+export { codeBlockStyles, mobileStyles, ogpCardStyles, postStyles };

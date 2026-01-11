@@ -1,5 +1,5 @@
 // Common base styles shared across pages
-export const baseStyles = `
+const baseStyles = `
   body {
     max-width: 800px;
     margin: 0 auto;
@@ -43,3 +43,5 @@ export const baseStyles = `
     font-size: 0.85rem;
   }
 `;
+
+export default baseStyles;

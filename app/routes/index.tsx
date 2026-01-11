@@ -1,6 +1,6 @@
 import { getAllPosts } from "../lib/posts";
-import { baseStyles } from "../styles/base";
-import { indexStyles } from "../styles/index";
+import baseStyles from "../styles/base";
+import indexStyles from "../styles/index";
 
 export default function Home() {
   const posts = getAllPosts();

@@ -1,6 +1,6 @@
 import { createRoute } from "honox/factory";
 import { getPostBySlug } from "../../lib/posts";
-import { baseStyles } from "../../styles/base";
+import baseStyles from "../../styles/base";
 import { codeBlockStyles, mobileStyles, ogpCardStyles, postStyles } from "../../styles/post";
 
 export default createRoute((c) => {

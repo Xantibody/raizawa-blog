@@ -1,5 +1,5 @@
 // Index page specific styles
-export const indexStyles = `
+const indexStyles = `
   .posts {
     list-style: none;
     padding: 0;
@@ -24,3 +24,5 @@ export const indexStyles = `
     color: #0066cc;
   }
 `;
+
+export default indexStyles;

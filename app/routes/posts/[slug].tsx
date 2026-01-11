@@ -1,19 +1,19 @@
-import { createRoute } from 'honox/factory'
-import { getPostBySlug } from '../../lib/posts'
+import { createRoute } from "honox/factory";
+import { getPostBySlug } from "../../lib/posts";
 
 export default createRoute((c) => {
-  const slug = c.req.param('slug')
+  const slug = c.req.param("slug");
   if (!slug) {
-    return c.notFound()
+    return c.notFound();
   }
 
-  const post = getPostBySlug(slug)
+  const post = getPostBySlug(slug);
   if (!post) {
-    return c.notFound()
+    return c.notFound();
   }
 
   // Use pre-rendered HTML from build time
-  const htmlContent = post.html
+  const htmlContent = post.html;
 
   return c.render(
     <html>
@@ -255,9 +255,9 @@ export default createRoute((c) => {
           </a>
           <h1>{post.meta.title}</h1>
           <div class="post-meta">
-            <time>{new Date(post.meta.date).toLocaleDateString('ja-JP')}</time>
+            <time>{new Date(post.meta.date).toLocaleDateString("ja-JP")}</time>
             {post.meta.categories && post.meta.categories.length > 0 && (
-              <span> • {post.meta.categories.join(', ')}</span>
+              <span> • {post.meta.categories.join(", ")}</span>
             )}
           </div>
           {post.meta.tags && post.meta.tags.length > 0 && (
@@ -273,6 +273,6 @@ export default createRoute((c) => {
 
         <article dangerouslySetInnerHTML={{ __html: htmlContent }}></article>
       </body>
-    </html>
-  )
-})
+    </html>,
+  );
+});

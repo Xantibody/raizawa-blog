@@ -1,8 +1,8 @@
 {
   "name": "raizawa-blog",
-  "module": "index.ts",
-  "type": "module",
   "private": true,
+  "type": "module",
+  "module": "index.ts",
   "scripts": {
     "dev": "bun run build:content && vite",
     "build": "bun run build:content && bun run build:bundle",
@@ -13,17 +13,8 @@
     "typecheck": "tsgo --noEmit",
     "lint": "oxlint app/",
     "lint:fix": "oxlint app/ --fix",
-    "format": "oxfmt app/",
-    "format:check": "oxfmt --check app/"
-  },
-  "devDependencies": {
-    "@hono/vite-build": "^1.8.0",
-    "@hono/vite-dev-server": "^0.24.0",
-    "@types/bun": "latest",
-    "@types/js-yaml": "^4.0.9",
-    "@typescript/native-preview": "^7.0.0-dev.20260109.1",
-    "vite": "^7.3.1",
-    "vitest": "^4.0.16"
+    "format": "nix fmt",
+    "format:check": "nix fmt -- --fail-on-change"
   },
   "dependencies": {
     "@shikijs/markdown-it": "^3.21.0",
@@ -34,5 +25,14 @@
     "js-yaml": "^4.1.1",
     "markdown-it": "^14.1.0",
     "shiki": "^3.21.0"
+  },
+  "devDependencies": {
+    "@hono/vite-build": "^1.8.0",
+    "@hono/vite-dev-server": "^0.24.0",
+    "@types/bun": "latest",
+    "@types/js-yaml": "^4.0.9",
+    "@typescript/native-preview": "^7.0.0-dev.20260109.1",
+    "vite": "^7.3.1",
+    "vitest": "^4.0.16"
   }
 }

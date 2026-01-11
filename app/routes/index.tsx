@@ -1,7 +1,7 @@
-import { getAllPosts } from '../lib/posts'
+import { getAllPosts } from "../lib/posts";
 
 export default function Home() {
-  const posts = getAllPosts()
+  const posts = getAllPosts();
 
   return (
     <html>
@@ -105,9 +105,9 @@ export default function Home() {
                   <a href={`/posts/${post.slug}`}>{post.title}</a>
                 </h2>
                 <div class="post-meta">
-                  <time>{new Date(post.date).toLocaleDateString('ja-JP')}</time>
+                  <time>{new Date(post.date).toLocaleDateString("ja-JP")}</time>
                   {post.categories && post.categories.length > 0 && (
-                    <span> • {post.categories.join(', ')}</span>
+                    <span> • {post.categories.join(", ")}</span>
                   )}
                 </div>
                 {post.tags && post.tags.length > 0 && (
@@ -125,5 +125,5 @@ export default function Home() {
         </main>
       </body>
     </html>
-  )
+  );
 }

@@ -7,6 +7,7 @@ draft: true
 tags:
   - Rust
 ---
+
 ## はじめに
 
 <https://doc.rust-jp.rs/book-ja/>

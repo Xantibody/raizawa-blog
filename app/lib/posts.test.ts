@@ -1,66 +1,66 @@
-import { describe, it, expect } from 'vitest'
-import { getAllPosts, getPostBySlug } from './posts'
-import { renderMarkdown } from './markdown'
+import { describe, it, expect } from "vitest";
+import { getAllPosts, getPostBySlug } from "./posts";
+import { renderMarkdown } from "./markdown";
 
-describe('posts', () => {
-  it('should load all posts without error', () => {
-    const posts = getAllPosts()
-    expect(posts.length).toBeGreaterThan(0)
-  })
+describe("posts", () => {
+  it("should load all posts without error", () => {
+    const posts = getAllPosts();
+    expect(posts.length).toBeGreaterThan(0);
+  });
 
-  it('all posts should have required frontmatter fields', () => {
-    const posts = getAllPosts()
+  it("all posts should have required frontmatter fields", () => {
+    const posts = getAllPosts();
     for (const post of posts) {
-      expect(post.title).toBeTruthy()
-      expect(post.date).toBeTruthy()
-      expect(post.slug).toBeTruthy()
+      expect(post.title).toBeTruthy();
+      expect(post.date).toBeTruthy();
+      expect(post.slug).toBeTruthy();
     }
-  })
+  });
 
-  it('each post should be loadable by slug', () => {
-    const posts = getAllPosts()
+  it("each post should be loadable by slug", () => {
+    const posts = getAllPosts();
     for (const post of posts) {
-      const loaded = getPostBySlug(post.slug)
-      expect(loaded).not.toBeNull()
-      expect(loaded?.meta.title).toBe(post.title)
+      const loaded = getPostBySlug(post.slug);
+      expect(loaded).not.toBeNull();
+      expect(loaded?.meta.title).toBe(post.title);
     }
-  })
-})
+  });
+});
 
-describe('markdown rendering', () => {
-  it('should render all posts without error', async () => {
+describe("markdown rendering", () => {
+  it("should render all posts without error", async () => {
     // Shiki initialization can be slow in CI
-    const posts = getAllPosts()
+    const posts = getAllPosts();
 
     for (const postMeta of posts) {
-      const post = getPostBySlug(postMeta.slug)
-      if (!post) continue
+      const post = getPostBySlug(postMeta.slug);
+      if (!post) continue;
 
       // This should not throw
-      await expect(renderMarkdown(post.content)).resolves.toBeDefined()
+      await expect(renderMarkdown(post.content)).resolves.toBeDefined();
     }
-  }, 60000) // 60 second timeout for CI
-})
+  }, 60000); // 60 second timeout for CI
+});
 
-describe('code blocks', () => {
-  it('should not have uppercase language identifiers', () => {
-    const posts = getAllPosts()
-    const issues: string[] = []
+describe("code blocks", () => {
+  it("should not have uppercase language identifiers", () => {
+    const posts = getAllPosts();
+    const issues: string[] = [];
 
     for (const postMeta of posts) {
-      const post = getPostBySlug(postMeta.slug)
-      if (!post) continue
+      const post = getPostBySlug(postMeta.slug);
+      if (!post) continue;
 
       // Find code blocks with uppercase language
-      const matches = post.content.matchAll(/```([A-Z][a-zA-Z]*)/g)
+      const matches = post.content.matchAll(/```([A-Z][a-zA-Z]*)/g);
       for (const match of matches) {
-        const lang = match[1]
+        const lang = match[1];
         if (lang) {
-          issues.push(`${postMeta.slug}: \`\`\`${lang} should be \`\`\`${lang.toLowerCase()}`)
+          issues.push(`${postMeta.slug}: \`\`\`${lang} should be \`\`\`${lang.toLowerCase()}`);
         }
       }
     }
 
-    expect(issues).toEqual([])
-  })
-})
+    expect(issues).toEqual([]);
+  });
+});

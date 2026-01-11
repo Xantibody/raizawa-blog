@@ -1,41 +1,41 @@
-import { describe, it, expect } from 'vitest'
-import { readFileSync } from 'fs'
-import { join } from 'path'
-import { renderMarkdown } from '../app/lib/markdown'
+import { describe, it, expect } from "vitest";
+import { readFileSync } from "fs";
+import { join } from "path";
+import { renderMarkdown } from "../app/lib/markdown";
 
-const fixturesDir = join(process.cwd(), 'test/fixtures')
+const fixturesDir = join(process.cwd(), "test/fixtures");
 
-describe('markdown rendering with fixtures', () => {
-  it('should render test-post.md correctly', async () => {
-    const content = readFileSync(join(fixturesDir, 'test-post.md'), 'utf-8')
+describe("markdown rendering with fixtures", () => {
+  it("should render test-post.md correctly", async () => {
+    const content = readFileSync(join(fixturesDir, "test-post.md"), "utf-8");
     // Extract content after frontmatter
-    const match = content.match(/^---\s*\n[\s\S]*?\n---\s*\n([\s\S]*)$/)
-    const markdown = match ? match[1] : content
+    const match = content.match(/^---\s*\n[\s\S]*?\n---\s*\n([\s\S]*)$/);
+    const markdown = match ? match[1] : content;
 
-    const html = await renderMarkdown(markdown)
+    const html = await renderMarkdown(markdown);
 
     // Check basic rendering
-    expect(html).toContain('<h2>')
-    expect(html).toContain('テスト記事です')
+    expect(html).toContain("<h2>");
+    expect(html).toContain("テスト記事です");
 
     // Check code blocks with Shiki
-    expect(html).toContain('class="shiki')
-    expect(html).toContain('language-javascript')
-    expect(html).toContain('language-rust')
+    expect(html).toContain('class="shiki');
+    expect(html).toContain("language-javascript");
+    expect(html).toContain("language-rust");
 
     // Check lists
-    expect(html).toContain('<li>')
-    expect(html).toContain('リスト1')
+    expect(html).toContain("<li>");
+    expect(html).toContain("リスト1");
 
     // Check table
-    expect(html).toContain('<table>')
-    expect(html).toContain('Column1')
+    expect(html).toContain("<table>");
+    expect(html).toContain("Column1");
 
     // Check blockquote
-    expect(html).toContain('<blockquote>')
+    expect(html).toContain("<blockquote>");
 
     // Check OGP cards
-    expect(html).toContain('ogp-card')
-    expect(html).toContain('github.com')
-  }, 60000)
-})
+    expect(html).toContain("ogp-card");
+    expect(html).toContain("github.com");
+  }, 60000);
+});

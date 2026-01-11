@@ -2,18 +2,61 @@
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
     systems.url = "github:nix-systems/default";
+    treefmt-nix.url = "github:numtide/treefmt-nix";
   };
 
   outputs =
     {
       nixpkgs,
       systems,
+      treefmt-nix,
       ...
     }:
     let
       forAllSystems = f: nixpkgs.lib.genAttrs (import systems) (system: f system);
+      treefmtEval = forAllSystems (
+        system:
+        treefmt-nix.lib.evalModule nixpkgs.legacyPackages.${system} {
+          projectRootFile = "flake.nix";
+          settings.global.excludes = [
+            "node_modules/**"
+            "dist/**"
+            ".honox/**"
+          ];
+          programs.nixfmt.enable = true;
+          programs.oxfmt = {
+            enable = true;
+            includes = [
+              # JS/TS
+              "*.js"
+              "*.jsx"
+              "*.ts"
+              "*.tsx"
+              # Data formats
+              "*.json"
+              "*.jsonc"
+              "*.json5"
+              "*.toml"
+              "*.yaml"
+              "*.yml"
+              # Web
+              "*.html"
+              "*.vue"
+              "*.css"
+              "*.scss"
+              "*.less"
+              # Others
+              "*.graphql"
+              "*.md"
+              "*.mdx"
+            ];
+          };
+        }
+      );
     in
     {
+      formatter = forAllSystems (system: treefmtEval.${system}.config.build.wrapper);
+
       devShells = forAllSystems (
         system:
         let

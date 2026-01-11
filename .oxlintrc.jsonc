@@ -1,0 +1,181 @@
+{
+  "$schema": "https://raw.githubusercontent.com/oxc-project/oxc/main/npm/oxlint/configuration_schema.json",
+  // Enable TypeScript, Unicorn, Oxc, Node, JSDoc, and Import plugins
+  "plugins": ["typescript", "unicorn", "oxc", "node", "jsdoc", "import"],
+  // Environment settings
+  "env": {
+    "builtin": true,
+    "es2024": true,
+    "browser": true,
+    "node": true
+  },
+  // Ignore patterns
+  "ignorePatterns": [
+    "dist",
+    "node_modules",
+    ".honox",
+    ".direnv",
+    "*.log",
+    "/nix/store/**",
+    // Generated files
+    "app/lib/posts-data.ts"
+  ],
+  // Rule categories - strict base configuration
+  // - correctness (196 rules): Catch definite bugs and errors
+  // - suspicious (47 rules): Flag potentially problematic patterns
+  // - pedantic (106 rules): Stricter code quality checks (includes no-throw-literal, require-await, ban-ts-comment, etc.)
+  // - perf (11 rules): Performance-related issues
+  // - style (168 rules): Code style rules
+  // Note: restriction category should be enabled per-rule basis
+  "categories": {
+    "correctness": "error",
+    "suspicious": "error",
+    "pedantic": "error",
+    "perf": "error",
+    "style": "error"
+  },
+  "rules": {
+    // ===================
+    // Restriction Rules (not in categories, must be explicit)
+    // ===================
+    // Disallow console usage in production code
+    "no-console": "error",
+    // Disallow empty blocks
+    "no-empty": "error",
+    // Disallow empty functions
+    "no-empty-function": "error",
+    // ===================
+    // Override category defaults with custom options
+    // ===================
+    // Unused variables - allow underscore prefix for intentional unused
+    "no-unused-vars": [
+      "error",
+      {
+        "vars": "all",
+        "varsIgnorePattern": "^_",
+        "args": "after-used",
+        "argsIgnorePattern": "^_"
+      }
+    ],
+    // Limit cyclomatic complexity (not in any category)
+    "complexity": [
+      "error",
+      {
+        "max": 7
+      }
+    ],
+    // ===================
+    // TypeScript Rules
+    // ===================
+    // Unused variables (TypeScript version) - allow underscore prefix
+    "typescript/no-unused-vars": [
+      "error",
+      {
+        "vars": "all",
+        "varsIgnorePattern": "^_",
+        "args": "after-used",
+        "argsIgnorePattern": "^_"
+      }
+    ],
+    // Disallow explicit `any` usage (restriction category)
+    "typescript/no-explicit-any": "error",
+    // Disallow floating promises - must handle or void
+    "typescript/no-floating-promises": "error",
+    // Error on awaiting non-thenable values
+    "typescript/await-thenable": "error",
+    // Enforce `import type` with inline style
+    "typescript/consistent-type-imports": [
+      "error",
+      {
+        "prefer": "type-imports",
+        "disallowTypeAnnotations": false,
+        "fixStyle": "inline-type-imports"
+      }
+    ],
+    // Disallow unnecessary type arguments
+    "typescript/no-unnecessary-type-arguments": "error",
+    // Enforce strict boolean expressions - no implicit coercion
+    // Requires --type-aware flag
+    "typescript/strict-boolean-expressions": [
+      "error",
+      {
+        "allowNullableBoolean": false,
+        "allowNullableObject": false,
+        "allowString": false,
+        "allowNumber": false
+      }
+    ],
+    // Disallow classes with only static members
+    "typescript/no-extraneous-class": "error",
+    // Ban @ts-ignore, allow @ts-expect-error with description (override pedantic default)
+    "typescript/ban-ts-comment": [
+      "error",
+      {
+        "ts-ignore": true,
+        "ts-expect-error": "allow-with-description"
+      }
+    ],
+    // ===================
+    // Node.js Rules
+    // ===================
+    // Disallow direct assignment to exports
+    "node/no-exports-assign": "error",
+    // Disallow new require calls
+    "node/no-new-require": "error",
+    // ===================
+    // JSDoc Rules
+    // ===================
+    "jsdoc/check-access": "warn",
+    "jsdoc/check-property-names": "warn",
+    "jsdoc/empty-tags": "warn",
+    "jsdoc/implements-on-classes": "warn",
+    "jsdoc/no-defaults": "warn",
+    "jsdoc/require-param-name": "warn",
+    "jsdoc/require-property": "warn",
+    "jsdoc/require-property-description": "warn",
+    "jsdoc/require-property-name": "warn",
+    "jsdoc/require-returns-description": "warn",
+    // ===================
+    // Import Rules
+    // ===================
+    // Enforce top-level type specifier style
+    "import/consistent-type-specifier-style": ["error", "top-level"],
+    // Ensure imports are at the top
+    "import/first": "error",
+    // Disallow duplicate imports
+    "import/no-duplicates": "error",
+    // Disallow mutable exports
+    "import/no-mutable-exports": "error",
+    // Disallow named default exports
+    "import/no-named-default": "error",
+    // ===================
+    // Unicorn Rules
+    // ===================
+    // Disable top-level await in src (library code should not use top-level await)
+    "unicorn/prefer-top-level-await": "off",
+    // ===================
+    // Style Rules
+    // ===================
+    // Enforce consistent brace style for all control statements
+    "curly": ["error", "all"]
+  },
+  "overrides": [
+    {
+      // Relaxed rules for test files
+      "files": ["**/*.test.ts", "**/*.test.tsx", "**/*.spec.ts", "test/**/*.ts"],
+      "rules": {
+        "no-console": "off",
+        "typescript/no-explicit-any": "warn",
+        "typescript/no-floating-promises": "warn"
+      }
+    },
+    {
+      // Build scripts can use console
+      "files": ["scripts/**/*.ts"],
+      "rules": {
+        "no-console": "off",
+        "unicorn/prefer-top-level-await": "error"
+      }
+    }
+  ]
+}

@@ -1,4 +1,4 @@
-import type { Post, PostMeta } from "./types";
+import { type Post, type PostMeta } from "./types";
 // Import generated data (created by scripts/build-posts.ts)
 import { posts } from "./posts-data";
 

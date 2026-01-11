@@ -1,4 +1,4 @@
-import type { Post } from "./types";
+import { type Post } from "./types";
 import { describe, expect, it } from "vitest";
 import { getAllPosts, getPostBySlug } from "./posts";
 import renderMarkdown from "./markdown";

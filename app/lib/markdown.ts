@@ -6,7 +6,7 @@ import {
 } from "@shikijs/transformers";
 import Shiki from "@shikijs/markdown-it";
 import MarkdownIt from "markdown-it";
-import type { ShikiTransformer } from "shiki";
+import { type ShikiTransformer } from "shiki";
 
 const REGEX_CAPTURE_GROUP_INDEX = 1;
 

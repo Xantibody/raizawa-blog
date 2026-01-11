@@ -18,7 +18,8 @@
     "*.log",
     "/nix/store/**",
     // Generated files
-    "app/lib/posts-data.ts"
+    "app/lib/posts-data.ts",
+    "app/lib/posts-data.d.ts"
   ],
   // Rule categories - strict base configuration
   // - correctness (196 rules): Catch definite bugs and errors
@@ -138,8 +139,8 @@
     // ===================
     // Import Rules
     // ===================
-    // Enforce top-level type specifier style
-    "import/consistent-type-specifier-style": ["error", "top-level"],
+    // Enforce inline type specifier style (compatible with no-duplicates)
+    "import/consistent-type-specifier-style": ["error", "prefer-inline"],
     // Ensure imports are at the top
     "import/first": "error",
     // Disallow duplicate imports

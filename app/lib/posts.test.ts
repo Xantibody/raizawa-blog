@@ -1,7 +1,7 @@
 import type { Post } from "./types";
 import { describe, expect, it } from "vitest";
 import { getAllPosts, getPostBySlug } from "./posts";
-import { renderMarkdown } from "./markdown";
+import renderMarkdown from "./markdown";
 
 const MINIMUM_POSTS = 0;
 const CI_TIMEOUT_MS = 60_000;

@@ -82,7 +82,7 @@ const detectStandaloneURLs = (markdown: string): string[] => {
   return [...new Set(urls)]; // Remove duplicates
 };
 
-export const renderMarkdown = async (markdown: string): Promise<string> => {
+const renderMarkdown = async (markdown: string): Promise<string> => {
   await initShiki();
 
   // Detect all standalone URLs
@@ -109,3 +109,5 @@ export const renderMarkdown = async (markdown: string): Promise<string> => {
 
   return md.render(processedMarkdown);
 };
+
+export default renderMarkdown;

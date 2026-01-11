@@ -18,7 +18,12 @@ const createOGPData = (url: string, partial: Partial<OGPData> = {}): OGPData => 
 
 // In-memory cache for OGP data (expires after 1 hour)
 const ogpCache = new Map<string, { data: OGPData; timestamp: number }>();
-const CACHE_DURATION = 60 * 60 * 1000; // 1 hour
+const SECONDS_PER_MINUTE = 60;
+const MINUTES_PER_HOUR = 60;
+const MS_PER_SECOND = 1000;
+const CACHE_DURATION = SECONDS_PER_MINUTE * MINUTES_PER_HOUR * MS_PER_SECOND; // 1 hour
+const FETCH_TIMEOUT_MS = 5000;
+const REGEX_CAPTURE_GROUP_INDEX = 1;
 
 // Extract content from meta tags using regex
 const extractMetaContent = (html: string, patterns: string[]): string | undefined => {
@@ -26,7 +31,7 @@ const extractMetaContent = (html: string, patterns: string[]): string | undefine
     const regex = new RegExp(`<meta[^>]*${pattern}[^>]*content=["']([^"']+)["']`, "i");
     const match = html.match(regex);
     if (match) {
-      return match[1];
+      return match[REGEX_CAPTURE_GROUP_INDEX];
     }
   }
   return undefined;
@@ -42,7 +47,7 @@ export const fetchOGP = async (url: string): Promise<OGPData> => {
   try {
     // Fetch HTML with timeout
     const controller = new AbortController();
-    const timeoutId = setTimeout(() => controller.abort(), 5000); // 5 second timeout
+    const timeoutId = setTimeout(() => controller.abort(), FETCH_TIMEOUT_MS);
 
     const response = await fetch(url, {
       headers: {
@@ -62,7 +67,7 @@ export const fetchOGP = async (url: string): Promise<OGPData> => {
     // Extract OGP and fallback meta tags using regex
     const title =
       extractMetaContent(html, ['property="og:title"', 'name="twitter:title"']) ??
-      html.match(/<title[^>]*>([^<]+)<\/title>/i)?.[1];
+      html.match(/<title[^>]*>([^<]+)<\/title>/i)?.[REGEX_CAPTURE_GROUP_INDEX];
 
     const description = extractMetaContent(html, [
       'property="og:description"',

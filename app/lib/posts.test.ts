@@ -1,11 +1,15 @@
-import { describe, it, expect } from "vitest";
+import { describe, expect, it } from "vitest";
 import { getAllPosts, getPostBySlug } from "./posts";
 import { renderMarkdown } from "./markdown";
+
+const MINIMUM_POSTS = 0;
+const CI_TIMEOUT_MS = 60000;
+const REGEX_CAPTURE_GROUP_INDEX = 1;
 
 describe("posts", () => {
   it("should load all posts without error", () => {
     const posts = getAllPosts();
-    expect(posts.length).toBeGreaterThan(0);
+    expect(posts.length).toBeGreaterThan(MINIMUM_POSTS);
   });
 
   it("all posts should have required frontmatter fields", () => {
@@ -39,7 +43,7 @@ describe("markdown rendering", () => {
       // This should not throw
       await expect(renderMarkdown(post.content)).resolves.toBeDefined();
     }
-  }, 60000); // 60 second timeout for CI
+  }, CI_TIMEOUT_MS);
 });
 
 describe("code blocks", () => {
@@ -54,7 +58,7 @@ describe("code blocks", () => {
       // Find code blocks with uppercase language
       const matches = post.content.matchAll(/```([A-Z][a-zA-Z]*)/g);
       for (const match of matches) {
-        const lang = match[1];
+        const lang = match[REGEX_CAPTURE_GROUP_INDEX];
         if (lang) {
           issues.push(`${postMeta.slug}: \`\`\`${lang} should be \`\`\`${lang.toLowerCase()}`);
         }

@@ -157,7 +157,14 @@
     // Style Rules
     // ===================
     // Enforce consistent brace style for all control statements
-    "curly": ["error", "all"]
+    "curly": ["error", "all"],
+    // Allow common magic numbers
+    "no-magic-numbers": [
+      "error",
+      {
+        "ignore": [-1, 0, 1]
+      }
+    ]
   },
   "overrides": [
     {

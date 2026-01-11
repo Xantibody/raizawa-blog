@@ -2,11 +2,13 @@ import MarkdownIt from "markdown-it";
 import Shiki from "@shikijs/markdown-it";
 import {
   transformerNotationDiff,
-  transformerNotationHighlight,
   transformerNotationErrorLevel,
+  transformerNotationHighlight,
 } from "@shikijs/transformers";
 import type { ShikiTransformer } from "shiki";
 import { fetchOGP, generateOGPCard } from "./ogp";
+
+const REGEX_CAPTURE_GROUP_INDEX = 1;
 
 // Custom transformer to add file name from meta string
 // Usage: ```ts title="filename.ts"
@@ -20,7 +22,7 @@ const transformerMetaTitle = (): ShikiTransformer => {
       }
 
       const match = meta.match(/title=["']([^"']+)["']/);
-      const title = match?.[1];
+      const title = match?.[REGEX_CAPTURE_GROUP_INDEX];
       if (title) {
         // Add title element before the code
         node.children.unshift({
@@ -65,7 +67,7 @@ const detectStandaloneURLs = (markdown: string): string[] => {
   // Match <URL> on its own line
   const autolinkRegex = /^<(https?:\/\/[^\s>]+)>$/gm;
   while ((match = autolinkRegex.exec(markdown)) !== null) {
-    const url = match[1];
+    const url = match[REGEX_CAPTURE_GROUP_INDEX];
     if (url) {
       urls.push(url);
     }
@@ -74,7 +76,7 @@ const detectStandaloneURLs = (markdown: string): string[] => {
   // Match standalone URLs on their own line
   const standaloneRegex = /^(https?:\/\/[^\s]+)$/gm;
   while ((match = standaloneRegex.exec(markdown)) !== null) {
-    const url = match[1];
+    const url = match[REGEX_CAPTURE_GROUP_INDEX];
     if (url) {
       urls.push(url);
     }

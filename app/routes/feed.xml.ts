@@ -4,6 +4,8 @@ import { getAllPosts } from "../lib/posts";
 const SITE_URL = "https://raizawa-blog.pages.dev";
 const SITE_TITLE = "R-Aizawa Blog";
 const SITE_DESCRIPTION = "R-Aizawaの技術ブログ";
+const MAX_FEED_ITEMS = 20;
+const HTTP_OK = 200;
 
 const escapeXml = (str: string): string => {
   return str
@@ -18,7 +20,7 @@ export default createRoute((c) => {
   const posts = getAllPosts();
 
   const items = posts
-    .slice(0, 20)
+    .slice(0, MAX_FEED_ITEMS)
     .map((post) => {
       const pubDate = new Date(post.date).toUTCString();
       return `    <item>
@@ -43,7 +45,7 @@ ${items}
   </channel>
 </rss>`;
 
-  return c.body(xml, 200, {
+  return c.body(xml, HTTP_OK, {
     "Content-Type": "application/rss+xml; charset=utf-8",
   });
 });

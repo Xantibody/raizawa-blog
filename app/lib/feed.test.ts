@@ -1,7 +1,8 @@
-import { describe, it, expect } from "vitest";
+import { describe, expect, it } from "vitest";
 import { getAllPosts } from "./posts";
 
 const SITE_URL = "https://raizawa-blog.pages.dev";
+const MAX_FEED_ITEMS = 20;
 
 const escapeXml = (str: string): string => {
   return str
@@ -14,7 +15,7 @@ const escapeXml = (str: string): string => {
 
 const generateRssFeed = (posts: ReturnType<typeof getAllPosts>): string => {
   const items = posts
-    .slice(0, 20)
+    .slice(0, MAX_FEED_ITEMS)
     .map((post) => {
       const pubDate = new Date(post.date).toUTCString();
       return `    <item>
@@ -70,7 +71,7 @@ describe("RSS feed", () => {
     expect(xml).toContain("</item>");
 
     // Check first post is included
-    const firstPost = posts[0];
+    const [firstPost] = posts;
     if (firstPost) {
       expect(xml).toContain(escapeXml(firstPost.title));
       expect(xml).toContain(`${SITE_URL}/posts/${firstPost.slug}`);
@@ -81,8 +82,8 @@ describe("RSS feed", () => {
     const posts = getAllPosts();
     const xml = generateRssFeed(posts);
 
-    const itemCount = (xml.match(/<item>/g) || []).length;
-    expect(itemCount).toBeLessThanOrEqual(20);
+    const itemCount = (xml.match(/<item>/g) ?? []).length;
+    expect(itemCount).toBeLessThanOrEqual(MAX_FEED_ITEMS);
   });
 
   it("should escape special XML characters in titles", () => {

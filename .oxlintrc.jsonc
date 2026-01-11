@@ -176,6 +176,13 @@
         "no-console": "off",
         "unicorn/prefer-top-level-await": "error"
       }
+    },
+    {
+      // JSX components tend to be longer due to markup
+      "files": ["**/*.tsx"],
+      "rules": {
+        "max-lines-per-function": ["error", { "max": 100 }]
+      }
     }
   ]
 }

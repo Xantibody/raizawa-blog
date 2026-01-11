@@ -95,11 +95,11 @@ export async function renderMarkdown(markdown: string): Promise<string> {
   let processedMarkdown = markdown;
   for (const { url, ogp } of ogpResults) {
     const ogpCard = generateOGPCard(ogp);
-    const escapedUrl = url.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+    const escapedUrl = url.replaceAll(/[.*+?^${}()|[\]\\]/g, String.raw`\$&`);
     // Replace only standalone URLs (on their own line)
     processedMarkdown = processedMarkdown
-      .replace(new RegExp(`^<${escapedUrl}>$`, "gm"), ogpCard)
-      .replace(new RegExp(`^${escapedUrl}$`, "gm"), ogpCard);
+      .replaceAll(new RegExp(`^<${escapedUrl}>$`, "gm"), ogpCard)
+      .replaceAll(new RegExp(`^${escapedUrl}$`, "gm"), ogpCard);
   }
 
   return md.render(processedMarkdown);

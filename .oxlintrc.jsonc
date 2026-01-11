@@ -7,7 +7,7 @@
     "builtin": true,
     "es2024": true,
     "browser": true,
-    "node": true
+    "node": true,
   },
   // Ignore patterns
   "ignorePatterns": [
@@ -19,7 +19,7 @@
     "/nix/store/**",
     // Generated files
     "app/lib/posts-data.ts",
-    "app/lib/posts-data.d.ts"
+    "app/lib/posts-data.d.ts",
   ],
   // Rule categories - strict base configuration
   // - correctness (196 rules): Catch definite bugs and errors
@@ -33,7 +33,7 @@
     "suspicious": "error",
     "pedantic": "error",
     "perf": "error",
-    "style": "error"
+    "style": "error",
   },
   "rules": {
     // ===================
@@ -55,15 +55,15 @@
         "vars": "all",
         "varsIgnorePattern": "^_",
         "args": "after-used",
-        "argsIgnorePattern": "^_"
-      }
+        "argsIgnorePattern": "^_",
+      },
     ],
     // Limit cyclomatic complexity (not in any category)
     "complexity": [
       "error",
       {
-        "max": 7
-      }
+        "max": 7,
+      },
     ],
     // ===================
     // TypeScript Rules
@@ -75,8 +75,8 @@
         "vars": "all",
         "varsIgnorePattern": "^_",
         "args": "after-used",
-        "argsIgnorePattern": "^_"
-      }
+        "argsIgnorePattern": "^_",
+      },
     ],
     // Disallow explicit `any` usage (restriction category)
     "typescript/no-explicit-any": "error",
@@ -90,8 +90,8 @@
       {
         "prefer": "type-imports",
         "disallowTypeAnnotations": false,
-        "fixStyle": "inline-type-imports"
-      }
+        "fixStyle": "inline-type-imports",
+      },
     ],
     // Disallow unnecessary type arguments
     "typescript/no-unnecessary-type-arguments": "error",
@@ -103,8 +103,8 @@
         "allowNullableBoolean": false,
         "allowNullableObject": false,
         "allowString": false,
-        "allowNumber": false
-      }
+        "allowNumber": false,
+      },
     ],
     // Disallow classes with only static members
     "typescript/no-extraneous-class": "error",
@@ -113,8 +113,8 @@
       "error",
       {
         "ts-ignore": true,
-        "ts-expect-error": "allow-with-description"
-      }
+        "ts-expect-error": "allow-with-description",
+      },
     ],
     // ===================
     // Node.js Rules
@@ -163,30 +163,30 @@
     "no-magic-numbers": [
       "error",
       {
-        "ignore": [-1, 0, 1]
-      }
+        "ignore": [-1, 0, 1],
+      },
     ],
     // Sort imports - ignore declaration sort to avoid conflicts with syntax ordering
     "sort-imports": [
       "error",
       {
-        "ignoreDeclarationSort": true
-      }
+        "ignoreDeclarationSort": true,
+      },
     ],
     // Allow PascalCase library functions that aren't constructors
     "new-cap": [
       "error",
       {
-        "capIsNewExceptions": ["MarkdownIt", "Shiki"]
-      }
+        "capIsNewExceptions": ["MarkdownIt", "Shiki"],
+      },
     ],
     // Allow common short identifiers
     "id-length": [
       "error",
       {
-        "exceptions": ["c", "md"]
-      }
-    ]
+        "exceptions": ["c", "md"],
+      },
+    ],
   },
   "overrides": [
     {
@@ -196,23 +196,23 @@
         "no-console": "off",
         "typescript/no-explicit-any": "warn",
         "typescript/no-floating-promises": "warn",
-        "max-lines-per-function": "off"
-      }
+        "max-lines-per-function": "off",
+      },
     },
     {
       // Build scripts can use console
       "files": ["scripts/**/*.ts"],
       "rules": {
         "no-console": "off",
-        "unicorn/prefer-top-level-await": "error"
-      }
+        "unicorn/prefer-top-level-await": "error",
+      },
     },
     {
       // JSX components tend to be longer due to markup
       "files": ["**/*.tsx"],
       "rules": {
-        "max-lines-per-function": ["error", { "max": 100 }]
-      }
-    }
-  ]
+        "max-lines-per-function": ["error", { "max": 100 }],
+      },
+    },
+  ],
 }

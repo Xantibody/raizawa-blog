@@ -33,17 +33,21 @@ describe("posts", () => {
 });
 
 describe("markdown rendering", () => {
-  it("should render all posts without error", async () => {
-    // Shiki initialization can be slow in CI
-    const posts = getAllPosts();
+  it(
+    "should render all posts without error",
+    async () => {
+      // Shiki initialization can be slow in CI
+      const posts = getAllPosts();
 
-    const renderPromises = posts
-      .map((postMeta) => getPostBySlug(postMeta.slug))
-      .filter((post): post is Post => post !== null && post !== undefined)
-      .map((post) => expect(renderMarkdown(post.content)).resolves.toBeDefined());
+      const renderPromises = posts
+        .map((postMeta) => getPostBySlug(postMeta.slug))
+        .filter((post): post is Post => post !== null && post !== undefined)
+        .map((post) => expect(renderMarkdown(post.content)).resolves.toBeDefined());
 
-    await Promise.all(renderPromises);
-  }, CI_TIMEOUT_MS);
+      await Promise.all(renderPromises);
+    },
+    CI_TIMEOUT_MS,
+  );
 });
 
 describe("code blocks", () => {

@@ -38,12 +38,10 @@ describe("markdown rendering", () => {
 
     for (const postMeta of posts) {
       const post = getPostBySlug(postMeta.slug);
-      if (!post) {
-        continue;
+      if (post) {
+        // This should not throw
+        await expect(renderMarkdown(post.content)).resolves.toBeDefined();
       }
-
-      // This should not throw
-      await expect(renderMarkdown(post.content)).resolves.toBeDefined();
     }
   }, CI_TIMEOUT_MS);
 });
@@ -55,16 +53,14 @@ describe("code blocks", () => {
 
     for (const postMeta of posts) {
       const post = getPostBySlug(postMeta.slug);
-      if (!post) {
-        continue;
-      }
-
-      // Find code blocks with uppercase language
-      const matches = post.content.matchAll(/```([A-Z][a-zA-Z]*)/g);
-      for (const match of matches) {
-        const lang = match[REGEX_CAPTURE_GROUP_INDEX];
-        if (lang) {
-          issues.push(`${postMeta.slug}: \`\`\`${lang} should be \`\`\`${lang.toLowerCase()}`);
+      if (post) {
+        // Find code blocks with uppercase language
+        const matches = post.content.matchAll(/```([A-Z][a-zA-Z]*)/g);
+        for (const match of matches) {
+          const lang = match[REGEX_CAPTURE_GROUP_INDEX];
+          if (lang) {
+            issues.push(`${postMeta.slug}: \`\`\`${lang} should be \`\`\`${lang.toLowerCase()}`);
+          }
         }
       }
     }

@@ -178,6 +178,13 @@
       {
         "capIsNewExceptions": ["MarkdownIt", "Shiki"]
       }
+    ],
+    // Allow common short identifiers
+    "id-length": [
+      "error",
+      {
+        "exceptions": ["c", "md"]
+      }
     ]
   },
   "overrides": [

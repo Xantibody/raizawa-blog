@@ -60,11 +60,10 @@ const initShiki = async () => {
 // Detect standalone URLs (on their own line only)
 const detectStandaloneURLs = (markdown: string): string[] => {
   const urls: string[] = [];
-  let match;
 
   // Match <URL> on its own line
   const autolinkRegex = /^<(https?:\/\/[^\s>]+)>$/gm;
-  while ((match = autolinkRegex.exec(markdown)) !== null) {
+  for (const match of markdown.matchAll(autolinkRegex)) {
     const url = match[REGEX_CAPTURE_GROUP_INDEX];
     if (url) {
       urls.push(url);
@@ -73,7 +72,7 @@ const detectStandaloneURLs = (markdown: string): string[] => {
 
   // Match standalone URLs on their own line
   const standaloneRegex = /^(https?:\/\/[^\s]+)$/gm;
-  while ((match = standaloneRegex.exec(markdown)) !== null) {
+  for (const match of markdown.matchAll(standaloneRegex)) {
     const url = match[REGEX_CAPTURE_GROUP_INDEX];
     if (url) {
       urls.push(url);

@@ -197,6 +197,7 @@
         "typescript/no-explicit-any": "warn",
         "typescript/no-floating-promises": "warn",
         "max-lines-per-function": "off",
+        "no-await-in-loop": "off",
       },
     },
     {

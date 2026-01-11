@@ -45,6 +45,7 @@
               bun
               oxlint
               oxfmt
+              typescript-go
               wrangler
               textlint
               (textlint.withPackages [

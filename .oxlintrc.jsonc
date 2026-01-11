@@ -171,6 +171,13 @@
       {
         "ignoreDeclarationSort": true
       }
+    ],
+    // Allow PascalCase library functions that aren't constructors
+    "new-cap": [
+      "error",
+      {
+        "capIsNewExceptions": ["MarkdownIt", "Shiki"]
+      }
     ]
   },
   "overrides": [

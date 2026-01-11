@@ -43,6 +43,8 @@
           default = pkgs.mkShell {
             packages = with pkgs; [
               bun
+              oxlint
+              oxfmt
               wrangler
               textlint
               (textlint.withPackages [

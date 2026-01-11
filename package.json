@@ -10,7 +10,11 @@
     "build:bundle": "vite build",
     "preview": "vite preview",
     "test": "bun run build:content && vitest run",
-    "typecheck": "tsgo --noEmit"
+    "typecheck": "tsgo --noEmit",
+    "lint": "oxlint app/",
+    "lint:fix": "oxlint app/ --fix",
+    "format": "oxfmt app/",
+    "format:check": "oxfmt --check app/"
   },
   "devDependencies": {
     "@hono/vite-build": "^1.8.0",

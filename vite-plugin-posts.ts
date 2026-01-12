@@ -29,7 +29,7 @@ export function postsHMR(): Plugin {
             stdio: "inherit",
           });
 
-          proc.on("close", (code) => {
+          proc.on("close", (code: number | null) => {
             if (code === 0) {
               console.log("[posts-hmr] Rebuild complete, reloading...");
               server.ws.send({ type: "full-reload" });

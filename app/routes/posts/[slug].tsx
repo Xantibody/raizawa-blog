@@ -42,7 +42,7 @@ export default createRoute((c) => {
           <h1>{post.meta.title}</h1>
           <div class="post-meta">
             <time>{new Date(post.meta.date).toLocaleDateString("ja-JP")}</time>
-            {post.meta.category && (
+            {post.meta.category !== "" && (
               <span>
                 {" "}
                 • <a href={`/category/${post.meta.category}`}>{post.meta.category}</a>

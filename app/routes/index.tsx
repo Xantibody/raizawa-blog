@@ -43,7 +43,7 @@ export default function Home() {
                 </h2>
                 <div class="post-meta">
                   <time>{new Date(post.date).toLocaleDateString("ja-JP")}</time>
-                  {post.category && (
+                  {post.category !== "" && (
                     <span>
                       {" "}
                       • <a href={`/category/${post.category}`}>{post.category}</a>

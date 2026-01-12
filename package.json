@@ -10,9 +10,9 @@
     "build:bundle": "vite build",
     "preview": "vite preview",
     "test": "bun run build:content && vitest run",
-    "typecheck": "tsgo --noEmit",
-    "lint": "oxlint -c .oxlintrc.jsonc --type-aware app/",
-    "lint:fix": "oxlint -c .oxlintrc.jsonc --type-aware app/ --fix",
+    "typecheck": "nix shell nixpkgs#typescript-go -c tsgo --noEmit",
+    "lint": "nix shell nixpkgs#oxlint -c oxlint -c .oxlintrc.jsonc --type-aware app/",
+    "lint:fix": "nix shell nixpkgs#oxlint -c oxlint -c .oxlintrc.jsonc --type-aware app/ --fix",
     "format": "nix fmt",
     "format:check": "nix fmt -- --fail-on-change"
   },

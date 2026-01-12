@@ -41,7 +41,7 @@ jobs:
           cachix-auth-token: ${{ secrets.CACHIX_AUTH_TOKEN }}
 
       - name: Lint
-        run: nix develop --command oxlint -c .oxlintrc.jsonc app/
+        run: nix develop --command oxlint -c .oxlintrc.jsonc --type-aware app/
 
   format:
     runs-on: ubuntu-latest

@@ -4,7 +4,7 @@ interface PostMeta {
   slug: string;
   title: string;
   date: string;
-  categories: string[];
+  category: string;
   tags: string[];
   draft: boolean;
 }

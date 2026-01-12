@@ -42,7 +42,13 @@ export default createRoute((c) => {
           <h1>{post.meta.title}</h1>
           <div class="post-meta">
             <time>{new Date(post.meta.date).toLocaleDateString("ja-JP")}</time>
-            {post.meta.categories.length > 0 && <span> • {post.meta.categories.join(", ")}</span>}
+            {post.meta.category && (
+              <span>
+                {" "}
+                •{" "}
+                <a href={`/category/${post.meta.category}`}>{post.meta.category}</a>
+              </span>
+            )}
           </div>
           {post.meta.tags.length > 0 && (
             <div class="post-tags">

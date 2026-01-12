@@ -19,7 +19,7 @@ interface PostMeta {
   slug: string;
   title: string;
   date: string;
-  categories: string[];
+  category: string;
   tags: string[];
   draft: boolean;
 }
@@ -115,7 +115,7 @@ async function main() {
       slug,
       title: data.title || slug,
       date: data.date || "",
-      categories: data.categories || [],
+      category: data.category || "",
       tags: data.tags || [],
       draft: data.draft || false,
     };

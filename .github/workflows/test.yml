@@ -13,21 +13,25 @@ concurrency:
 jobs:
   test:
     runs-on: ubuntu-slim
+    permissions:
+      id-token: write
+      contents: read
     steps:
       - uses: actions/checkout@v4
 
-      - uses: oven-sh/setup-bun@v2
+      - name: Setup Nix
+        uses: ./.github/actions/setup-nix
         with:
-          bun-version: latest
+          cachix-auth-token: ${{ secrets.CACHIX_AUTH_TOKEN }}
 
       - name: Install dependencies
-        run: bun install --frozen-lockfile
+        run: nix develop --command bun install --frozen-lockfile
 
-      - name: typecheck
-        run: bun run typecheck
+      - name: Typecheck
+        run: nix develop --command bun run typecheck
 
       - name: Run tests
-        run: bun run test
+        run: nix develop --command bun run test
 
       - name: Build
-        run: bun run build
+        run: nix develop --command bun run build

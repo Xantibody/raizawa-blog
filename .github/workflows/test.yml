@@ -30,6 +30,13 @@ jobs:
       - name: Setup Nix
         uses: ./.github/actions/setup-nix
 
+      - uses: oven-sh/setup-bun@v2
+        with:
+          bun-version: latest
+
+      - name: Install oxlint-tsgolint
+        run: bun install oxlint-tsgolint
+
       - name: Lint
         run: nix shell nixpkgs#oxlint -c oxlint -c .oxlintrc.jsonc --type-aware app/
 

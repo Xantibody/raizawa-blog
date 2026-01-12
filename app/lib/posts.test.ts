@@ -1,5 +1,12 @@
 import { describe, expect, it } from "vitest";
-import { getAllPosts, getPostBySlug } from "./posts";
+import {
+  getAllPosts,
+  getCategories,
+  getPostBySlug,
+  getPostsByCategory,
+  getPostsByTag,
+  getTags,
+} from "./posts";
 import renderMarkdown from "./markdown";
 
 const MINIMUM_POSTS = 0;
@@ -61,6 +68,52 @@ const findUppercaseLangIssues = (slug: string, content: string): string[] => {
   }
   return issues;
 };
+
+describe("categories", () => {
+  it("should return all categories", () => {
+    const categories = getCategories();
+    expect(categories.length).toBeGreaterThan(0);
+  });
+
+  it("should return posts for each category", () => {
+    const categories = getCategories();
+    for (const category of categories) {
+      const posts = getPostsByCategory(category);
+      expect(posts.length).toBeGreaterThan(0);
+      for (const post of posts) {
+        expect(post.category).toBe(category);
+      }
+    }
+  });
+
+  it("should return empty array for non-existent category", () => {
+    const posts = getPostsByCategory("non-existent-category");
+    expect(posts).toEqual([]);
+  });
+});
+
+describe("tags", () => {
+  it("should return all tags", () => {
+    const tags = getTags();
+    expect(tags.length).toBeGreaterThan(0);
+  });
+
+  it("should return posts for each tag", () => {
+    const tags = getTags();
+    for (const tag of tags) {
+      const posts = getPostsByTag(tag);
+      expect(posts.length).toBeGreaterThan(0);
+      for (const post of posts) {
+        expect(post.tags).toContain(tag);
+      }
+    }
+  });
+
+  it("should return empty array for non-existent tag", () => {
+    const posts = getPostsByTag("non-existent-tag");
+    expect(posts).toEqual([]);
+  });
+});
 
 describe("code blocks", () => {
   it("should not have uppercase language identifiers", () => {

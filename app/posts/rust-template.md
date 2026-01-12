@@ -1,8 +1,7 @@
 ---
 date:
 title: template
-categories:
-  - ぎじゅつ
+category: ぎじゅつ
 draft: true
 tags:
   - Rust

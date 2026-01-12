@@ -41,6 +41,24 @@ const baseStyles = `
     padding: 0.2rem 0.5rem;
     border-radius: 4px;
     font-size: 0.85rem;
+    color: #333;
+    text-decoration: none;
+  }
+  .tag:visited {
+    color: #333;
+  }
+  .tag:hover {
+    background: #e0e0e0;
+  }
+  .post-meta a {
+    color: #666;
+    text-decoration: none;
+  }
+  .post-meta a:visited {
+    color: #666;
+  }
+  .post-meta a:hover {
+    text-decoration: underline;
   }
 `;
 

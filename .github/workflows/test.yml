@@ -19,6 +19,10 @@ jobs:
       - name: Setup Nix
         uses: ./.github/actions/setup-nix
 
+      - uses: oven-sh/setup-bun@v2
+        with:
+          bun-version: latest
+
       - name: Typecheck
         run: bun run typecheck
 

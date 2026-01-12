@@ -1,9 +1,9 @@
 import { describe, expect, it } from "vitest";
 import {
   getAllPosts,
+  getCategories,
   getPostBySlug,
   getPostsByCategory,
-  getCategories,
   getPostsByTag,
   getTags,
 } from "./posts";

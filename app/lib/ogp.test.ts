@@ -86,7 +86,9 @@ describe("OGP meta tags structure", () => {
 
   it("should have correct og:type values", () => {
     const validTypes = ["website", "article"];
-    expect(validTypes).toContain("website"); // for index page
-    expect(validTypes).toContain("article"); // for post pages
+    // For index page
+    expect(validTypes).toContain("website");
+    // For post pages
+    expect(validTypes).toContain("article");
   });
 });

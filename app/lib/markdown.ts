@@ -16,13 +16,13 @@ const transformerMetaTitle = (): ShikiTransformer => ({
   name: "meta-title",
   pre(node) {
     const meta = this.options.meta?.__raw;
-    if (!meta) {
+    if (meta === undefined || meta === "") {
       return;
     }
 
     const match = meta.match(/title=["']([^"']+)["']/);
     const title = match?.[REGEX_CAPTURE_GROUP_INDEX];
-    if (title) {
+    if (title !== undefined && title !== "") {
       // Add title element before the code
       node.children.unshift({
         children: [{ type: "text", value: title }],
@@ -57,29 +57,30 @@ const initShiki = async () => {
   }
 };
 
-// Detect standalone URLs (on their own line only)
-const detectStandaloneURLs = (markdown: string): string[] => {
+// Extract URLs from markdown using a regex pattern
+const extractUrlsWithPattern = (markdown: string, regex: RegExp): string[] => {
   const urls: string[] = [];
-
-  // Match <URL> on its own line
-  const autolinkRegex = /^<(https?:\/\/[^\s>]+)>$/gm;
-  for (const match of markdown.matchAll(autolinkRegex)) {
+  for (const match of markdown.matchAll(regex)) {
     const url = match[REGEX_CAPTURE_GROUP_INDEX];
-    if (url) {
+    if (url !== undefined && url !== "") {
       urls.push(url);
     }
   }
+  return urls;
+};
+
+// Detect standalone URLs (on their own line only)
+const detectStandaloneURLs = (markdown: string): string[] => {
+  // Match <URL> on its own line
+  const autolinkRegex = /^<(https?:\/\/[^\s>]+)>$/gm;
+  const autolinkUrls = extractUrlsWithPattern(markdown, autolinkRegex);
 
   // Match standalone URLs on their own line
   const standaloneRegex = /^(https?:\/\/[^\s]+)$/gm;
-  for (const match of markdown.matchAll(standaloneRegex)) {
-    const url = match[REGEX_CAPTURE_GROUP_INDEX];
-    if (url) {
-      urls.push(url);
-    }
-  }
+  const standaloneUrls = extractUrlsWithPattern(markdown, standaloneRegex);
 
-  return [...new Set(urls)]; // Remove duplicates
+  // Remove duplicates
+  return [...new Set([...autolinkUrls, ...standaloneUrls])];
 };
 
 const renderMarkdown = async (markdown: string): Promise<string> => {

@@ -5,12 +5,12 @@ import { codeBlockStyles, mobileStyles, ogpCardStyles, postStyles } from "../../
 
 export default createRoute((c) => {
   const slug = c.req.param("slug");
-  if (!slug) {
+  if (slug === undefined || slug === "") {
     return c.notFound();
   }
 
   const post = getPostBySlug(slug);
-  if (!post) {
+  if (post === undefined) {
     return c.notFound();
   }
 
@@ -42,11 +42,9 @@ export default createRoute((c) => {
           <h1>{post.meta.title}</h1>
           <div class="post-meta">
             <time>{new Date(post.meta.date).toLocaleDateString("ja-JP")}</time>
-            {post.meta.categories && post.meta.categories.length > 0 && (
-              <span> • {post.meta.categories.join(", ")}</span>
-            )}
+            {post.meta.categories.length > 0 && <span> • {post.meta.categories.join(", ")}</span>}
           </div>
-          {post.meta.tags && post.meta.tags.length > 0 && (
+          {post.meta.tags.length > 0 && (
             <div class="post-tags">
               {post.meta.tags.map((tag) => (
                 <span class="tag" key={tag}>

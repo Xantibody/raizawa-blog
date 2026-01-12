@@ -40,7 +40,7 @@ describe("markdown rendering", () => {
 
       for (const postMeta of posts) {
         const post = getPostBySlug(postMeta.slug);
-        if (post) {
+        if (post !== undefined) {
           await expect(renderMarkdown(post.content)).resolves.toBeDefined();
         }
       }
@@ -49,6 +49,19 @@ describe("markdown rendering", () => {
   );
 });
 
+// Find uppercase language identifiers in code blocks
+const findUppercaseLangIssues = (slug: string, content: string): string[] => {
+  const issues: string[] = [];
+  const matches = content.matchAll(/```([A-Z][a-zA-Z]*)/g);
+  for (const match of matches) {
+    const lang = match[REGEX_CAPTURE_GROUP_INDEX];
+    if (lang !== undefined && lang !== "") {
+      issues.push(`${slug}: \`\`\`${lang} should be \`\`\`${lang.toLowerCase()}`);
+    }
+  }
+  return issues;
+};
+
 describe("code blocks", () => {
   it("should not have uppercase language identifiers", () => {
     const posts = getAllPosts();
@@ -56,15 +69,8 @@ describe("code blocks", () => {
 
     for (const postMeta of posts) {
       const post = getPostBySlug(postMeta.slug);
-      if (post) {
-        // Find code blocks with uppercase language
-        const matches = post.content.matchAll(/```([A-Z][a-zA-Z]*)/g);
-        for (const match of matches) {
-          const lang = match[REGEX_CAPTURE_GROUP_INDEX];
-          if (lang) {
-            issues.push(`${postMeta.slug}: \`\`\`${lang} should be \`\`\`${lang.toLowerCase()}`);
-          }
-        }
+      if (post !== undefined) {
+        issues.push(...findUppercaseLangIssues(postMeta.slug, post.content));
       }
     }
 

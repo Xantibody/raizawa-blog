@@ -71,7 +71,7 @@ describe("RSS feed", () => {
 
     // Check first post is included
     const [firstPost] = posts;
-    if (firstPost) {
+    if (firstPost !== undefined) {
       expect(xml).toContain(escapeXml(firstPost.title));
       expect(xml).toContain(`${SITE_URL}/posts/${firstPost.slug}`);
     }

@@ -149,6 +149,8 @@
     "import/no-mutable-exports": "error",
     // Disallow named default exports
     "import/no-named-default": "error",
+    // Allow named exports (common pattern for multi-function modules)
+    "import/no-named-export": "off",
     // ===================
     // Unicorn Rules
     // ===================
@@ -189,6 +191,14 @@
     ],
   },
   "overrides": [
+    {
+      // HonoX server entry point has type inference issues with createApp
+      "files": ["app/server.ts"],
+      "rules": {
+        "typescript/no-unsafe-assignment": "off",
+        "typescript/no-unsafe-argument": "off",
+      },
+    },
     {
       // Relaxed rules for test files
       "files": ["**/*.test.ts", "**/*.test.tsx", "**/*.spec.ts", "test/**/*.ts"],

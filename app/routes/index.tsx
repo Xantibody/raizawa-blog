@@ -43,11 +43,9 @@ export default function Home() {
                 </h2>
                 <div class="post-meta">
                   <time>{new Date(post.date).toLocaleDateString("ja-JP")}</time>
-                  {post.categories && post.categories.length > 0 && (
-                    <span> • {post.categories.join(", ")}</span>
-                  )}
+                  {post.categories.length > 0 && <span> • {post.categories.join(", ")}</span>}
                 </div>
-                {post.tags && post.tags.length > 0 && (
+                {post.tags.length > 0 && (
                   <div class="post-tags">
                     {post.tags.map((tag) => (
                       <span class="tag" key={tag}>

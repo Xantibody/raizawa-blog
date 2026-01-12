@@ -19,7 +19,8 @@ const ogpCache = new Map<string, { data: OGPData; timestamp: number }>();
 const SECONDS_PER_MINUTE = 60;
 const MINUTES_PER_HOUR = 60;
 const MS_PER_SECOND = 1000;
-const CACHE_DURATION = SECONDS_PER_MINUTE * MINUTES_PER_HOUR * MS_PER_SECOND; // 1 hour
+// 1 hour cache duration
+const CACHE_DURATION = SECONDS_PER_MINUTE * MINUTES_PER_HOUR * MS_PER_SECOND;
 const FETCH_TIMEOUT_MS = 5000;
 const REGEX_CAPTURE_GROUP_INDEX = 1;
 
@@ -28,7 +29,7 @@ const extractMetaContent = (html: string, patterns: string[]): string | undefine
   for (const pattern of patterns) {
     const regex = new RegExp(`<meta[^>]*${pattern}[^>]*content=["']([^"']+)["']`, "i");
     const match = html.match(regex);
-    if (match) {
+    if (match !== null) {
       return match[REGEX_CAPTURE_GROUP_INDEX];
     }
   }
@@ -38,7 +39,7 @@ const extractMetaContent = (html: string, patterns: string[]): string | undefine
 // Check cache and return cached data if valid
 const getCachedOGP = (url: string): OGPData | undefined => {
   const cached = ogpCache.get(url);
-  if (cached && Date.now() - cached.timestamp < CACHE_DURATION) {
+  if (cached !== undefined && Date.now() - cached.timestamp < CACHE_DURATION) {
     return cached.data;
   }
   return undefined;
@@ -47,7 +48,9 @@ const getCachedOGP = (url: string): OGPData | undefined => {
 // Fetch HTML content with timeout
 const fetchPageHTML = async (url: string): Promise<string> => {
   const controller = new AbortController();
-  const timeoutId = setTimeout(() => controller.abort(), FETCH_TIMEOUT_MS);
+  const timeoutId = setTimeout(() => {
+    controller.abort();
+  }, FETCH_TIMEOUT_MS);
 
   const response = await fetch(url, {
     headers: {
@@ -80,7 +83,7 @@ const extractOGPFromHTML = (html: string, url: string): OGPData => {
   let image = extractMetaContent(html, ['property="og:image"', 'name="twitter:image"']);
 
   // Resolve relative image URLs
-  if (image && !image.startsWith("http")) {
+  if (image !== undefined && image !== "" && !image.startsWith("http")) {
     const baseUrl = new URL(url);
     image = new URL(image, baseUrl.origin).toString();
   }
@@ -99,7 +102,7 @@ const cacheAndReturn = (url: string, ogpData: OGPData): OGPData => {
 const fetchOGP = async (url: string): Promise<OGPData> => {
   // Check cache first
   const cached = getCachedOGP(url);
-  if (cached) {
+  if (cached !== undefined) {
     return cached;
   }
 
@@ -113,16 +116,23 @@ const fetchOGP = async (url: string): Promise<OGPData> => {
   }
 };
 
+const getAltText = (title: string, url: string): string => {
+  if (title === "") {
+    return url;
+  }
+  return title;
+};
+
 const generateOGPCard = (ogp: OGPData): string => {
   const { description, image, siteName, title, url } = ogp;
 
   let imageHtml = `<span class="ogp-image ogp-noimage">NO IMAGE</span>`;
-  if (image) {
-    const altText = title || url;
+  if (image !== "") {
+    const altText = getAltText(title, url);
     imageHtml = `<span class="ogp-image"><img src="${image}" alt="${altText}" /></span>`;
   }
 
-  const displayTitle = title || url;
+  const displayTitle = getAltText(title, url);
   return `<a href="${url}" class="ogp-card" target="_blank" rel="noopener noreferrer">${imageHtml}<span class="ogp-content"><span class="ogp-title">${displayTitle}</span><span class="ogp-description">${description}</span><span class="ogp-site">${siteName}</span></span></a>`;
 };
 

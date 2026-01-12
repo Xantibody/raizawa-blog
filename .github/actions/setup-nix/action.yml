@@ -1,19 +1,8 @@
 name: Setup Nix
-description: Setup Nix with Cachix
-
-inputs:
-  cachix-auth-token:
-    description: Cachix auth token for pushing to cache
-    required: true
+description: Setup Nix
 
 runs:
   using: composite
   steps:
     - name: Install Nix
       uses: DeterminateSystems/nix-installer-action@v17
-
-    - name: Setup Cachix
-      uses: cachix/cachix-action@v16
-      with:
-        name: r-aizawa-nixos-configuration
-        authToken: ${{ inputs.cachix-auth-token }}

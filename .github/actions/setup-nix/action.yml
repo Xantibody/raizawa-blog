@@ -1,0 +1,8 @@
+name: Setup Nix
+description: Setup Nix
+
+runs:
+  using: composite
+  steps:
+    - name: Install Nix
+      uses: DeterminateSystems/nix-installer-action@v17

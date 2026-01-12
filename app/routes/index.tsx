@@ -54,9 +54,9 @@ export default function Home() {
                 {post.tags.length > 0 && (
                   <div class="post-tags">
                     {post.tags.map((tag) => (
-                      <span class="tag" key={tag}>
+                      <a class="tag" key={tag} href={`/tag/${tag}`}>
                         {tag}
-                      </span>
+                      </a>
                     ))}
                   </div>
                 )}

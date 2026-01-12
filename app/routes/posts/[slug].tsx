@@ -53,9 +53,9 @@ export default createRoute((c) => {
           {post.meta.tags.length > 0 && (
             <div class="post-tags">
               {post.meta.tags.map((tag) => (
-                <span class="tag" key={tag}>
+                <a class="tag" key={tag} href={`/tag/${tag}`}>
                   {tag}
-                </span>
+                </a>
               ))}
             </div>
           )}

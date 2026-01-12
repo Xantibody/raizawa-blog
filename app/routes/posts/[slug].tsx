@@ -45,8 +45,7 @@ export default createRoute((c) => {
             {post.meta.category && (
               <span>
                 {" "}
-                •{" "}
-                <a href={`/category/${post.meta.category}`}>{post.meta.category}</a>
+                • <a href={`/category/${post.meta.category}`}>{post.meta.category}</a>
               </span>
             )}
           </div>

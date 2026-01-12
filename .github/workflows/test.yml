@@ -11,19 +11,8 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
-  typecheck:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-
-      - name: Setup Nix
-        uses: ./.github/actions/setup-nix
-
-      - name: Typecheck
-        run: nix shell nixpkgs#typescript-go -c tsgo --noEmit
-
-  lint:
-    runs-on: ubuntu-latest
+  check:
+    runs-on: ubuntu-slim
     steps:
       - uses: actions/checkout@v4
 
@@ -34,11 +23,20 @@ jobs:
         with:
           bun-version: latest
 
-      - name: Install oxlint-tsgolint
-        run: bun install oxlint-tsgolint
+      - name: Install dependencies
+        run: bun install --frozen-lockfile
+
+      - name: Typecheck
+        run: nix shell nixpkgs#typescript-go -c tsgo --noEmit
 
       - name: Lint
         run: nix shell nixpkgs#oxlint -c oxlint -c .oxlintrc.jsonc --type-aware app/
+
+      - name: Test
+        run: bun run test
+
+      - name: Build
+        run: bun run build
 
   format:
     runs-on: ubuntu-latest
@@ -50,33 +48,3 @@ jobs:
 
       - name: Format check
         run: nix fmt -- --fail-on-change
-
-  test:
-    runs-on: ubuntu-slim
-    steps:
-      - uses: actions/checkout@v4
-
-      - uses: oven-sh/setup-bun@v2
-        with:
-          bun-version: latest
-
-      - name: Install dependencies
-        run: bun install --frozen-lockfile
-
-      - name: Test
-        run: bun run test
-
-  build:
-    runs-on: ubuntu-slim
-    steps:
-      - uses: actions/checkout@v4
-
-      - uses: oven-sh/setup-bun@v2
-        with:
-          bun-version: latest
-
-      - name: Install dependencies
-        run: bun install --frozen-lockfile
-
-      - name: Build
-        run: bun run build

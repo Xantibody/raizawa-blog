@@ -20,7 +20,7 @@ draft: false
 ### コード例
 
 ```javascript
-console.log('Hello, HonoX!')
+console.log("Hello, HonoX!");
 ```
 
 ```rust

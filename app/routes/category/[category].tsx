@@ -1,4 +1,5 @@
 import { createRoute } from "honox/factory";
+import { SITE_TITLE } from "../../lib/config";
 import { getPostsByCategory } from "../../lib/posts";
 import baseStyles from "../../styles/base";
 import indexStyles from "../../styles/index";
@@ -19,9 +20,11 @@ export default createRoute((c) => {
       <head>
         <meta charSet="utf8" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-        <title>{category} - R-Aizawa Blog</title>
+        <title>
+          {category} - {SITE_TITLE}
+        </title>
         <meta name="description" content={`${category}の記事一覧`} />
-        <link rel="alternate" type="application/rss+xml" title="R-Aizawa Blog" href="/feed.xml" />
+        <link rel="alternate" type="application/rss+xml" title={SITE_TITLE} href="/feed.xml" />
         <style>{baseStyles + indexStyles}</style>
       </head>
       <body>

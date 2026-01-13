@@ -1,3 +1,4 @@
+import { SITE_DESCRIPTION, SITE_TITLE, SITE_URL } from "../lib/config";
 import { getAllPosts } from "../lib/posts";
 import baseStyles from "../styles/base";
 import indexStyles from "../styles/index";
@@ -10,20 +11,20 @@ export default function Home() {
       <head>
         <meta charSet="utf8" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-        <title>R-Aizawa Blog</title>
-        <meta name="description" content="R-Aizawaの技術ブログ" />
-        <meta property="og:title" content="R-Aizawa Blog" />
-        <meta property="og:description" content="R-Aizawaの技術ブログ" />
+        <title>{SITE_TITLE}</title>
+        <meta name="description" content={SITE_DESCRIPTION} />
+        <meta property="og:title" content={SITE_TITLE} />
+        <meta property="og:description" content={SITE_DESCRIPTION} />
         <meta property="og:type" content="website" />
-        <meta property="og:url" content="https://raizawa-blog.pages.dev" />
-        <meta property="og:site_name" content="R-Aizawa Blog" />
+        <meta property="og:url" content={SITE_URL} />
+        <meta property="og:site_name" content={SITE_TITLE} />
         <meta name="twitter:card" content="summary" />
-        <link rel="alternate" type="application/rss+xml" title="R-Aizawa Blog" href="/feed.xml" />
+        <link rel="alternate" type="application/rss+xml" title={SITE_TITLE} href="/feed.xml" />
         <style>{baseStyles + indexStyles}</style>
       </head>
       <body>
         <header>
-          <h1>R-Aizawa Blog</h1>
+          <h1>{SITE_TITLE}</h1>
           <div class="links">
             <a href="https://github.com/Xantibody" target="_blank" rel="noopener noreferrer">
               GitHub

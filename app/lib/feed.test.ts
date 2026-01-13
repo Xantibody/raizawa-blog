@@ -1,7 +1,6 @@
 import { describe, expect, it } from "vitest";
+import { SITE_DESCRIPTION, SITE_TITLE, SITE_URL } from "./config";
 import { getAllPosts } from "./posts";
-
-const SITE_URL = "https://raizawa-blog.pages.dev";
 const MAX_FEED_ITEMS = 20;
 
 const escapeXml = (str: string): string =>
@@ -29,9 +28,9 @@ const generateRssFeed = (posts: ReturnType<typeof getAllPosts>): string => {
   return `<?xml version="1.0" encoding="UTF-8"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>R-Aizawa Blog</title>
+    <title>${SITE_TITLE}</title>
     <link>${SITE_URL}</link>
-    <description>R-Aizawaの技術ブログ</description>
+    <description>${SITE_DESCRIPTION}</description>
     <language>ja</language>
     <lastBuildDate>${new Date().toUTCString()}</lastBuildDate>
     <atom:link href="${SITE_URL}/feed.xml" rel="self" type="application/rss+xml"/>
@@ -56,7 +55,7 @@ describe("RSS feed", () => {
     const posts = getAllPosts();
     const xml = generateRssFeed(posts);
 
-    expect(xml).toContain("<title>R-Aizawa Blog</title>");
+    expect(xml).toContain(`<title>${SITE_TITLE}</title>`);
     expect(xml).toContain(`<link>${SITE_URL}</link>`);
     expect(xml).toContain("<description>");
     expect(xml).toContain("<language>ja</language>");

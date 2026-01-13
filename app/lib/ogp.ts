@@ -1,3 +1,5 @@
+import { SITE_URL } from "./config";
+
 interface OGPData {
   url: string;
   title: string;
@@ -54,7 +56,7 @@ const fetchPageHTML = async (url: string): Promise<string> => {
 
   const response = await fetch(url, {
     headers: {
-      "User-Agent": "Mozilla/5.0 (compatible; OGPBot/1.0; +https://raizawa-blog.pages.dev)",
+      "User-Agent": `Mozilla/5.0 (compatible; OGPBot/1.0; +${SITE_URL})`,
     },
     signal: controller.signal,
   });

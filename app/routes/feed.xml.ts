@@ -1,9 +1,6 @@
 import { createRoute } from "honox/factory";
+import { SITE_DESCRIPTION, SITE_TITLE, SITE_URL } from "../lib/config";
 import { getAllPosts } from "../lib/posts";
-
-const SITE_URL = "https://raizawa-blog.pages.dev";
-const SITE_TITLE = "R-Aizawa Blog";
-const SITE_DESCRIPTION = "R-Aizawaの技術ブログ";
 const MAX_FEED_ITEMS = 20;
 const HTTP_OK = 200;
 

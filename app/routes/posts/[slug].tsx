@@ -1,4 +1,5 @@
 import { createRoute } from "honox/factory";
+import { SITE_TITLE, SITE_URL } from "../../lib/config";
 import { getPostBySlug } from "../../lib/posts";
 import baseStyles from "../../styles/base";
 import { codeBlockStyles, mobileStyles, ogpCardStyles, postStyles } from "../../styles/post";
@@ -23,15 +24,17 @@ export default createRoute((c) => {
       <head>
         <meta charSet="utf8" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-        <title>{post.meta.title} - R-Aizawa Blog</title>
-        <meta name="description" content={`${post.meta.title} - R-Aizawa Blog`} />
+        <title>
+          {post.meta.title} - {SITE_TITLE}
+        </title>
+        <meta name="description" content={`${post.meta.title} - ${SITE_TITLE}`} />
         <meta property="og:title" content={post.meta.title} />
-        <meta property="og:description" content={`${post.meta.title} - R-Aizawa Blog`} />
+        <meta property="og:description" content={`${post.meta.title} - ${SITE_TITLE}`} />
         <meta property="og:type" content="article" />
-        <meta property="og:url" content={`https://raizawa-blog.pages.dev/posts/${slug}`} />
-        <meta property="og:site_name" content="R-Aizawa Blog" />
+        <meta property="og:url" content={`${SITE_URL}/posts/${slug}`} />
+        <meta property="og:site_name" content={SITE_TITLE} />
         <meta name="twitter:card" content="summary" />
-        <link rel="alternate" type="application/rss+xml" title="R-Aizawa Blog" href="/feed.xml" />
+        <link rel="alternate" type="application/rss+xml" title={SITE_TITLE} href="/feed.xml" />
         <style>{allStyles}</style>
       </head>
       <body>

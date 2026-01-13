@@ -21,7 +21,7 @@ export function postsHMR(): Plugin {
 
       server.watcher.add(postsDir);
 
-      server.watcher.on("change", async (path) => {
+      server.watcher.on("change", (path) => {
         if (path.endsWith(".md") && path.includes(postsDir)) {
           console.log(`\n[posts-hmr] ${path} changed, rebuilding...`);
 

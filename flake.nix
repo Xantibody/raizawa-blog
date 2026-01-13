@@ -89,8 +89,7 @@
               oxlint
               oxfmt
               nodejs-slim_24
-              typescript-go
-              wrangler
+              tsgolint
               textlint
               (textlint.withPackages [
                 textlint-rule-preset-ja-technical-writing

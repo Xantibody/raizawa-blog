@@ -1,0 +1,8 @@
+{
+  "extends": "./tsconfig.json",
+  "include": ["app/**/*", "vite.config.ts", "vite-plugin-posts.ts"],
+  // tsgolintがHonoXの型定義で誤検知を起こすため除外
+  // - app/routes/**/*: createRouteのコールバックがPromiseを返すと誤認識 (promise-function-async)
+  // - app/server.ts: createApp()の型推論問題 (no-unsafe-assignment/argument)
+  "exclude": ["app/routes/**/*", "app/server.ts"]
+}

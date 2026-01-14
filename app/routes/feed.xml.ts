@@ -1,8 +1,8 @@
 import { createRoute } from "honox/factory";
 import { SITE_DESCRIPTION, SITE_TITLE, SITE_URL } from "../lib/config";
+import { HTTP_OK } from "../lib/http";
 import { getAllPosts } from "../lib/posts";
 const MAX_FEED_ITEMS = 20;
-const HTTP_OK = 200;
 
 const escapeXml = (str: string): string =>
   str

@@ -1,3 +1,5 @@
+import baseStyles from "./base";
+
 // Post page specific styles
 const postStyles = `
   .back-link {
@@ -219,4 +221,7 @@ const mobileStyles = `
   }
 `;
 
-export { codeBlockStyles, mobileStyles, ogpCardStyles, postStyles };
+const allPostStyles =
+  baseStyles + postStyles + codeBlockStyles + ogpCardStyles + mobileStyles;
+
+export { allPostStyles, codeBlockStyles, mobileStyles, ogpCardStyles, postStyles };

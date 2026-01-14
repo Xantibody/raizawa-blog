@@ -4,18 +4,17 @@ import { getPostBySlug } from "../../lib/posts";
 import baseStyles from "../../styles/base";
 import { codeBlockStyles, mobileStyles, ogpCardStyles, postStyles } from "../../styles/post";
 
-export default createRoute((c) => {
+export default createRoute(async (c) => {
   const slug = c.req.param("slug");
   if (slug === undefined || slug === "") {
     return c.notFound();
   }
 
-  const post = getPostBySlug(slug);
+  const post = await getPostBySlug(slug);
   if (post === undefined) {
     return c.notFound();
   }
 
-  // Use pre-rendered HTML from build time
   const htmlContent = post.html;
   const allStyles = baseStyles + postStyles + codeBlockStyles + ogpCardStyles + mobileStyles;
 
@@ -64,6 +63,27 @@ export default createRoute((c) => {
         </header>
 
         <article dangerouslySetInnerHTML={{ __html: htmlContent }}></article>
+
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `
+          document.querySelectorAll('.copy-button').forEach(button => {
+            button.addEventListener('click', async () => {
+              const pre = button.closest('pre');
+              const code = pre.querySelector('code');
+              const text = code.innerText.replace(/^\\d+\\s*/gm, '');
+              await navigator.clipboard.writeText(text);
+              button.textContent = 'Copied!';
+              button.classList.add('copied');
+              setTimeout(() => {
+                button.textContent = 'Copy';
+                button.classList.remove('copied');
+              }, 2000);
+            });
+          });
+        `,
+          }}
+        />
       </body>
     </html>,
   );

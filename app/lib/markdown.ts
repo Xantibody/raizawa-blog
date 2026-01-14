@@ -1,60 +1,57 @@
 import { fetchOGP, generateOGPCard } from "./ogp";
-import {
-  transformerNotationDiff,
-  transformerNotationErrorLevel,
-  transformerNotationHighlight,
-} from "@shikijs/transformers";
-import Shiki from "@shikijs/markdown-it";
+import { getHighlighter, shikiTransformers } from "./shiki";
 import MarkdownIt from "markdown-it";
-import { type ShikiTransformer } from "shiki";
 
 const REGEX_CAPTURE_GROUP_INDEX = 1;
 
-// Custom transformer to add file name from meta string
-// Usage: ```ts title="filename.ts"
-const transformerMetaTitle = (): ShikiTransformer => ({
-  name: "meta-title",
-  pre(node) {
-    const meta = this.options.meta?.__raw;
-    if (meta === undefined || meta === "") {
-      return;
-    }
-
-    const match = meta.match(/title=["']([^"']+)["']/);
-    const title = match?.[REGEX_CAPTURE_GROUP_INDEX];
-    if (title !== undefined && title !== "") {
-      // Add title element before the code
-      node.children.unshift({
-        children: [{ type: "text", value: title }],
-        properties: { class: "code-title" },
-        tagName: "div",
-        type: "element",
-      });
-    }
-  },
-});
-
-// Initialize markdown-it with Shiki
+// Initialize markdown-it
 const md = MarkdownIt({ breaks: true, html: true });
 
 // Shiki plugin (initialized lazily)
 let shikiInitialized = false;
 
-const initShiki = async () => {
-  if (!shikiInitialized) {
-    md.use(
-      await Shiki({
-        theme: "gruvbox-dark-soft",
-        transformers: [
-          transformerNotationDiff(),
-          transformerNotationHighlight(),
-          transformerNotationErrorLevel(),
-          transformerMetaTitle(),
-        ],
-      }),
-    );
-    shikiInitialized = true;
+const getLangFromTokenInfo = (info: string): string => {
+  const [langPart] = info.split(/\s+/);
+  if (langPart !== undefined && langPart !== "") {
+    return langPart;
   }
+  return "text";
+};
+
+const resolveLang = (lang: string, loadedLangs: string[]): string => {
+  if (loadedLangs.includes(lang)) {
+    return lang;
+  }
+  return "text";
+};
+
+const initShiki = async () => {
+  if (shikiInitialized) {
+    return;
+  }
+
+  const highlighter = await getHighlighter();
+
+  // Custom fence renderer using Shiki
+  md.renderer.rules.fence = (tokens, idx) => {
+    const token = tokens[idx];
+    if (token === undefined) {
+      return "";
+    }
+    const code = token.content;
+    const lang = getLangFromTokenInfo(token.info);
+    const meta = token.info.slice(lang.length).trim();
+    const langToUse = resolveLang(lang, highlighter.getLoadedLanguages());
+
+    return highlighter.codeToHtml(code, {
+      lang: langToUse,
+      meta: { __raw: meta },
+      theme: "gruvbox-dark-soft",
+      transformers: shikiTransformers,
+    });
+  };
+
+  shikiInitialized = true;
 };
 
 // Extract URLs from markdown using a regex pattern

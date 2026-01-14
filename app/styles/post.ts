@@ -62,11 +62,35 @@ const postStyles = `
 
 const codeBlockStyles = `
   pre.shiki {
+    position: relative;
     counter-reset: line;
     overflow-x: auto;
     padding: 1rem;
     border-radius: 8px;
     font-size: 0.9rem;
+  }
+  .copy-button {
+    position: absolute;
+    top: 0.5rem;
+    right: 0.5rem;
+    padding: 0.25rem 0.5rem;
+    background: #3d4556;
+    border: 1px solid #555;
+    border-radius: 4px;
+    color: #e1e4e8;
+    font-size: 0.75rem;
+    cursor: pointer;
+    opacity: 0;
+    transition: opacity 0.2s;
+  }
+  pre.shiki:hover .copy-button {
+    opacity: 1;
+  }
+  .copy-button:hover {
+    background: #4d5566;
+  }
+  .copy-button.copied {
+    background: #238636;
   }
   pre.shiki .line::before {
     counter-increment: line;

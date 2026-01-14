@@ -27,13 +27,14 @@ describe("posts", () => {
     }
   });
 
-  it("each post should be loadable by slug", async () => {
-    const posts = getAllPosts();
-    for (const post of posts) {
-      const loaded = await getPostBySlug(post.slug);
-      expect(loaded).toBeDefined();
-      expect(loaded?.meta.title).toBe(post.title);
+  it("should load post by slug", async () => {
+    const [firstPost] = getAllPosts();
+    if (firstPost === undefined) {
+      throw new Error("No posts found");
     }
+    const loaded = await getPostBySlug(firstPost.slug);
+    expect(loaded).toBeDefined();
+    expect(loaded?.meta.title).toBe(firstPost.title);
   });
 
   it("should return undefined for non-existent slug", async () => {

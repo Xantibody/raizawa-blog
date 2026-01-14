@@ -221,7 +221,6 @@ const mobileStyles = `
   }
 `;
 
-const allPostStyles =
-  baseStyles + postStyles + codeBlockStyles + ogpCardStyles + mobileStyles;
+const allPostStyles = baseStyles + postStyles + codeBlockStyles + ogpCardStyles + mobileStyles;
 
 export { allPostStyles, codeBlockStyles, mobileStyles, ogpCardStyles, postStyles };

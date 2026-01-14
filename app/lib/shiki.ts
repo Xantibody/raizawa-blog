@@ -4,7 +4,7 @@ import {
   transformerNotationHighlight,
 } from "@shikijs/transformers";
 import { type HighlighterCore, createHighlighterCore } from "shiki/core";
-import { createOnigurumaEngine } from "shiki/engine/oniguruma";
+import { createJavaScriptRegexEngine } from "shiki/engine/javascript";
 import { type ShikiTransformer } from "shiki";
 
 // Global highlighter cache
@@ -65,7 +65,7 @@ const getHighlighter = async (): Promise<HighlighterCore> => {
   }
 
   highlighter = await createHighlighterCore({
-    engine: createOnigurumaEngine(import("shiki/wasm")),
+    engine: createJavaScriptRegexEngine(),
     langs: [
       import("shiki/langs/rust.mjs"),
       import("shiki/langs/nix.mjs"),

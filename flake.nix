@@ -90,7 +90,6 @@
               oxfmt
               nodejs-slim_24
               tsgolint
-              textlint
               (textlint.withPackages [
                 textlint-rule-preset-ja-technical-writing
                 textlint-rule-prh

@@ -7,7 +7,6 @@ import {
   getPostsByTag,
   getTags,
 } from "./posts";
-import renderMarkdown from "./markdown";
 
 const MINIMUM_POSTS = 0;
 const CI_TIMEOUT_MS = 60_000;
@@ -28,33 +27,70 @@ describe("posts", () => {
     }
   });
 
-  it("each post should be loadable by slug", () => {
+  it("each post should be loadable by slug", async () => {
     const posts = getAllPosts();
     for (const post of posts) {
-      const loaded = getPostBySlug(post.slug);
+      const loaded = await getPostBySlug(post.slug);
       expect(loaded).toBeDefined();
       expect(loaded?.meta.title).toBe(post.title);
     }
   });
+
+  it("should return undefined for non-existent slug", async () => {
+    const post = await getPostBySlug("non-existent-post-slug-12345");
+    expect(post).toBeUndefined();
+  });
+
+  it("posts should be sorted by date descending", () => {
+    const posts = getAllPosts();
+    for (let idx = 1; idx < posts.length; idx++) {
+      const prev = posts[idx - 1];
+      const curr = posts[idx];
+      if (prev !== undefined && curr !== undefined) {
+        const prevDate = new Date(prev.date);
+        const currDate = new Date(curr.date);
+        expect(prevDate.getTime()).toBeGreaterThanOrEqual(currDate.getTime());
+      }
+    }
+  });
+
+  it("post meta should have correct types", () => {
+    const posts = getAllPosts();
+    for (const post of posts) {
+      expect(typeof post.slug).toBe("string");
+      expect(typeof post.title).toBe("string");
+      expect(typeof post.date).toBe("string");
+      expect(typeof post.category).toBe("string");
+      expect(Array.isArray(post.tags)).toBe(true);
+      expect(typeof post.draft).toBe("boolean");
+    }
+  });
+
+  it("should not include draft posts in getAllPosts", () => {
+    const posts = getAllPosts();
+    for (const post of posts) {
+      expect(post.draft).toBe(false);
+    }
+  });
 });
 
-describe("markdown rendering", () => {
-  it(
-    "should render all posts without error",
-    async () => {
+describe(
+  "markdown rendering",
+  () => {
+    it("should render all posts without error", async () => {
       // Shiki initialization can be slow in CI - run sequentially
       const posts = getAllPosts();
 
       for (const postMeta of posts) {
-        const post = getPostBySlug(postMeta.slug);
+        const post = await getPostBySlug(postMeta.slug);
         if (post !== undefined) {
-          await expect(renderMarkdown(post.content)).resolves.toBeDefined();
+          expect(post.html).toBeDefined();
         }
       }
-    },
-    CI_TIMEOUT_MS,
-  );
-});
+    });
+  },
+  CI_TIMEOUT_MS,
+);
 
 // Find uppercase language identifiers in code blocks
 const findUppercaseLangIssues = (slug: string, content: string): string[] => {
@@ -116,12 +152,12 @@ describe("tags", () => {
 });
 
 describe("code blocks", () => {
-  it("should not have uppercase language identifiers", () => {
+  it("should not have uppercase language identifiers", async () => {
     const posts = getAllPosts();
     const issues: string[] = [];
 
     for (const postMeta of posts) {
-      const post = getPostBySlug(postMeta.slug);
+      const post = await getPostBySlug(postMeta.slug);
       if (post !== undefined) {
         issues.push(...findUppercaseLangIssues(postMeta.slug, post.content));
       }

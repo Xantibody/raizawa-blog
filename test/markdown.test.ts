@@ -20,8 +20,8 @@ describe("markdown rendering with fixtures", () => {
 
     // Check code blocks with Shiki
     expect(html).toContain('class="shiki');
-    expect(html).toContain("language-javascript");
-    expect(html).toContain("language-rust");
+    // Check copy button is present
+    expect(html).toContain('class="copy-button"');
 
     // Check lists
     expect(html).toContain("<li>");

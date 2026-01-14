@@ -7,6 +7,8 @@ import { type HighlighterCore, createHighlighterCore } from "shiki/core";
 import { createJavaScriptRegexEngine } from "shiki/engine/javascript";
 import { type ShikiTransformer } from "shiki";
 
+const SHIKI_THEME = "one-dark-pro";
+
 // Global highlighter cache
 // eslint-disable-next-line init-declarations -- lazy initialization pattern
 let highlighter: HighlighterCore | undefined;
@@ -72,10 +74,10 @@ const getHighlighter = async (): Promise<HighlighterCore> => {
       import("shiki/langs/bash.mjs"),
       import("shiki/langs/json.mjs"),
     ],
-    themes: [import("shiki/themes/gruvbox-dark-soft.mjs")],
+    themes: [import("shiki/themes/one-dark-pro.mjs")],
   });
 
   return highlighter;
 };
 
-export { getHighlighter, shikiTransformers };
+export { getHighlighter, SHIKI_THEME, shikiTransformers };

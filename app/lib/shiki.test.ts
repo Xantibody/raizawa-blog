@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { getHighlighter, shikiTransformers } from "./shiki";
+import { SHIKI_THEME, getHighlighter, shikiTransformers } from "./shiki";
 
 describe("shiki", () => {
   describe("getHighlighter", () => {
@@ -30,7 +30,7 @@ describe("shiki", () => {
       const highlighter = await getHighlighter();
       const html = highlighter.codeToHtml("const x = 1;", {
         lang: "rust",
-        theme: "gruvbox-dark-soft",
+        theme: SHIKI_THEME,
         transformers: shikiTransformers,
       });
       expect(html).toContain('class="copy-button"');
@@ -42,7 +42,7 @@ describe("shiki", () => {
       const html = highlighter.codeToHtml("fn main() {}", {
         lang: "rust",
         meta: { __raw: 'title="example.rs"' },
-        theme: "gruvbox-dark-soft",
+        theme: SHIKI_THEME,
         transformers: shikiTransformers,
       });
       expect(html).toContain('class="code-title"');
@@ -53,7 +53,7 @@ describe("shiki", () => {
       const highlighter = await getHighlighter();
       const html = highlighter.codeToHtml("fn main() {}", {
         lang: "rust",
-        theme: "gruvbox-dark-soft",
+        theme: SHIKI_THEME,
         transformers: shikiTransformers,
       });
       expect(html).not.toContain('class="code-title"');
@@ -64,7 +64,7 @@ describe("shiki", () => {
       const html = highlighter.codeToHtml("{}", {
         lang: "json",
         meta: { __raw: "title='config.json'" },
-        theme: "gruvbox-dark-soft",
+        theme: SHIKI_THEME,
         transformers: shikiTransformers,
       });
       expect(html).toContain("config.json");

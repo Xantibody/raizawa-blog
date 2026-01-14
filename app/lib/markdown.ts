@@ -1,5 +1,5 @@
 import { fetchOGP, generateOGPCard } from "./ogp";
-import { getHighlighter, shikiTransformers } from "./shiki";
+import { SHIKI_THEME, getHighlighter, shikiTransformers } from "./shiki";
 import MarkdownIt from "markdown-it";
 
 const REGEX_CAPTURE_GROUP_INDEX = 1;
@@ -46,7 +46,7 @@ const initShiki = async () => {
     return highlighter.codeToHtml(code, {
       lang: langToUse,
       meta: { __raw: meta },
-      theme: "gruvbox-dark-soft",
+      theme: SHIKI_THEME,
       transformers: shikiTransformers,
     });
   };

@@ -65,6 +65,13 @@ describe("posts", () => {
       expect(typeof post.draft).toBe("boolean");
     }
   });
+
+  it("should not include draft posts in getAllPosts", () => {
+    const posts = getAllPosts();
+    for (const post of posts) {
+      expect(post.draft).toBe(false);
+    }
+  });
 });
 
 describe(

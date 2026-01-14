@@ -1,10 +1,12 @@
+import { ssgParams } from "hono/ssg";
 import { createRoute } from "honox/factory";
 import { SITE_TITLE, SITE_URL } from "../../lib/config";
-import { getPostBySlug } from "../../lib/posts";
-import baseStyles from "../../styles/base";
-import { codeBlockStyles, mobileStyles, ogpCardStyles, postStyles } from "../../styles/post";
+import { getAllPosts, getPostBySlug } from "../../lib/posts";
+import { allPostStyles } from "../../styles/post";
 
-export default createRoute(async (c) => {
+export default createRoute(
+  ssgParams(() => getAllPosts().map((post) => ({ slug: post.slug }))),
+  async (c) => {
   const slug = c.req.param("slug");
   if (slug === undefined || slug === "") {
     return c.notFound();
@@ -16,7 +18,6 @@ export default createRoute(async (c) => {
   }
 
   const htmlContent = post.html;
-  const allStyles = baseStyles + postStyles + codeBlockStyles + ogpCardStyles + mobileStyles;
 
   return c.render(
     <html>
@@ -34,7 +35,7 @@ export default createRoute(async (c) => {
         <meta property="og:site_name" content={SITE_TITLE} />
         <meta name="twitter:card" content="summary" />
         <link rel="alternate" type="application/rss+xml" title={SITE_TITLE} href="/feed.xml" />
-        <style>{allStyles}</style>
+        <style>{allPostStyles}</style>
       </head>
       <body>
         <header>

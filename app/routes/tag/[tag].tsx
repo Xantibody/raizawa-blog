@@ -1,10 +1,13 @@
+import { ssgParams } from "hono/ssg";
 import { createRoute } from "honox/factory";
 import { SITE_TITLE } from "../../lib/config";
-import { getPostsByTag } from "../../lib/posts";
+import { getPostsByTag, getTags } from "../../lib/posts";
 import baseStyles from "../../styles/base";
 import indexStyles from "../../styles/index";
 
-export default createRoute((c) => {
+export default createRoute(
+  ssgParams(() => getTags().map((tag) => ({ tag }))),
+  (c) => {
   const tag = c.req.param("tag");
   if (tag === undefined || tag === "") {
     return c.notFound();

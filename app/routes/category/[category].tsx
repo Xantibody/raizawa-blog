@@ -1,10 +1,13 @@
+import { ssgParams } from "hono/ssg";
 import { createRoute } from "honox/factory";
 import { SITE_TITLE } from "../../lib/config";
-import { getPostsByCategory } from "../../lib/posts";
+import { getCategories, getPostsByCategory } from "../../lib/posts";
 import baseStyles from "../../styles/base";
 import indexStyles from "../../styles/index";
 
-export default createRoute((c) => {
+export default createRoute(
+  ssgParams(() => getCategories().map((category) => ({ category }))),
+  (c) => {
   const category = c.req.param("category");
   if (category === undefined || category === "") {
     return c.notFound();

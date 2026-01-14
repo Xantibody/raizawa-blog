@@ -25,6 +25,7 @@
   "devDependencies": {
     "@hono/vite-build": "^1.8.0",
     "@hono/vite-dev-server": "^0.24.0",
+    "@hono/vite-ssg": "^0.3.2",
     "@types/bun": "latest",
     "@types/js-yaml": "^4.0.9",
     "@typescript/native-preview": "^7.0.0-dev.20260109.1",

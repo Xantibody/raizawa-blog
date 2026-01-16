@@ -22,7 +22,7 @@ jobs:
           cachix_auth_token: ${{ secrets.CACHIX_AUTH_TOKEN }}
 
       - name: Install tools
-        run: nix profile add nixpkgs#bun nixpkgs#oxlint nixpkgs#tsgolint
+        run: nix profile add nixpkgs#bun nixpkgs#oxlint
 
       - name: Install dependencies
         run: bun install --frozen-lockfile

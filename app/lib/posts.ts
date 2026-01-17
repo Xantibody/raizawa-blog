@@ -1,4 +1,4 @@
-import { load as yamlLoad } from "js-yaml";
+import matter from "gray-matter";
 import renderMarkdown from "./markdown";
 
 // Type definitions
@@ -23,34 +23,6 @@ const markdownFiles = import.meta.glob<string>("../posts/*.md", {
   import: "default",
   query: "?raw",
 });
-
-// Parse frontmatter from markdown content
-const parseFrontmatter = (
-  fileContents: string,
-): { content: string; data: Record<string, unknown> } => {
-  const frontmatterRegex = /^---\s*\n([\s\S]*?)\n---\s*\n([\s\S]*)$/;
-  const match = fileContents.match(frontmatterRegex);
-
-  if (match === null) {
-    return { content: fileContents, data: {} };
-  }
-
-  const [, frontmatter, content] = match;
-  const loaded = yamlLoad(frontmatter ?? "");
-  const data = toRecord(loaded);
-
-  return { content: content ?? "", data };
-};
-
-const isRecord = (value: unknown): value is Record<string, unknown> =>
-  typeof value === "object" && value !== null;
-
-const toRecord = (value: unknown): Record<string, unknown> => {
-  if (isRecord(value)) {
-    return value;
-  }
-  return {};
-};
 
 // Extract slug from file path
 const getSlugFromPath = (path: string): string => {
@@ -112,7 +84,7 @@ const initMetaCache = (): void => {
 
   for (const [path, content] of Object.entries(markdownFiles)) {
     const slug = getSlugFromPath(path);
-    const { data } = parseFrontmatter(content);
+    const { data } = matter(content);
     const meta = parsePostMeta(slug, data);
 
     if (!meta.draft) {
@@ -144,7 +116,7 @@ const getPostBySlug = async (slug: string): Promise<Post | undefined> => {
     return undefined;
   }
 
-  const { content: markdownContent, data } = parseFrontmatter(content);
+  const { content: markdownContent, data } = matter(content);
   const meta = parsePostMeta(slug, data);
 
   if (meta.draft) {

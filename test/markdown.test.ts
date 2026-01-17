@@ -1,6 +1,7 @@
 import { describe, it, expect } from "vitest";
 import { readFileSync } from "fs";
 import { join } from "path";
+import matter from "gray-matter";
 import renderMarkdown from "../app/lib/markdown";
 
 const fixturesDir = join(process.cwd(), "test/fixtures");
@@ -8,9 +9,7 @@ const fixturesDir = join(process.cwd(), "test/fixtures");
 describe("markdown rendering with fixtures", () => {
   it("should render test-post.md correctly", async () => {
     const content = readFileSync(join(fixturesDir, "test-post.md"), "utf-8");
-    // Extract content after frontmatter
-    const match = content.match(/^---\s*\n[\s\S]*?\n---\s*\n([\s\S]*)$/);
-    const markdown = match ? match[1] : content;
+    const { content: markdown } = matter(content);
 
     const html = await renderMarkdown(markdown);
 

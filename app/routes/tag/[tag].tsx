@@ -1,6 +1,6 @@
 import { ssgParams } from "hono/ssg";
 import { createRoute } from "honox/factory";
-import { SITE_TITLE } from "../../lib/config";
+import { FAVICON_URL, SITE_TITLE } from "../../lib/config";
 import { getPostsByTag, getTags } from "../../lib/posts";
 import baseStyles from "../../styles/base";
 import indexStyles from "../../styles/index";
@@ -28,6 +28,7 @@ export default createRoute(
           </title>
           <meta name="description" content={`${tag}の記事一覧`} />
           <link rel="alternate" type="application/rss+xml" title={SITE_TITLE} href="/feed.xml" />
+          <link rel="icon" href={FAVICON_URL} />
           <style>{baseStyles + indexStyles}</style>
         </head>
         <body>

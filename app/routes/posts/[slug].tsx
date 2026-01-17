@@ -1,6 +1,6 @@
 import { ssgParams } from "hono/ssg";
 import { createRoute } from "honox/factory";
-import { SITE_TITLE, SITE_URL } from "../../lib/config";
+import { FAVICON_URL, SITE_TITLE, SITE_URL } from "../../lib/config";
 import { getAllPosts, getPostBySlug } from "../../lib/posts";
 import { allPostStyles } from "../../styles/post";
 
@@ -35,6 +35,7 @@ export default createRoute(
           <meta property="og:site_name" content={SITE_TITLE} />
           <meta name="twitter:card" content="summary" />
           <link rel="alternate" type="application/rss+xml" title={SITE_TITLE} href="/feed.xml" />
+          <link rel="icon" href={FAVICON_URL} />
           <style>{allPostStyles}</style>
         </head>
         <body>

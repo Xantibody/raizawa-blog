@@ -1,4 +1,4 @@
-import { SITE_DESCRIPTION, SITE_TITLE, SITE_URL } from "../lib/config";
+import { FAVICON_URL, SITE_DESCRIPTION, SITE_TITLE, SITE_URL } from "../lib/config";
 import { getAllPosts } from "../lib/posts";
 import baseStyles from "../styles/base";
 import indexStyles from "../styles/index";
@@ -20,6 +20,7 @@ export default function Home() {
         <meta property="og:site_name" content={SITE_TITLE} />
         <meta name="twitter:card" content="summary" />
         <link rel="alternate" type="application/rss+xml" title={SITE_TITLE} href="/feed.xml" />
+        <link rel="icon" href={FAVICON_URL} />
         <style>{baseStyles + indexStyles}</style>
       </head>
       <body>

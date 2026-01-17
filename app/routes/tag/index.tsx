@@ -1,5 +1,5 @@
 import { createRoute } from "honox/factory";
-import { SITE_TITLE } from "../../lib/config";
+import { FAVICON_URL, SITE_TITLE } from "../../lib/config";
 import { getPostsByTag, getTags } from "../../lib/posts";
 import baseStyles from "../../styles/base";
 import indexStyles from "../../styles/index";
@@ -15,6 +15,7 @@ export default createRoute((c) => {
         <title>タグ一覧 - {SITE_TITLE}</title>
         <meta name="description" content="タグ一覧" />
         <link rel="alternate" type="application/rss+xml" title={SITE_TITLE} href="/feed.xml" />
+        <link rel="icon" href={FAVICON_URL} />
         <style>{baseStyles + indexStyles}</style>
       </head>
       <body>

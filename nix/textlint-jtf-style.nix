@@ -1,46 +1,55 @@
-# nix/overlays/textlint-jtf-style-pnpm.nix
-self: super:
+final: prev:
 let
-  inherit (super)
+  inherit (prev)
     lib
+    stdenvNoCC
     fetchFromGitHub
-    buildNpmPackage
-    fetchPnpmDeps
-    pnpm
-    nodejs_22
+    fetchYarnDeps
+    nodejs
+    npmHooks
+    yarnBuildHook
+    yarnConfigHook
+    textlint
     ;
 in
 {
-  textlint-rule-preset-jtf-style = buildNpmPackage rec {
+  textlint-rule-preset-jtf-style = stdenvNoCC.mkDerivation (finalAttrs: {
     pname = "textlint-rule-preset-jtf-style";
-    version = "3.0.2";
+    version = "3.0.3";
 
     src = fetchFromGitHub {
       owner = "textlint-ja";
       repo = "textlint-rule-preset-JTF-style";
-      rev = "v${version}";
-      hash = "sha256-03s05TZcPN5WY8buxqNNKOXutsYL++REZDYiLIGpFDI="; # ← 1回ビルドして出る sha256 に置換
+      tag = "v${finalAttrs.version}";
+      hash = "sha256-iI3sK59NOeXrbN+ROqN+68UnkWOureHuPfsNHuiudzM=";
     };
 
-    # ★ ここがポイント：pnpm ロックを使って依存取得
-    pnpmDeps = fetchPnpmDeps {
-      inherit src;
-      hash = lib.fakeHash; # ← 同上（1回ビルドして出る値を貼る）
+    offlineCache = fetchYarnDeps {
+      yarnLock = "${finalAttrs.src}/yarn.lock";
+      hash = "sha256-R6Bnay2r1VJ9NKIjvj80r4Jw29nv6lV8+r9N0QTrSTE=";
     };
 
-    # pnpm 用セットアップフック。unstable なら pnpm.configHook があります
-    nativeBuildInputs = [ pnpm.configHook ];
+    nativeBuildInputs = [
+      nodejs
+      yarnBuildHook
+      yarnConfigHook
+    ];
 
-    nodejs = nodejs_22;
+    # npmInstallHook を使わず手動でインストール
+    # (上流の prepare スクリプトが git を要求するため)
+    installPhase = ''
+      runHook preInstall
+      mkdir -p $out/lib/node_modules/textlint-rule-preset-jtf-style
+      cp -r lib package.json $out/lib/node_modules/textlint-rule-preset-jtf-style/
+      runHook postInstall
+    '';
 
-    # これは純粋なルールパッケージなのでビルドなしでOK
-    dontNpmBuild = true;
-
-    meta = with lib; {
+    meta = {
       description = "JTF日本語標準スタイルガイドの textlint プリセット";
       homepage = "https://github.com/textlint-ja/textlint-rule-preset-JTF-style";
-      license = licenses.mit;
-      platforms = platforms.unix;
+      changelog = "https://github.com/textlint-ja/textlint-rule-preset-JTF-style/releases/tag/v${finalAttrs.version}";
+      license = lib.licenses.mit;
+      platforms = textlint.meta.platforms;
     };
-  };
+  });
 }

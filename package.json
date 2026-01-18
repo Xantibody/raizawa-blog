@@ -16,7 +16,7 @@
   "dependencies": {
     "@shikijs/transformers": "^3.21.0",
     "@types/markdown-it": "^14.1.2",
-    "gray-matter": "^4.0.3",
+    "gray-matter-es": "^0.2.1",
     "hono": "^4.11.3",
     "honox": "^0.1.53",
     "markdown-it": "^14.1.0",

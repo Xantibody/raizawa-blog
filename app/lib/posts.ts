@@ -1,4 +1,4 @@
-import matter from "gray-matter";
+import { matter } from "gray-matter-es";
 import renderMarkdown from "./markdown";
 
 // Type definitions

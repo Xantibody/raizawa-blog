@@ -93,7 +93,7 @@
                 textlint-rule-preset-ja-technical-writing
                 textlint-rule-prh
                 textlint-rule-write-good
-                #    textlint-rule-preset-jtf-style
+                textlint-rule-preset-jtf-style
                 "@textlint/markdown"
               ])
             ];

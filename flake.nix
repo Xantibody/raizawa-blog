@@ -69,7 +69,7 @@
               "@textlint/markdown" = true;
             };
             rules = {
-              #  preset-jtf-style = true;
+              preset-jtf-style = true;
               preset-ja-technical-writing = {
                 ja-no-mixed-period = false;
                 no-exclamation-question-mark = false;

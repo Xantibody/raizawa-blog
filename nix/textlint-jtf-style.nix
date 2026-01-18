@@ -40,7 +40,7 @@ in
     installPhase = ''
       runHook preInstall
       mkdir -p $out/lib/node_modules/textlint-rule-preset-jtf-style
-      cp -r lib package.json $out/lib/node_modules/textlint-rule-preset-jtf-style/
+      cp -r lib package.json node_modules $out/lib/node_modules/textlint-rule-preset-jtf-style/
       runHook postInstall
     '';
 

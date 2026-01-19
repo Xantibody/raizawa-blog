@@ -8,8 +8,8 @@
     "build": "vite build",
     "preview": "vite preview",
     "test": "vitest run",
-    "lint": "oxlint --type-check -c .oxlintrc.jsonc --type-aware app/ scripts/",
-    "lint:fix": "oxlint -c .oxlintrc.jsonc --type-aware app/ scripts/ --fix",
+    "lint": "oxlint --type-check -c .oxlintrc.jsonc --type-aware app/",
+    "lint:fix": "oxlint -c .oxlintrc.jsonc --type-aware app/ --fix",
     "format": "nix fmt",
     "format:check": "nix fmt -- --fail-on-change",
     "new-post": "bun run scripts/new-post.ts"

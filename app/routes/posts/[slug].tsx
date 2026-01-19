@@ -1,8 +1,41 @@
 import { ssgParams } from "hono/ssg";
 import { createRoute } from "honox/factory";
 import { FAVICON_URL, SITE_TITLE, SITE_URL } from "../../lib/config";
-import { getAllPosts, getPostBySlug } from "../../lib/posts";
+import { type PostMeta, getAdjacentPosts, getAllPosts, getPostBySlug } from "../../lib/posts";
 import { allPostStyles } from "../../styles/post";
+
+const PostNav = ({ next, prev }: { next: PostMeta | undefined; prev: PostMeta | undefined }) => {
+  if (prev === undefined && next === undefined) {
+    return <></>;
+  }
+  return (
+    <nav class="post-nav">
+      {prev === undefined && <span />}
+      {prev !== undefined && (
+        <a href={`/posts/${prev.slug}`} class="post-nav-prev">
+          ← {prev.title}
+        </a>
+      )}
+      {next !== undefined && (
+        <a href={`/posts/${next.slug}`} class="post-nav-next">
+          {next.title} →
+        </a>
+      )}
+    </nav>
+  );
+};
+
+const copyScript = `document.querySelectorAll('.copy-button').forEach(button => {
+  button.addEventListener('click', async () => {
+    const pre = button.closest('pre');
+    const code = pre.querySelector('code');
+    const text = code.innerText.replace(/^\\d+\\s*/gm, '');
+    await navigator.clipboard.writeText(text);
+    button.textContent = 'Copied!';
+    button.classList.add('copied');
+    setTimeout(() => { button.textContent = 'Copy'; button.classList.remove('copied'); }, 2000);
+  });
+});`;
 
 export default createRoute(
   ssgParams(() => getAllPosts().map((post) => ({ slug: post.slug }))),
@@ -18,6 +51,7 @@ export default createRoute(
     }
 
     const htmlContent = post.html;
+    const { prev, next } = getAdjacentPosts(slug);
 
     return c.render(
       <html>
@@ -65,27 +99,8 @@ export default createRoute(
           </header>
 
           <article dangerouslySetInnerHTML={{ __html: htmlContent }}></article>
-
-          <script
-            dangerouslySetInnerHTML={{
-              __html: `
-          document.querySelectorAll('.copy-button').forEach(button => {
-            button.addEventListener('click', async () => {
-              const pre = button.closest('pre');
-              const code = pre.querySelector('code');
-              const text = code.innerText.replace(/^\\d+\\s*/gm, '');
-              await navigator.clipboard.writeText(text);
-              button.textContent = 'Copied!';
-              button.classList.add('copied');
-              setTimeout(() => {
-                button.textContent = 'Copy';
-                button.classList.remove('copied');
-              }, 2000);
-            });
-          });
-        `,
-            }}
-          />
+          <PostNav next={next} prev={prev} />
+          <script dangerouslySetInnerHTML={{ __html: copyScript }} />
         </body>
       </html>,
     );

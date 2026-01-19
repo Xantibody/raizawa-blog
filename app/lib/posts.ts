@@ -148,5 +148,33 @@ const getTags = (): string[] => {
   return [...new Set(postsMetaCache.flatMap((post) => post.tags))];
 };
 
-export type { Post, PostMeta };
-export { getAllPosts, getCategories, getPostBySlug, getPostsByCategory, getPostsByTag, getTags };
+interface AdjacentPosts {
+  prev: PostMeta | undefined;
+  next: PostMeta | undefined;
+}
+
+const getAdjacentPosts = (slug: string): AdjacentPosts => {
+  initMetaCache();
+  const index = postsMetaCache.findIndex((post) => post.slug === slug);
+
+  if (index === -1) {
+    return { next: undefined, prev: undefined };
+  }
+
+  // PostsMetaCache is sorted by date descending, so index+1 is older (prev), index-1 is newer (next)
+  return {
+    next: postsMetaCache[index - 1],
+    prev: postsMetaCache[index + 1],
+  };
+};
+
+export type { AdjacentPosts, Post, PostMeta };
+export {
+  getAdjacentPosts,
+  getAllPosts,
+  getCategories,
+  getPostBySlug,
+  getPostsByCategory,
+  getPostsByTag,
+  getTags,
+};

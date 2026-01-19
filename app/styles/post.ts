@@ -52,6 +52,31 @@ const postStyles = `
   article a:hover {
     text-decoration: underline;
   }
+  .post-nav {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 3rem;
+    padding-top: 2rem;
+    border-top: 1px solid #ddd;
+  }
+  .post-nav a {
+    color: #0066cc;
+    text-decoration: none;
+    max-width: 45%;
+  }
+  .post-nav a:visited {
+    color: #0066cc;
+  }
+  .post-nav a:hover {
+    text-decoration: underline;
+  }
+  .post-nav-prev {
+    text-align: left;
+  }
+  .post-nav-next {
+    text-align: right;
+    margin-left: auto;
+  }
   article code:not(pre code) {
     background: #f0f0f0;
     padding: 0.2rem 0.4rem;

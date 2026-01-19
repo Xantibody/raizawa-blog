@@ -1,6 +1,6 @@
 ---
 date:
-title: template
+title: Rustの勉強
 category: ぎじゅつ
 draft: true
 tags:
@@ -11,8 +11,6 @@ tags:
 
 <https://doc.rust-jp.rs/book-ja/>
 を読んでいる
-
-### 今日読む場所
 
 ## お勉強
 

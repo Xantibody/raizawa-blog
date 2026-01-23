@@ -6,12 +6,41 @@ import baseStyles from "../../styles/base";
 import indexStyles from "../../styles/index";
 
 const SECOND_PAGE = 2;
+const FIRST_PAGE = 1;
 
 const Pagination = ({ currentPage, totalPages }: { currentPage: number; totalPages: number }) => {
   let prevHref = "/";
   if (currentPage !== SECOND_PAGE) {
     prevHref = `/page/${currentPage - 1}`;
   }
+
+  const getPageHref = (page: number): string => {
+    if (page === FIRST_PAGE) {
+      return "/";
+    }
+    return `/page/${page}`;
+  };
+
+  const getPageNumbers = (): (number | string)[] => {
+    const pages: (number | string)[] = [];
+    const showRange = 1;
+
+    for (let pageNum = FIRST_PAGE; pageNum <= totalPages; pageNum++) {
+      const isFirst = pageNum === FIRST_PAGE;
+      const isLast = pageNum === totalPages;
+      const isNearCurrent = Math.abs(pageNum - currentPage) <= showRange;
+
+      if (isFirst || isLast || isNearCurrent) {
+        pages.push(pageNum);
+      } else if (pages.at(-1) !== "...") {
+        pages.push("...");
+      }
+    }
+
+    return pages;
+  };
+
+  const pageNumbers = getPageNumbers();
 
   return (
     <div class="pagination">
@@ -20,9 +49,31 @@ const Pagination = ({ currentPage, totalPages }: { currentPage: number; totalPag
           ← 前のページ
         </a>
       )}
-      <span class="pagination-info">
-        {currentPage} / {totalPages}
-      </span>
+      <div class="pagination-numbers">
+        {pageNumbers.map((pageNum, index) => {
+          if (pageNum === "...") {
+            return (
+              <span key={`ellipsis-${index}`} class="pagination-ellipsis">
+                ...
+              </span>
+            );
+          }
+          // After filtering "...", pageNum is guaranteed to be a number
+          const pageNumber = Number(pageNum);
+          if (pageNumber === currentPage) {
+            return (
+              <span key={pageNumber} class="pagination-number pagination-current">
+                {pageNumber}
+              </span>
+            );
+          }
+          return (
+            <a key={pageNumber} href={getPageHref(pageNumber)} class="pagination-number">
+              {pageNumber}
+            </a>
+          );
+        })}
+      </div>
       {currentPage < totalPages && (
         <a href={`/page/${currentPage + 1}`} class="pagination-link">
           次のページ →

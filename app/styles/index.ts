@@ -30,6 +30,7 @@ const indexStyles = `
     margin-top: 3rem;
     padding-top: 2rem;
     border-top: 1px solid #eee;
+    gap: 1rem;
   }
   .pagination-link {
     color: #0066cc;
@@ -39,8 +40,31 @@ const indexStyles = `
   .pagination-link:hover {
     text-decoration: underline;
   }
-  .pagination-info {
+  .pagination-numbers {
+    display: flex;
+    gap: 0.5rem;
+    align-items: center;
+  }
+  .pagination-number {
+    color: #0066cc;
+    text-decoration: none;
+    padding: 0.25rem 0.5rem;
+    min-width: 2rem;
+    text-align: center;
+  }
+  .pagination-number:hover {
+    background: #f0f0f0;
+    border-radius: 4px;
+  }
+  .pagination-current {
+    background: #0066cc;
+    color: white;
+    border-radius: 4px;
+    font-weight: bold;
+  }
+  .pagination-ellipsis {
     color: #666;
+    padding: 0.25rem 0.5rem;
   }
 `;
 

@@ -54,9 +54,11 @@ export default createRoute(
     const { prev, next } = getAdjacentPosts(slug);
 
     return c.render(
-      <html>
-        <head>
-          <meta charSet="utf8" />
+      <>
+        {"<!DOCTYPE html>"}
+        <html>
+          <head>
+            <meta charSet="utf8" />
           <meta name="viewport" content="width=device-width, initial-scale=1.0" />
           <title>
             {post.meta.title} - {SITE_TITLE}
@@ -102,7 +104,8 @@ export default createRoute(
           <PostNav next={next} prev={prev} />
           <script dangerouslySetInnerHTML={{ __html: copyScript }} />
         </body>
-      </html>,
+      </html>
+      </>,
     );
   },
 );

@@ -36,9 +36,11 @@ export default function Home() {
   const totalPages = getTotalPages();
 
   return (
-    <html>
-      <head>
-        <meta charSet="utf8" />
+    <>
+      {"<!DOCTYPE html>"}
+      <html>
+        <head>
+          <meta charSet="utf8" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
         <title>{SITE_TITLE}</title>
         <meta name="description" content={SITE_DESCRIPTION} />
@@ -97,5 +99,6 @@ export default function Home() {
         </main>
       </body>
     </html>
+    </>
   );
 }

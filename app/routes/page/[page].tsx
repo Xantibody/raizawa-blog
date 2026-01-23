@@ -53,9 +53,11 @@ export default createRoute(
     const posts = getPostsForPage(currentPage);
 
     return c.render(
-      <html>
-        <head>
-          <meta charSet="utf8" />
+      <>
+        {"<!DOCTYPE html>"}
+        <html>
+          <head>
+            <meta charSet="utf8" />
           <meta name="viewport" content="width=device-width, initial-scale=1.0" />
           <title>
             {SITE_TITLE} - ページ {currentPage}
@@ -115,7 +117,8 @@ export default createRoute(
             <Pagination currentPage={currentPage} totalPages={totalPages} />
           </main>
         </body>
-      </html>,
+      </html>
+      </>,
     );
   },
 );

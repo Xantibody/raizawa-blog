@@ -19,9 +19,11 @@ export default createRoute(
     }
 
     return c.render(
-      <html>
-        <head>
-          <meta charSet="utf8" />
+      <>
+        {"<!DOCTYPE html>"}
+        <html>
+          <head>
+            <meta charSet="utf8" />
           <meta name="viewport" content="width=device-width, initial-scale=1.0" />
           <title>
             {tag} - {SITE_TITLE}
@@ -60,7 +62,8 @@ export default createRoute(
             </ul>
           </main>
         </body>
-      </html>,
+      </html>
+      </>,
     );
   },
 );

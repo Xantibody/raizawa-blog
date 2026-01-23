@@ -1,10 +1,39 @@
 import { FAVICON_URL, SITE_DESCRIPTION, SITE_TITLE, SITE_URL } from "../lib/config";
-import { getAllPosts } from "../lib/posts";
+import { getPostsForPage, getTotalPages } from "../lib/posts";
 import baseStyles from "../styles/base";
 import indexStyles from "../styles/index";
 
+const SECOND_PAGE = 2;
+
+const Pagination = ({ currentPage, totalPages }: { currentPage: number; totalPages: number }) => {
+  let prevHref = "/";
+  if (currentPage !== SECOND_PAGE) {
+    prevHref = `/page/${currentPage - 1}`;
+  }
+
+  return (
+    <div class="pagination">
+      {currentPage > 1 && (
+        <a href={prevHref} class="pagination-link">
+          ← 前のページ
+        </a>
+      )}
+      <span class="pagination-info">
+        {currentPage} / {totalPages}
+      </span>
+      {currentPage < totalPages && (
+        <a href={`/page/${currentPage + 1}`} class="pagination-link">
+          次のページ →
+        </a>
+      )}
+    </div>
+  );
+};
+
 export default function Home() {
-  const posts = getAllPosts();
+  const currentPage = 1;
+  const posts = getPostsForPage(currentPage);
+  const totalPages = getTotalPages();
 
   return (
     <html>
@@ -64,6 +93,7 @@ export default function Home() {
               </li>
             ))}
           </ul>
+          <Pagination currentPage={currentPage} totalPages={totalPages} />
         </main>
       </body>
     </html>

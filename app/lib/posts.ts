@@ -168,6 +168,20 @@ const getAdjacentPosts = (slug: string): AdjacentPosts => {
   };
 };
 
+const POSTS_PER_PAGE = 5;
+
+const getTotalPages = (): number => {
+  const posts = getAllPosts();
+  return Math.ceil(posts.length / POSTS_PER_PAGE);
+};
+
+const getPostsForPage = (page: number): PostMeta[] => {
+  const posts = getAllPosts();
+  const start = (page - 1) * POSTS_PER_PAGE;
+  const end = start + POSTS_PER_PAGE;
+  return posts.slice(start, end);
+};
+
 export type { AdjacentPosts, Post, PostMeta };
 export {
   getAdjacentPosts,
@@ -176,5 +190,8 @@ export {
   getPostBySlug,
   getPostsByCategory,
   getPostsByTag,
+  getPostsForPage,
   getTags,
+  getTotalPages,
+  POSTS_PER_PAGE,
 };

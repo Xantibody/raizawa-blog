@@ -23,6 +23,25 @@ const indexStyles = `
   .post-title a:hover {
     color: #0066cc;
   }
+  .pagination {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 3rem;
+    padding-top: 2rem;
+    border-top: 1px solid #eee;
+  }
+  .pagination-link {
+    color: #0066cc;
+    text-decoration: none;
+    padding: 0.5rem 1rem;
+  }
+  .pagination-link:hover {
+    text-decoration: underline;
+  }
+  .pagination-info {
+    color: #666;
+  }
 `;
 
 export default indexStyles;

@@ -54,58 +54,55 @@ export default createRoute(
     const { prev, next } = getAdjacentPosts(slug);
 
     return c.render(
-      <>
-        {"<!DOCTYPE html>"}
-        <html>
-          <head>
-            <meta charSet="utf8" />
-            <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-            <title>
-              {post.meta.title} - {SITE_TITLE}
-            </title>
-            <meta name="description" content={`${post.meta.title} - ${SITE_TITLE}`} />
-            <meta property="og:title" content={post.meta.title} />
-            <meta property="og:description" content={`${post.meta.title} - ${SITE_TITLE}`} />
-            <meta property="og:type" content="article" />
-            <meta property="og:url" content={`${SITE_URL}/posts/${slug}`} />
-            <meta property="og:site_name" content={SITE_TITLE} />
-            <meta name="twitter:card" content="summary" />
-            <link rel="alternate" type="application/rss+xml" title={SITE_TITLE} href="/feed.xml" />
-            <link rel="icon" href={FAVICON_URL} />
-            <style>{allPostStyles}</style>
-          </head>
-          <body>
-            <header>
-              <a href="/" class="back-link">
-                ← トップページに戻る
-              </a>
-              <h1>{post.meta.title}</h1>
-              <div class="post-meta">
-                <time>{new Date(post.meta.date).toLocaleDateString("ja-JP")}</time>
-                {post.meta.category !== "" && (
-                  <span>
-                    {" "}
-                    • <a href={`/category/${post.meta.category}`}>{post.meta.category}</a>
-                  </span>
-                )}
-              </div>
-              {post.meta.tags.length > 0 && (
-                <div class="post-tags">
-                  {post.meta.tags.map((tag) => (
-                    <a class="tag" key={tag} href={`/tag/${tag}`}>
-                      {tag}
-                    </a>
-                  ))}
-                </div>
+      <html>
+        <head>
+          <meta charSet="utf8" />
+          <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+          <title>
+            {post.meta.title} - {SITE_TITLE}
+          </title>
+          <meta name="description" content={`${post.meta.title} - ${SITE_TITLE}`} />
+          <meta property="og:title" content={post.meta.title} />
+          <meta property="og:description" content={`${post.meta.title} - ${SITE_TITLE}`} />
+          <meta property="og:type" content="article" />
+          <meta property="og:url" content={`${SITE_URL}/posts/${slug}`} />
+          <meta property="og:site_name" content={SITE_TITLE} />
+          <meta name="twitter:card" content="summary" />
+          <link rel="alternate" type="application/rss+xml" title={SITE_TITLE} href="/feed.xml" />
+          <link rel="icon" href={FAVICON_URL} />
+          <style>{allPostStyles}</style>
+        </head>
+        <body>
+          <header>
+            <a href="/" class="back-link">
+              ← トップページに戻る
+            </a>
+            <h1>{post.meta.title}</h1>
+            <div class="post-meta">
+              <time>{new Date(post.meta.date).toLocaleDateString("ja-JP")}</time>
+              {post.meta.category !== "" && (
+                <span>
+                  {" "}
+                  • <a href={`/category/${post.meta.category}`}>{post.meta.category}</a>
+                </span>
               )}
-            </header>
+            </div>
+            {post.meta.tags.length > 0 && (
+              <div class="post-tags">
+                {post.meta.tags.map((tag) => (
+                  <a class="tag" key={tag} href={`/tag/${tag}`}>
+                    {tag}
+                  </a>
+                ))}
+              </div>
+            )}
+          </header>
 
-            <article dangerouslySetInnerHTML={{ __html: htmlContent }}></article>
-            <PostNav next={next} prev={prev} />
-            <script dangerouslySetInnerHTML={{ __html: copyScript }} />
-          </body>
-        </html>
-      </>,
+          <article dangerouslySetInnerHTML={{ __html: htmlContent }}></article>
+          <PostNav next={next} prev={prev} />
+          <script dangerouslySetInnerHTML={{ __html: copyScript }} />
+        </body>
+      </html>,
     );
   },
 );

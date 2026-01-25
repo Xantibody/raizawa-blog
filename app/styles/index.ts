@@ -32,6 +32,16 @@ const indexStyles = `
     border-top: 1px solid #eee;
     gap: 1rem;
   }
+  .pagination-prev,
+  .pagination-next {
+    flex: 0 0 8rem;
+  }
+  .pagination-prev {
+    text-align: left;
+  }
+  .pagination-next {
+    text-align: right;
+  }
   .pagination-link {
     color: #0066cc;
     text-decoration: none;

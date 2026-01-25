@@ -44,11 +44,13 @@ const Pagination = ({ currentPage, totalPages }: { currentPage: number; totalPag
 
   return (
     <div class="pagination">
-      {currentPage > 1 && (
-        <a href={prevHref} class="pagination-link">
-          ← 前のページ
-        </a>
-      )}
+      <div class="pagination-prev">
+        {currentPage > 1 && (
+          <a href={prevHref} class="pagination-link">
+            ← 前のページ
+          </a>
+        )}
+      </div>
       <div class="pagination-numbers">
         {pageNumbers.map((pageNum, index) => {
           if (pageNum === "...") {
@@ -74,11 +76,13 @@ const Pagination = ({ currentPage, totalPages }: { currentPage: number; totalPag
           );
         })}
       </div>
-      {currentPage < totalPages && (
-        <a href={`/page/${currentPage + 1}`} class="pagination-link">
-          次のページ →
-        </a>
-      )}
+      <div class="pagination-next">
+        {currentPage < totalPages && (
+          <a href={`/page/${currentPage + 1}`} class="pagination-link">
+            次のページ →
+          </a>
+        )}
+      </div>
     </div>
   );
 };

@@ -1,5 +1,6 @@
 import { describe, expect, it } from "vitest";
 import {
+  getAdjacentPosts,
   getAllPosts,
   getCategories,
   getPostBySlug,
@@ -165,5 +166,71 @@ describe("code blocks", () => {
     }
 
     expect(issues).toEqual([]);
+  });
+});
+
+describe("getAdjacentPosts", () => {
+  it("should return adjacent posts without options", () => {
+    const [newestPost, middlePost, olderPost] = getAllPosts();
+    expect(middlePost).toBeDefined();
+    if (middlePost === undefined) {
+      return;
+    }
+
+    const { prev, next } = getAdjacentPosts(middlePost.slug);
+    expect(next?.slug).toBe(newestPost?.slug);
+    expect(prev?.slug).toBe(olderPost?.slug);
+  });
+
+  it("should return undefined for non-existent slug", () => {
+    const { prev, next } = getAdjacentPosts("non-existent-slug");
+    expect(prev).toBeUndefined();
+    expect(next).toBeUndefined();
+  });
+
+  it("should filter by category", () => {
+    const [category] = getCategories();
+    if (category === undefined) {
+      throw new Error("No categories found");
+    }
+
+    const [firstPost, secondPost] = getPostsByCategory(category);
+    if (firstPost === undefined) {
+      throw new Error("No posts in category");
+    }
+
+    const { prev, next } = getAdjacentPosts(firstPost.slug, { category });
+    expect(next).toBeUndefined();
+    expect(prev?.slug).toBe(secondPost?.slug);
+  });
+
+  it("should filter by tag", () => {
+    const [tag] = getTags();
+    if (tag === undefined) {
+      throw new Error("No tags found");
+    }
+
+    const [firstPost, secondPost] = getPostsByTag(tag);
+    if (firstPost === undefined) {
+      throw new Error("No posts with tag");
+    }
+
+    const { prev, next } = getAdjacentPosts(firstPost.slug, { tag });
+    expect(next).toBeUndefined();
+    expect(prev?.slug).toBe(secondPost?.slug);
+  });
+
+  it("should return undefined for boundary posts", () => {
+    const posts = getAllPosts();
+    const [firstPost] = posts;
+    const lastPost = posts.at(-1);
+    expect(firstPost).toBeDefined();
+    expect(lastPost).toBeDefined();
+    if (firstPost === undefined || lastPost === undefined) {
+      return;
+    }
+
+    expect(getAdjacentPosts(firstPost.slug).next).toBeUndefined();
+    expect(getAdjacentPosts(lastPost.slug).prev).toBeUndefined();
   });
 });

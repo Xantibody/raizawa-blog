@@ -44,7 +44,7 @@ export default createRoute(
               {posts.map((post) => (
                 <li class="post-item" key={post.slug}>
                   <h2 class="post-title">
-                    <a href={`/posts/${post.slug}`}>{post.title}</a>
+                    <a href={`/category/${category}/posts/${post.slug}`}>{post.title}</a>
                   </h2>
                   <div class="post-meta">
                     <time>{new Date(post.date).toLocaleDateString("ja-JP")}</time>

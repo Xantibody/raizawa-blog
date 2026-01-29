@@ -153,19 +153,34 @@ interface AdjacentPosts {
   next: PostMeta | undefined;
 }
 
-const getAdjacentPosts = (slug: string): AdjacentPosts => {
+interface AdjacentPostsOptions {
+  category?: string;
+  tag?: string;
+}
+
+const filterPostsByOptions = (posts: PostMeta[], options?: AdjacentPostsOptions): PostMeta[] => {
+  const categoryFilter = options?.category ?? "";
+  const tagFilter = options?.tag ?? "";
+
+  return posts.filter(
+    (post) =>
+      (categoryFilter === "" || post.category === categoryFilter) &&
+      (tagFilter === "" || post.tags.includes(tagFilter)),
+  );
+};
+
+const getAdjacentPosts = (slug: string, options?: AdjacentPostsOptions): AdjacentPosts => {
   initMetaCache();
-  const index = postsMetaCache.findIndex((post) => post.slug === slug);
+
+  const posts = filterPostsByOptions(postsMetaCache, options);
+  const index = posts.findIndex((post) => post.slug === slug);
 
   if (index === -1) {
     return { next: undefined, prev: undefined };
   }
 
-  // PostsMetaCache is sorted by date descending, so index+1 is older (prev), index-1 is newer (next)
-  return {
-    next: postsMetaCache[index - 1],
-    prev: postsMetaCache[index + 1],
-  };
+  // Posts are sorted by date descending, so index+1 is older (prev), index-1 is newer (next)
+  return { next: posts[index - 1], prev: posts[index + 1] };
 };
 
 const POSTS_PER_PAGE = 5;

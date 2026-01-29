@@ -9,6 +9,11 @@ const postStyles = `
   .back-link:hover {
     text-decoration: underline;
   }
+  .back-links {
+    display: flex;
+    gap: 1rem;
+    flex-wrap: wrap;
+  }
   h1 {
     margin: 0.5rem 0;
   }

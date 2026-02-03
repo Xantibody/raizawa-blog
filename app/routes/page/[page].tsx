@@ -110,7 +110,7 @@ export default createRoute(
     return c.render(
       <html>
         <head>
-          <meta charSet="utf8" />
+          <meta charSet="utf-8" />
           <meta name="viewport" content="width=device-width, initial-scale=1.0" />
           <title>
             {SITE_TITLE} - ページ {currentPage}

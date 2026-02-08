@@ -1,8 +1,7 @@
 import { createRoute } from "honox/factory";
+import { Link } from "honox/server";
 import { FAVICON_URL, SITE_DESCRIPTION, SITE_TITLE, SITE_URL } from "../lib/config";
 import { getPostsForPage, getTotalPages } from "../lib/posts";
-import baseStyles from "../styles/base";
-import indexStyles from "../styles/index";
 
 const SECOND_PAGE = 2;
 const FIRST_PAGE = 1;
@@ -42,46 +41,39 @@ const Pagination = ({ currentPage, totalPages }: { currentPage: number; totalPag
   const pageNumbers = getPageNumbers();
 
   return (
-    <div class="pagination">
-      <div class="pagination-prev">
-        {currentPage > 1 && (
-          <a href={prevHref} class="pagination-link">
-            ← 前のページ
-          </a>
-        )}
-      </div>
-      <div class="pagination-numbers">
-        {pageNumbers.map((pageNum, index) => {
-          if (pageNum === "...") {
-            return (
-              <span key={`ellipsis-${index}`} class="pagination-ellipsis">
-                ...
-              </span>
-            );
-          }
-          // After filtering "...", pageNum is guaranteed to be a number
-          const pageNumber = Number(pageNum);
-          if (pageNumber === currentPage) {
-            return (
-              <span key={pageNumber} class="pagination-number pagination-current">
-                {pageNumber}
-              </span>
-            );
-          }
+    <div class="join mt-8 pt-6 border-t border-base-300 flex justify-center">
+      {currentPage > 1 && (
+        <a href={prevHref} class="join-item btn">
+          «
+        </a>
+      )}
+      {pageNumbers.map((pageNum, index) => {
+        if (pageNum === "...") {
           return (
-            <a key={pageNumber} href={getPageHref(pageNumber)} class="pagination-number">
-              {pageNumber}
-            </a>
+            <span key={`ellipsis-${index}`} class="join-item btn btn-disabled">
+              ...
+            </span>
           );
-        })}
-      </div>
-      <div class="pagination-next">
-        {currentPage < totalPages && (
-          <a href={`/page/${currentPage + 1}`} class="pagination-link">
-            次のページ →
+        }
+        const pageNumber = Number(pageNum);
+        if (pageNumber === currentPage) {
+          return (
+            <span key={pageNumber} class="join-item btn btn-active">
+              {pageNumber}
+            </span>
+          );
+        }
+        return (
+          <a key={pageNumber} href={getPageHref(pageNumber)} class="join-item btn">
+            {pageNumber}
           </a>
-        )}
-      </div>
+        );
+      })}
+      {currentPage < totalPages && (
+        <a href={`/page/${currentPage + 1}`} class="join-item btn">
+          »
+        </a>
+      )}
     </div>
   );
 };
@@ -92,7 +84,7 @@ export default createRoute((c) => {
   const totalPages = getTotalPages();
 
   return c.render(
-    <html>
+    <html data-theme="light">
       <head>
         <meta charSet="utf-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -106,51 +98,70 @@ export default createRoute((c) => {
         <meta name="twitter:card" content="summary" />
         <link rel="alternate" type="application/rss+xml" title={SITE_TITLE} href="/feed.xml" />
         <link rel="icon" href={FAVICON_URL} />
-        <style>{baseStyles + indexStyles}</style>
+        <Link href="/app/style.css" rel="stylesheet" />
       </head>
-      <body>
-        <header>
-          <h1>{SITE_TITLE}</h1>
-          <div class="links">
-            <a href="https://github.com/Xantibody" target="_blank" rel="noopener noreferrer">
-              GitHub
-            </a>
-            <a href="https://zenn.dev/master_peace_36" target="_blank" rel="noopener noreferrer">
-              Zenn
-            </a>
-          </div>
-        </header>
+      <body class="min-h-screen bg-base-100">
+        <div class="container mx-auto max-w-3xl px-4 py-8">
+          <header class="border-b-2 border-base-content pb-4 mb-8">
+            <h1 class="text-3xl font-bold">{SITE_TITLE}</h1>
+            <div class="flex gap-4 mt-2">
+              <a
+                href="https://github.com/Xantibody"
+                target="_blank"
+                rel="noopener noreferrer"
+                class="link link-primary"
+              >
+                GitHub
+              </a>
+              <a
+                href="https://zenn.dev/master_peace_36"
+                target="_blank"
+                rel="noopener noreferrer"
+                class="link link-primary"
+              >
+                Zenn
+              </a>
+            </div>
+          </header>
 
-        <main>
-          <ul class="posts">
-            {posts.map((post) => (
-              <li class="post-item" key={post.slug}>
-                <h2 class="post-title">
-                  <a href={`/posts/${post.slug}`}>{post.title}</a>
-                </h2>
-                <div class="post-meta">
-                  <time>{new Date(post.date).toLocaleDateString("ja-JP")}</time>
-                  {post.category !== "" && (
-                    <span>
-                      {" "}
-                      • <a href={`/category/${post.category}`}>{post.category}</a>
-                    </span>
-                  )}
-                </div>
-                {post.tags.length > 0 && (
-                  <div class="post-tags">
-                    {post.tags.map((tag) => (
-                      <a class="tag" key={tag} href={`/tag/${tag}`}>
-                        {tag}
+          <main>
+            <ul class="space-y-6">
+              {posts.map((post) => (
+                <li class="card bg-base-200 shadow-sm" key={post.slug}>
+                  <div class="card-body p-4">
+                    <h2 class="card-title">
+                      <a href={`/posts/${post.slug}`} class="link link-hover">
+                        {post.title}
                       </a>
-                    ))}
+                    </h2>
+                    <div class="text-sm text-base-content/70">
+                      <time>{new Date(post.date).toLocaleDateString("ja-JP")}</time>
+                      {post.category !== "" && (
+                        <span>
+                          {" "}
+                          •{" "}
+                          <a href={`/category/${post.category}`} class="link">
+                            {post.category}
+                          </a>
+                        </span>
+                      )}
+                    </div>
+                    {post.tags.length > 0 && (
+                      <div class="flex flex-wrap gap-2 mt-2">
+                        {post.tags.map((tag) => (
+                          <a class="badge badge-outline" key={tag} href={`/tag/${tag}`}>
+                            {tag}
+                          </a>
+                        ))}
+                      </div>
+                    )}
                   </div>
-                )}
-              </li>
-            ))}
-          </ul>
-          <Pagination currentPage={currentPage} totalPages={totalPages} />
-        </main>
+                </li>
+              ))}
+            </ul>
+            <Pagination currentPage={currentPage} totalPages={totalPages} />
+          </main>
+        </div>
       </body>
     </html>,
   );

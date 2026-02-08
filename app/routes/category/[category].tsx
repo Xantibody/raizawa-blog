@@ -1,5 +1,6 @@
 import { ssgParams } from "hono/ssg";
 import { createRoute } from "honox/factory";
+import ArticleNav from "../../components/article-nav";
 import Layout from "../../components/layout";
 import { SITE_TITLE, SITE_URL } from "../../lib/config";
 import { getCategories, getPostsByCategory } from "../../lib/posts";
@@ -23,17 +24,17 @@ export default createRoute(
         description={`${category}の記事一覧`}
         ogUrl={`${SITE_URL}/category/${category}`}
       >
-        <header class="mb-8">
-          <a href="/" class="link link-primary">
-            ← トップページに戻る
-          </a>
-          <h1 class="text-3xl font-bold mt-2">{category}</h1>
+        <ArticleNav breadcrumbs={[{ href: "/category", label: "カテゴリ一覧" }]} />
+        <header class="card bg-base-100 shadow-sm mb-6">
+          <div class="card-body p-6">
+            <h1 class="text-2xl sm:text-3xl font-bold">{category}</h1>
+          </div>
         </header>
 
         <main>
           <ul class="space-y-4">
             {posts.map((post) => (
-              <li class="card bg-base-200 shadow-sm" key={post.slug}>
+              <li class="card bg-base-100 shadow-sm" key={post.slug}>
                 <div class="card-body p-4">
                   <h2 class="card-title">
                     <a href={`/category/${category}/posts/${post.slug}`} class="link link-hover">

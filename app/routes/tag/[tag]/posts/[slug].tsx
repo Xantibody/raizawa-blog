@@ -1,5 +1,6 @@
 import { ssgParams } from "hono/ssg";
 import { createRoute } from "honox/factory";
+import ArticleNav from "../../../../components/article-nav";
 import Layout from "../../../../components/layout";
 import { SITE_TITLE, SITE_URL } from "../../../../lib/config";
 import { type PostMeta, getAdjacentPosts, getAllPosts, getPostBySlug } from "../../../../lib/posts";
@@ -109,19 +110,15 @@ export default createRoute(
         ogType="article"
         ogUrl={`${SITE_URL}/tag/${tag}/posts/${slug}`}
       >
+        <ArticleNav
+          breadcrumbs={[
+            { href: "/tag", label: "タグ一覧" },
+            { href: `/tag/${tag}`, label: tag },
+          ]}
+        />
         <header class="card bg-base-100 shadow-sm mb-6">
           <div class="card-body p-6">
-            <div class="flex gap-2 flex-wrap">
-              <a href="/" class="btn btn-ghost btn-sm gap-1">
-                <span>←</span>
-                <span>トップ</span>
-              </a>
-              <a href={`/tag/${tag}`} class="btn btn-ghost btn-sm gap-1">
-                <span>←</span>
-                <span>{tag}</span>
-              </a>
-            </div>
-            <h1 class="text-2xl sm:text-3xl font-bold mt-2">{post.meta.title}</h1>
+            <h1 class="text-2xl sm:text-3xl font-bold">{post.meta.title}</h1>
             <div class="text-sm opacity-70 mt-1">
               <time>{new Date(post.meta.date).toLocaleDateString("ja-JP")}</time>
               {post.meta.category !== "" && (

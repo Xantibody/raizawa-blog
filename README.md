@@ -8,6 +8,8 @@ https://r-aizawa.com
 - [Hono](https://hono.dev/) - Web framework
 - [Cloudflare Workers](https://workers.cloudflare.com/) - Runtime
 - [Vite](https://vite.dev/) - Build tool
+- [Tailwind CSS](https://tailwindcss.com/) - CSS framework
+- [DaisyUI](https://daisyui.com/) - Component library
 - [Bun](https://bun.sh/) - Package manager & runtime
 - [Vitest](https://vitest.dev/) - Test framework
 - [OxLint](https://oxc.rs/docs/guide/usage/linter) - Linter

@@ -1,0 +1,197 @@
+@import "tailwindcss" source("../app");
+@plugin "daisyui";
+
+/* Article content styles */
+@layer components {
+  .prose-article h1 {
+    @apply text-3xl font-bold mt-8 mb-4;
+  }
+  .prose-article h2 {
+    @apply text-2xl font-bold mt-6 mb-3;
+  }
+  .prose-article h3 {
+    @apply text-xl font-bold mt-4 mb-2;
+  }
+  .prose-article h4 {
+    @apply text-lg font-bold mt-3 mb-2;
+  }
+
+  .prose-article blockquote {
+    @apply border-l-4 border-base-300 pl-4 my-4 text-base-content/70;
+  }
+
+  .prose-article table {
+    @apply w-full my-4 border-collapse;
+  }
+  .prose-article th,
+  .prose-article td {
+    @apply border border-base-300 p-2 text-left;
+  }
+  .prose-article th {
+    @apply bg-base-200;
+  }
+
+  .prose-article ul {
+    @apply pl-8 my-4 list-disc;
+  }
+  .prose-article ol {
+    @apply pl-8 my-4 list-decimal;
+  }
+  .prose-article li {
+    @apply my-1;
+  }
+  .prose-article p {
+    @apply my-4;
+  }
+
+  .prose-article a {
+    @apply link link-primary;
+  }
+
+  .prose-article code:not(pre code) {
+    @apply bg-base-200 px-1.5 py-0.5 rounded text-sm font-mono text-error;
+  }
+}
+
+/* Code block styles (Shiki) */
+pre.shiki {
+  position: relative;
+  counter-reset: line;
+  overflow-x: auto;
+  padding: 1rem;
+  border-radius: 0.5rem;
+  font-size: 0.875rem;
+}
+
+.copy-button {
+  position: absolute;
+  top: 0.5rem;
+  right: 0.5rem;
+  padding: 0.25rem 0.5rem;
+  background: #3d4556;
+  border: 1px solid #555;
+  border-radius: 0.25rem;
+  color: #e1e4e8;
+  font-size: 0.75rem;
+  cursor: pointer;
+  opacity: 0;
+  transition: opacity 0.2s;
+}
+
+pre.shiki:hover .copy-button {
+  opacity: 1;
+}
+
+.copy-button:hover {
+  background: #4d5566;
+}
+
+.copy-button.copied {
+  background: #238636;
+}
+
+pre.shiki .line::before {
+  counter-increment: line;
+  content: counter(line);
+  display: inline-block;
+  width: 2rem;
+  margin-right: 1rem;
+  text-align: right;
+  color: #6a737d;
+  user-select: none;
+}
+
+.code-title {
+  background: #1f2428;
+  color: #e1e4e8;
+  padding: 0.5rem 1rem;
+  font-size: 0.85rem;
+  border-bottom: 1px solid #444d56;
+  font-family: ui-monospace, SFMono-Regular, Consolas, monospace;
+}
+
+pre.shiki .line.diff.add {
+  background-color: rgba(46, 160, 67, 0.2);
+}
+pre.shiki .line.diff.add::before {
+  content: "+";
+  color: #3fb950;
+}
+
+pre.shiki .line.diff.remove {
+  background-color: rgba(248, 81, 73, 0.2);
+}
+pre.shiki .line.diff.remove::before {
+  content: "-";
+  color: #f85149;
+}
+
+pre.shiki .line.highlighted {
+  background-color: rgba(56, 139, 253, 0.15);
+}
+pre.shiki .line.highlighted.error {
+  background-color: rgba(248, 81, 73, 0.2);
+}
+pre.shiki .line.highlighted.warning {
+  background-color: rgba(210, 153, 34, 0.2);
+}
+
+/* OGP card styles */
+.ogp-card {
+  @apply flex bg-base-100 border border-base-300 rounded-lg overflow-hidden my-6 no-underline shadow-md transition-shadow;
+  min-height: 120px;
+}
+.ogp-card:hover {
+  @apply shadow-xl no-underline;
+}
+.ogp-image {
+  @apply flex items-center justify-center shrink-0 w-48 h-36 overflow-hidden bg-base-300;
+}
+.ogp-image img {
+  @apply w-full h-full object-cover;
+}
+.ogp-noimage {
+  @apply text-base-content/50 text-sm;
+}
+.ogp-content {
+  @apply flex-1 p-4 flex flex-col justify-center;
+}
+.ogp-title {
+  @apply block text-lg font-semibold mb-2 text-base-content;
+}
+.ogp-description {
+  @apply block text-sm text-base-content/70 mb-2 overflow-hidden text-ellipsis whitespace-nowrap;
+}
+.ogp-site {
+  @apply block text-xs text-base-content/50;
+}
+
+/* Post navigation */
+.post-nav {
+  @apply flex justify-between mt-8 pt-6 border-t border-base-300;
+}
+.post-nav a {
+  @apply link link-primary max-w-[45%];
+}
+.post-nav-prev {
+  @apply text-left;
+}
+.post-nav-next {
+  @apply text-right ml-auto;
+}
+
+/* Mobile styles */
+@media (max-width: 640px) {
+  .ogp-card {
+    @apply flex-col;
+  }
+  .ogp-image {
+    @apply w-full h-44;
+  }
+  pre.shiki .line::before {
+    display: none;
+  }
+  pre.shiki {
+    font-size: 0.8rem;
+  }
+}

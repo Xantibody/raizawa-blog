@@ -1,9 +1,8 @@
 import { ssgParams } from "hono/ssg";
 import { createRoute } from "honox/factory";
-import { FAVICON_URL, SITE_TITLE } from "../../lib/config";
+import Layout from "../../components/layout";
+import { SITE_TITLE, SITE_URL } from "../../lib/config";
 import { getCategories, getPostsByCategory } from "../../lib/posts";
-import baseStyles from "../../styles/base";
-import indexStyles from "../../styles/index";
 
 export default createRoute(
   ssgParams(() => getCategories().map((category) => ({ category }))),
@@ -19,51 +18,46 @@ export default createRoute(
     }
 
     return c.render(
-      <html>
-        <head>
-          <meta charSet="utf-8" />
-          <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-          <title>
-            {category} - {SITE_TITLE}
-          </title>
-          <meta name="description" content={`${category}の記事一覧`} />
-          <link rel="alternate" type="application/rss+xml" title={SITE_TITLE} href="/feed.xml" />
-          <link rel="icon" href={FAVICON_URL} />
-          <style>{baseStyles + indexStyles}</style>
-        </head>
-        <body>
-          <header>
-            <a href="/" class="back-link">
-              ← トップページに戻る
-            </a>
-            <h1>{category}</h1>
-          </header>
+      <Layout
+        title={`${category} - ${SITE_TITLE}`}
+        description={`${category}の記事一覧`}
+        ogUrl={`${SITE_URL}/category/${category}`}
+      >
+        <header class="mb-8">
+          <a href="/" class="link link-primary">
+            ← トップページに戻る
+          </a>
+          <h1 class="text-3xl font-bold mt-2">{category}</h1>
+        </header>
 
-          <main>
-            <ul class="posts">
-              {posts.map((post) => (
-                <li class="post-item" key={post.slug}>
-                  <h2 class="post-title">
-                    <a href={`/category/${category}/posts/${post.slug}`}>{post.title}</a>
+        <main>
+          <ul class="space-y-4">
+            {posts.map((post) => (
+              <li class="card bg-base-200 shadow-sm" key={post.slug}>
+                <div class="card-body p-4">
+                  <h2 class="card-title">
+                    <a href={`/category/${category}/posts/${post.slug}`} class="link link-hover">
+                      {post.title}
+                    </a>
                   </h2>
-                  <div class="post-meta">
+                  <div class="text-sm text-base-content/70">
                     <time>{new Date(post.date).toLocaleDateString("ja-JP")}</time>
                   </div>
                   {post.tags.length > 0 && (
-                    <div class="post-tags">
+                    <div class="flex flex-wrap gap-2 mt-2">
                       {post.tags.map((tag) => (
-                        <span class="tag" key={tag}>
+                        <span class="badge badge-outline" key={tag}>
                           {tag}
                         </span>
                       ))}
                     </div>
                   )}
-                </li>
-              ))}
-            </ul>
-          </main>
-        </body>
-      </html>,
+                </div>
+              </li>
+            ))}
+          </ul>
+        </main>
+      </Layout>,
     );
   },
 );

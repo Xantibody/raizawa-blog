@@ -5,7 +5,7 @@
   "module": "index.ts",
   "scripts": {
     "dev": "vite",
-    "build": "vite build",
+    "build": "vite build --mode client && vite build",
     "preview": "vite preview",
     "test": "vitest run",
     "lint": "oxlint --type-check -c .oxlintrc.jsonc --type-aware app/",
@@ -17,12 +17,15 @@
   },
   "dependencies": {
     "@shikijs/transformers": "^3.21.0",
+    "@tailwindcss/vite": "^4.1.18",
     "@types/markdown-it": "^14.1.2",
+    "daisyui": "^5.5.18",
     "gray-matter-es": "^0.2.1",
     "hono": "^4.11.3",
     "honox": "^0.1.53",
     "markdown-it": "^14.1.0",
-    "shiki": "^3.21.0"
+    "shiki": "^3.21.0",
+    "tailwindcss": "^4.1.18"
   },
   "devDependencies": {
     "@hono/vite-ssg": "^0.3.2",

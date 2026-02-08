@@ -139,6 +139,8 @@
     // ===================
     // Import Rules
     // ===================
+    // Allow up to 15 dependencies for route files with many component imports
+    "import/max-dependencies": ["error", { "max": 15 }],
     // Enforce inline type specifier style (compatible with no-duplicates)
     "import/consistent-type-specifier-style": ["error", "prefer-inline"],
     // Ensure imports are at the top
@@ -204,6 +206,7 @@
       "files": ["**/*.test.ts", "**/*.test.tsx", "**/*.spec.ts", "test/**/*.ts"],
       "rules": {
         "no-console": "off",
+        "no-magic-numbers": "off",
         "typescript/no-explicit-any": "warn",
         "typescript/no-floating-promises": "warn",
         "max-lines-per-function": "off",

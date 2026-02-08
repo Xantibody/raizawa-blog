@@ -1,48 +1,13 @@
-const FIRST_PAGE = 1;
-const SECOND_PAGE = 2;
+import { getPageHref, getPageNumbers, getPrevHref } from "../lib/pagination";
 
 interface PaginationProps {
   currentPage: number;
   totalPages: number;
 }
 
-const getPrevHref = (currentPage: number): string => {
-  if (currentPage === SECOND_PAGE) {
-    return "/";
-  }
-  return `/page/${currentPage - 1}`;
-};
-
 export default function Pagination({ currentPage, totalPages }: PaginationProps) {
   const prevHref = getPrevHref(currentPage);
-
-  const getPageHref = (page: number): string => {
-    if (page === FIRST_PAGE) {
-      return "/";
-    }
-    return `/page/${page}`;
-  };
-
-  const getPageNumbers = (): (number | string)[] => {
-    const pages: (number | string)[] = [];
-    const showRange = 1;
-
-    for (let pageNum = FIRST_PAGE; pageNum <= totalPages; pageNum++) {
-      const isFirst = pageNum === FIRST_PAGE;
-      const isLast = pageNum === totalPages;
-      const isNearCurrent = Math.abs(pageNum - currentPage) <= showRange;
-
-      if (isFirst || isLast || isNearCurrent) {
-        pages.push(pageNum);
-      } else if (pages.at(-1) !== "...") {
-        pages.push("...");
-      }
-    }
-
-    return pages;
-  };
-
-  const pageNumbers = getPageNumbers();
+  const pageNumbers = getPageNumbers(currentPage, totalPages);
 
   return (
     <div class="flex justify-center mt-8 pt-6 border-t border-base-300">

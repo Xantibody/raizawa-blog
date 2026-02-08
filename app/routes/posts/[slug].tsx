@@ -53,8 +53,8 @@ const PostNav = ({ next, prev }: { next: PostMeta | undefined; prev: PostMeta | 
 
 const copyScript = `document.querySelectorAll('.copy-button').forEach(button => {
   button.addEventListener('click', async () => {
-    const pre = button.closest('pre');
-    const code = pre.querySelector('code');
+    const wrapper = button.closest('.code-block-wrapper');
+    const code = wrapper.querySelector('code');
     const text = code.innerText.replace(/^\\d+\\s*/gm, '');
     await navigator.clipboard.writeText(text);
     button.textContent = 'Copied!';

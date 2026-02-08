@@ -63,31 +63,29 @@ pre.shiki {
   font-size: 0.875rem;
 }
 
-.copy-button {
-  position: absolute;
-  top: 0.5rem;
-  right: 0.5rem;
-  padding: 0.25rem 0.5rem;
-  background: #3d4556;
-  border: 1px solid #555;
-  border-radius: 0.25rem;
-  color: #e1e4e8;
-  font-size: 0.75rem;
-  cursor: pointer;
-  opacity: 0;
-  transition: opacity 0.2s;
+.code-block-wrapper {
+  @apply relative;
 }
 
-pre.shiki:hover .copy-button {
-  opacity: 1;
+.code-block-wrapper .copy-button {
+  @apply absolute top-2 right-2 z-10 opacity-0 transition-opacity;
 }
 
-.copy-button:hover {
-  background: #4d5566;
+.code-block-wrapper:hover .copy-button {
+  @apply opacity-100;
 }
 
 .copy-button.copied {
-  background: #238636;
+  @apply btn-success;
+}
+
+.code-title {
+  background: #1f2428;
+  color: #e1e4e8;
+  padding: 0.5rem 1rem;
+  font-size: 0.85rem;
+  border-bottom: 1px solid #444d56;
+  font-family: ui-monospace, SFMono-Regular, Consolas, monospace;
 }
 
 pre.shiki .line::before {
@@ -99,15 +97,6 @@ pre.shiki .line::before {
   text-align: right;
   color: #6a737d;
   user-select: none;
-}
-
-.code-title {
-  background: #1f2428;
-  color: #e1e4e8;
-  padding: 0.5rem 1rem;
-  font-size: 0.85rem;
-  border-bottom: 1px solid #444d56;
-  font-family: ui-monospace, SFMono-Regular, Consolas, monospace;
 }
 
 pre.shiki .line.diff.add {

@@ -33,7 +33,7 @@ describe("shiki", () => {
         theme: SHIKI_THEME,
         transformers: shikiTransformers,
       });
-      expect(html).toContain('class="copy-button"');
+      expect(html).toContain("copy-button");
       expect(html).toContain("Copy");
     });
 

@@ -9,7 +9,7 @@ describe("markdown rendering", () => {
       const markdown = "```rust\nfn main() {}\n```";
       const html = await renderMarkdown(markdown);
       expect(html).toContain('class="shiki');
-      expect(html).toContain('class="copy-button"');
+      expect(html).toContain("copy-button");
     });
 
     it("should fallback to text for unsupported language", async () => {

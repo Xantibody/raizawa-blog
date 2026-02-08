@@ -89,6 +89,7 @@
               oxlint
               oxfmt
               nodejs-slim_24
+              typos
               (textlint.withPackages [
                 textlint-rule-preset-ja-technical-writing
                 textlint-rule-prh

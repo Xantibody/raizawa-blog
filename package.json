@@ -12,7 +12,8 @@
     "lint:fix": "oxlint -c .oxlintrc.jsonc --type-aware app/ --fix",
     "format": "nix fmt",
     "format:check": "nix fmt -- --fail-on-change",
-    "new-post": "bun run scripts/new-post.ts"
+    "new-post": "bun run scripts/new-post.ts",
+    "post-check": "textlint app/posts/**/*.md && typos app/posts/"
   },
   "dependencies": {
     "@shikijs/transformers": "^3.21.0",

@@ -1,9 +1,9 @@
 import { ssgParams } from "hono/ssg";
 import { createRoute } from "honox/factory";
-import { Header } from "../../components/Header";
-import { Layout } from "../../components/Layout";
-import { Pagination } from "../../components/Pagination";
-import { PostList } from "../../components/PostList";
+import Header from "../../components/header";
+import Layout from "../../components/layout";
+import Pagination from "../../components/pagination";
+import PostList from "../../components/post-list";
 import { SITE_DESCRIPTION, SITE_TITLE, SITE_URL } from "../../lib/config";
 import { getPostsForPage, getTotalPages } from "../../lib/posts";
 

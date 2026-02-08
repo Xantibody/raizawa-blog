@@ -1,6 +1,6 @@
 import { ssgParams } from "hono/ssg";
 import { createRoute } from "honox/factory";
-import { Layout } from "../../components/Layout";
+import Layout from "../../components/layout";
 import { SITE_TITLE, SITE_URL } from "../../lib/config";
 import { getPostsByTag, getTags } from "../../lib/posts";
 

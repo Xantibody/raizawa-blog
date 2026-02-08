@@ -6,7 +6,12 @@ import tailwindcss from "@tailwindcss/vite";
 
 const entry = "./app/server.ts";
 
+// HonoX SSG requires a 2-stage build when using external CSS files:
+// 1. `vite build --mode client` - Build CSS assets and generate manifest
+// 2. `vite build` - SSG build that resolves CSS paths from manifest
+// See: https://github.com/honojs/honox#using-tailwind-css
 export default defineConfig(({ mode }) => {
+  // Stage 1: Client build for CSS assets
   if (mode === "client") {
     return {
       build: {

@@ -1,47 +1,39 @@
 import { createRoute } from "honox/factory";
-import { FAVICON_URL, SITE_TITLE } from "../../lib/config";
+import { Layout } from "../../components/Layout";
+import { SITE_TITLE, SITE_URL } from "../../lib/config";
 import { getPostsByTag, getTags } from "../../lib/posts";
-import baseStyles from "../../styles/base";
-import indexStyles from "../../styles/index";
 
 export default createRoute((c) => {
   const tags = getTags();
 
   return c.render(
-    <html>
-      <head>
-        <meta charSet="utf-8" />
-        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-        <title>タグ一覧 - {SITE_TITLE}</title>
-        <meta name="description" content="タグ一覧" />
-        <link rel="alternate" type="application/rss+xml" title={SITE_TITLE} href="/feed.xml" />
-        <link rel="icon" href={FAVICON_URL} />
-        <style>{baseStyles + indexStyles}</style>
-      </head>
-      <body>
-        <header>
-          <a href="/" class="back-link">
-            ← トップページに戻る
-          </a>
-          <h1>タグ一覧</h1>
-        </header>
+    <Layout title={`タグ一覧 - ${SITE_TITLE}`} description="タグ一覧" ogUrl={`${SITE_URL}/tag`}>
+      <header class="mb-8">
+        <a href="/" class="link link-primary">
+          ← トップページに戻る
+        </a>
+        <h1 class="text-3xl font-bold mt-2">タグ一覧</h1>
+      </header>
 
-        <main>
-          <ul class="posts">
-            {tags.map((tag) => {
-              const posts = getPostsByTag(tag);
-              return (
-                <li class="post-item" key={tag}>
-                  <h2 class="post-title">
-                    <a href={`/tag/${tag}`}>{tag}</a>
+      <main>
+        <ul class="space-y-4">
+          {tags.map((tag) => {
+            const posts = getPostsByTag(tag);
+            return (
+              <li class="card bg-base-200 shadow-sm" key={tag}>
+                <div class="card-body p-4">
+                  <h2 class="card-title">
+                    <a href={`/tag/${tag}`} class="link link-hover">
+                      {tag}
+                    </a>
                   </h2>
-                  <div class="post-meta">{posts.length}件の記事</div>
-                </li>
-              );
-            })}
-          </ul>
-        </main>
-      </body>
-    </html>,
+                  <div class="text-sm text-base-content/70">{posts.length}件の記事</div>
+                </div>
+              </li>
+            );
+          })}
+        </ul>
+      </main>
+    </Layout>,
   );
 });

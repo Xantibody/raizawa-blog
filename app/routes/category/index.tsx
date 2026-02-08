@@ -1,47 +1,39 @@
 import { createRoute } from "honox/factory";
-import { FAVICON_URL, SITE_TITLE } from "../../lib/config";
+import { Layout } from "../../components/Layout";
+import { SITE_TITLE, SITE_URL } from "../../lib/config";
 import { getCategories, getPostsByCategory } from "../../lib/posts";
-import baseStyles from "../../styles/base";
-import indexStyles from "../../styles/index";
 
 export default createRoute((c) => {
   const categories = getCategories();
 
   return c.render(
-    <html>
-      <head>
-        <meta charSet="utf-8" />
-        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-        <title>カテゴリ一覧 - {SITE_TITLE}</title>
-        <meta name="description" content="カテゴリ一覧" />
-        <link rel="alternate" type="application/rss+xml" title={SITE_TITLE} href="/feed.xml" />
-        <link rel="icon" href={FAVICON_URL} />
-        <style>{baseStyles + indexStyles}</style>
-      </head>
-      <body>
-        <header>
-          <a href="/" class="back-link">
-            ← トップページに戻る
-          </a>
-          <h1>カテゴリ一覧</h1>
-        </header>
+    <Layout title={`カテゴリ一覧 - ${SITE_TITLE}`} description="カテゴリ一覧" ogUrl={`${SITE_URL}/category`}>
+      <header class="mb-8">
+        <a href="/" class="link link-primary">
+          ← トップページに戻る
+        </a>
+        <h1 class="text-3xl font-bold mt-2">カテゴリ一覧</h1>
+      </header>
 
-        <main>
-          <ul class="posts">
-            {categories.map((category) => {
-              const posts = getPostsByCategory(category);
-              return (
-                <li class="post-item" key={category}>
-                  <h2 class="post-title">
-                    <a href={`/category/${category}`}>{category}</a>
+      <main>
+        <ul class="space-y-4">
+          {categories.map((category) => {
+            const posts = getPostsByCategory(category);
+            return (
+              <li class="card bg-base-200 shadow-sm" key={category}>
+                <div class="card-body p-4">
+                  <h2 class="card-title">
+                    <a href={`/category/${category}`} class="link link-hover">
+                      {category}
+                    </a>
                   </h2>
-                  <div class="post-meta">{posts.length}件の記事</div>
-                </li>
-              );
-            })}
-          </ul>
-        </main>
-      </body>
-    </html>,
+                  <div class="text-sm text-base-content/70">{posts.length}件の記事</div>
+                </div>
+              </li>
+            );
+          })}
+        </ul>
+      </main>
+    </Layout>,
   );
 });

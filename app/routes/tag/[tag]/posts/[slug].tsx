@@ -1,8 +1,8 @@
 import { ssgParams } from "hono/ssg";
 import { createRoute } from "honox/factory";
-import { FAVICON_URL, SITE_TITLE, SITE_URL } from "../../../../lib/config";
+import { Layout } from "../../../../components/Layout";
+import { SITE_TITLE, SITE_URL } from "../../../../lib/config";
 import { type PostMeta, getAdjacentPosts, getAllPosts, getPostBySlug } from "../../../../lib/posts";
-import { allPostStyles } from "../../../../styles/post";
 
 const isValidParam = (param: string | undefined): param is string =>
   param !== undefined && param !== "";
@@ -78,60 +78,49 @@ export default createRoute(
     const { prev, next } = getAdjacentPosts(slug, { tag });
 
     return c.render(
-      <html>
-        <head>
-          <meta charSet="utf-8" />
-          <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-          <title>
-            {post.meta.title} - {SITE_TITLE}
-          </title>
-          <meta name="description" content={`${post.meta.title} - ${SITE_TITLE}`} />
-          <meta property="og:title" content={post.meta.title} />
-          <meta property="og:description" content={`${post.meta.title} - ${SITE_TITLE}`} />
-          <meta property="og:type" content="article" />
-          <meta property="og:url" content={`${SITE_URL}/tag/${tag}/posts/${slug}`} />
-          <meta property="og:site_name" content={SITE_TITLE} />
-          <meta name="twitter:card" content="summary" />
-          <link rel="alternate" type="application/rss+xml" title={SITE_TITLE} href="/feed.xml" />
-          <link rel="icon" href={FAVICON_URL} />
-          <style>{allPostStyles}</style>
-        </head>
-        <body>
-          <header>
-            <div class="back-links">
-              <a href="/" class="back-link">
-                ← トップページ
-              </a>
-              <a href={`/tag/${tag}`} class="back-link">
-                ← {tag}
-              </a>
-            </div>
-            <h1>{post.meta.title}</h1>
-            <div class="post-meta">
-              <time>{new Date(post.meta.date).toLocaleDateString("ja-JP")}</time>
-              {post.meta.category !== "" && (
-                <span>
-                  {" "}
-                  • <a href={`/category/${post.meta.category}`}>{post.meta.category}</a>
-                </span>
-              )}
-            </div>
-            {post.meta.tags.length > 0 && (
-              <div class="post-tags">
-                {post.meta.tags.map((tagName) => (
-                  <a class="tag" key={tagName} href={`/tag/${tagName}`}>
-                    {tagName}
-                  </a>
-                ))}
-              </div>
+      <Layout
+        title={`${post.meta.title} - ${SITE_TITLE}`}
+        description={`${post.meta.title} - ${SITE_TITLE}`}
+        ogType="article"
+        ogUrl={`${SITE_URL}/tag/${tag}/posts/${slug}`}
+      >
+        <header class="mb-8">
+          <div class="flex gap-4 flex-wrap">
+            <a href="/" class="link link-primary">
+              ← トップページ
+            </a>
+            <a href={`/tag/${tag}`} class="link link-primary">
+              ← {tag}
+            </a>
+          </div>
+          <h1 class="text-3xl font-bold mt-2">{post.meta.title}</h1>
+          <div class="text-sm text-base-content/70 mt-2">
+            <time>{new Date(post.meta.date).toLocaleDateString("ja-JP")}</time>
+            {post.meta.category !== "" && (
+              <span>
+                {" "}
+                •{" "}
+                <a href={`/category/${post.meta.category}`} class="link">
+                  {post.meta.category}
+                </a>
+              </span>
             )}
-          </header>
+          </div>
+          {post.meta.tags.length > 0 && (
+            <div class="flex flex-wrap gap-2 mt-2">
+              {post.meta.tags.map((tagName) => (
+                <a class="badge badge-outline" key={tagName} href={`/tag/${tagName}`}>
+                  {tagName}
+                </a>
+              ))}
+            </div>
+          )}
+        </header>
 
-          <article dangerouslySetInnerHTML={{ __html: post.html }}></article>
-          <PostNav next={next} prev={prev} tag={tag} />
-          <script dangerouslySetInnerHTML={{ __html: copyScript }} />
-        </body>
-      </html>,
+        <article class="prose-article" dangerouslySetInnerHTML={{ __html: post.html }}></article>
+        <PostNav next={next} prev={prev} tag={tag} />
+        <script dangerouslySetInnerHTML={{ __html: copyScript }} />
+      </Layout>,
     );
   },
 );

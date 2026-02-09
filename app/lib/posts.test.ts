@@ -10,7 +10,7 @@ import {
 } from "./posts";
 
 const MINIMUM_POSTS = 0;
-const CI_TIMEOUT_MS = 60_000;
+
 const REGEX_CAPTURE_GROUP_INDEX = 1;
 
 describe("posts", () => {
@@ -76,23 +76,20 @@ describe("posts", () => {
   });
 });
 
-describe(
-  "markdown rendering",
-  () => {
-    it("should render all posts without error", async () => {
-      // Shiki initialization can be slow in CI - run sequentially
-      const posts = getAllPosts();
+describe("markdown rendering", () => {
+  it("should render all posts without error", async () => {
+    const posts = getAllPosts();
 
-      for (const postMeta of posts) {
+    await Promise.all(
+      posts.map(async (postMeta) => {
         const post = await getPostBySlug(postMeta.slug);
         if (post !== undefined) {
           expect(post.html).toBeDefined();
         }
-      }
-    });
-  },
-  CI_TIMEOUT_MS,
-);
+      }),
+    );
+  });
+});
 
 // Find uppercase language identifiers in code blocks
 const findUppercaseLangIssues = (slug: string, content: string): string[] => {
@@ -156,16 +153,18 @@ describe("tags", () => {
 describe("code blocks", () => {
   it("should not have uppercase language identifiers", async () => {
     const posts = getAllPosts();
-    const issues: string[] = [];
 
-    for (const postMeta of posts) {
-      const post = await getPostBySlug(postMeta.slug);
-      if (post !== undefined) {
-        issues.push(...findUppercaseLangIssues(postMeta.slug, post.content));
-      }
-    }
+    const results = await Promise.all(
+      posts.map(async (postMeta) => {
+        const post = await getPostBySlug(postMeta.slug);
+        if (post !== undefined) {
+          return findUppercaseLangIssues(postMeta.slug, post.content);
+        }
+        return [];
+      }),
+    );
 
-    expect(issues).toEqual([]);
+    expect(results.flat()).toEqual([]);
   });
 });
 

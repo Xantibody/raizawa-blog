@@ -103,12 +103,22 @@ export default createRoute(
 
     const { prev, next } = getAdjacentPosts(slug, { tag });
 
+    const jsonLd = {
+      "@context": "https://schema.org",
+      "@type": "BlogPosting",
+      author: { "@type": "Person", name: "r-aizawa" },
+      datePublished: post.meta.date,
+      headline: post.meta.title,
+      url: `${SITE_URL}/posts/${slug}`,
+    };
+
     return c.render(
       <Layout
         title={`${post.meta.title} - ${SITE_TITLE}`}
         description={`${post.meta.title} - ${SITE_TITLE}`}
         ogType="article"
         ogUrl={`${SITE_URL}/tag/${tag}/posts/${slug}`}
+        jsonLd={jsonLd}
       >
         <ArticleNav
           breadcrumbs={[

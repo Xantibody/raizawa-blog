@@ -11,8 +11,16 @@ export default createRoute((c) => {
   const posts = getPostsForPage(currentPage);
   const totalPages = getTotalPages();
 
+  const jsonLd = {
+    "@context": "https://schema.org",
+    "@type": "WebSite",
+    description: SITE_DESCRIPTION,
+    name: SITE_TITLE,
+    url: SITE_URL,
+  };
+
   return c.render(
-    <Layout title={SITE_TITLE} description={SITE_DESCRIPTION} ogUrl={SITE_URL}>
+    <Layout title={SITE_TITLE} description={SITE_DESCRIPTION} ogUrl={SITE_URL} jsonLd={jsonLd}>
       <Header />
       <main>
         <PostList posts={posts} />

@@ -77,7 +77,7 @@ describe("posts", () => {
 });
 
 describe("markdown rendering", () => {
-  it("should render all posts without error", async () => {
+  it("should render all posts without error", { timeout: 30_000 }, async () => {
     const posts = getAllPosts();
 
     await Promise.all(

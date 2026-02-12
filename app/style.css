@@ -1,47 +1,96 @@
 @import "tailwindcss" source("../app");
 @plugin "daisyui";
 
+@theme {
+  /* Golden Ratio (phi = 1.618) Design Tokens */
+
+  /* Spacing: base = 1rem */
+  --spacing-phi-1: 0.236rem; /* 1/phi^3 */
+  --spacing-phi-2: 0.382rem; /* 1/phi^2 */
+  --spacing-phi-3: 0.618rem; /* 1/phi   */
+  --spacing-phi-4: 1rem; /* base    */
+  --spacing-phi-5: 1.618rem; /* phi     */
+  --spacing-phi-6: 2.618rem; /* phi^2   */
+  --spacing-phi-7: 4.236rem; /* phi^3   */
+  --spacing-phi-8: 6.854rem; /* phi^4   */
+
+  /*
+   * Font Size
+   * --line-height values are intentionally hardcoded rather than referencing
+   * --leading-phi / --leading-phi-tight via var(). Reasons:
+   *   1. @theme is processed at build time; var() is resolved at runtime,
+   *      so Tailwind may not pick up the values for utility generation.
+   *   2. These are mathematical constants derived from phi — they won't drift.
+   *   3. Not all sizes share the same line-height (1.272, 1.15 have no
+   *      corresponding --leading-* token), so var() would be partial at best.
+   */
+  --text-phi-sm: 0.618rem;
+  --text-phi-sm--line-height: 1.618;
+  --text-phi-base: 1rem;
+  --text-phi-base--line-height: 1.618;
+  --text-phi-lg: 1.272rem; /* sqrt(phi) */
+  --text-phi-lg--line-height: 1.382;
+  --text-phi-xl: 1.618rem; /* phi       */
+  --text-phi-xl--line-height: 1.382;
+  --text-phi-2xl: 2.058rem; /* phi^1.5   */
+  --text-phi-2xl--line-height: 1.272;
+  --text-phi-3xl: 2.618rem; /* phi^2     */
+  --text-phi-3xl--line-height: 1.272;
+  --text-phi-4xl: 3.33rem; /* phi^2.5   */
+  --text-phi-4xl--line-height: 1.15;
+
+  /* Border Radius */
+  --radius-phi-sm: 0.382rem;
+  --radius-phi-md: 0.618rem;
+  --radius-phi-lg: 1rem;
+  --radius-phi-xl: 1.618rem;
+
+  /* Line Height */
+  --leading-phi: 1.618;
+  --leading-phi-tight: 1.382;
+}
+
 /* Article content styles */
 @layer components {
   .prose-article h1 {
-    @apply text-3xl font-bold mt-8 mb-4;
+    @apply text-phi-3xl font-bold mt-phi-6 mb-phi-4;
   }
   .prose-article h2 {
-    @apply text-2xl font-bold mt-6 mb-3;
+    @apply text-phi-2xl font-bold mt-phi-5 mb-phi-3;
   }
   .prose-article h3 {
-    @apply text-xl font-bold mt-4 mb-2;
+    @apply text-phi-xl font-bold mt-phi-4 mb-phi-2;
   }
   .prose-article h4 {
-    @apply text-lg font-bold mt-3 mb-2;
+    @apply text-phi-lg font-bold mt-phi-3 mb-phi-2;
   }
 
   .prose-article blockquote {
-    @apply border-l-4 border-base-300 pl-4 my-4 text-base-content/70;
+    @apply border-l-4 border-base-300 pl-phi-4 my-phi-4 text-base-content/70;
   }
 
   .prose-article table {
-    @apply w-full my-4 border-collapse;
+    @apply w-full my-phi-4 border-collapse;
   }
   .prose-article th,
   .prose-article td {
-    @apply border border-base-300 p-2 text-left;
+    @apply border border-base-300 p-phi-2 text-left;
   }
   .prose-article th {
     @apply bg-base-200;
   }
 
   .prose-article ul {
-    @apply pl-8 my-4 list-disc;
+    @apply pl-phi-5 my-phi-4 list-disc;
   }
   .prose-article ol {
-    @apply pl-8 my-4 list-decimal;
+    @apply pl-phi-5 my-phi-4 list-decimal;
   }
   .prose-article li {
-    @apply my-1;
+    @apply my-phi-1;
   }
   .prose-article p {
-    @apply my-4;
+    @apply my-phi-4;
   }
 
   .prose-article a {
@@ -49,7 +98,7 @@
   }
 
   .prose-article code:not(pre code) {
-    @apply bg-base-200 px-1.5 py-0.5 rounded text-sm font-mono text-error;
+    @apply bg-base-200 px-phi-2 py-phi-1 rounded text-sm font-mono text-error;
   }
 }
 

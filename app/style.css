@@ -14,7 +14,16 @@
   --spacing-phi-7: 4.236rem; /* phi^3   */
   --spacing-phi-8: 6.854rem; /* phi^4   */
 
-  /* Font Size */
+  /*
+   * Font Size
+   * --line-height values are intentionally hardcoded rather than referencing
+   * --leading-phi / --leading-phi-tight via var(). Reasons:
+   *   1. @theme is processed at build time; var() is resolved at runtime,
+   *      so Tailwind may not pick up the values for utility generation.
+   *   2. These are mathematical constants derived from phi — they won't drift.
+   *   3. Not all sizes share the same line-height (1.272, 1.15 have no
+   *      corresponding --leading-* token), so var() would be partial at best.
+   */
   --text-phi-sm: 0.618rem;
   --text-phi-sm--line-height: 1.618;
   --text-phi-base: 1rem;

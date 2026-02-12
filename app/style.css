@@ -1,6 +1,46 @@
 @import "tailwindcss" source("../app");
 @plugin "daisyui";
 
+@theme {
+  /* Golden Ratio (phi = 1.618) Design Tokens */
+
+  /* Spacing: base = 1rem */
+  --spacing-phi-1: 0.236rem; /* 1/phi^3 */
+  --spacing-phi-2: 0.382rem; /* 1/phi^2 */
+  --spacing-phi-3: 0.618rem; /* 1/phi   */
+  --spacing-phi-4: 1rem; /* base    */
+  --spacing-phi-5: 1.618rem; /* phi     */
+  --spacing-phi-6: 2.618rem; /* phi^2   */
+  --spacing-phi-7: 4.236rem; /* phi^3   */
+  --spacing-phi-8: 6.854rem; /* phi^4   */
+
+  /* Font Size */
+  --text-phi-sm: 0.618rem;
+  --text-phi-sm--line-height: 1.618;
+  --text-phi-base: 1rem;
+  --text-phi-base--line-height: 1.618;
+  --text-phi-lg: 1.272rem; /* sqrt(phi) */
+  --text-phi-lg--line-height: 1.382;
+  --text-phi-xl: 1.618rem; /* phi       */
+  --text-phi-xl--line-height: 1.382;
+  --text-phi-2xl: 2.058rem; /* phi^1.5   */
+  --text-phi-2xl--line-height: 1.272;
+  --text-phi-3xl: 2.618rem; /* phi^2     */
+  --text-phi-3xl--line-height: 1.272;
+  --text-phi-4xl: 3.33rem; /* phi^2.5   */
+  --text-phi-4xl--line-height: 1.15;
+
+  /* Border Radius */
+  --radius-phi-sm: 0.382rem;
+  --radius-phi-md: 0.618rem;
+  --radius-phi-lg: 1rem;
+  --radius-phi-xl: 1.618rem;
+
+  /* Line Height */
+  --leading-phi: 1.618;
+  --leading-phi-tight: 1.382;
+}
+
 /* Article content styles */
 @layer components {
   .prose-article h1 {

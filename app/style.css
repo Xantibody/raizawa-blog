@@ -44,44 +44,44 @@
 /* Article content styles */
 @layer components {
   .prose-article h1 {
-    @apply text-3xl font-bold mt-8 mb-4;
+    @apply text-phi-3xl font-bold mt-phi-6 mb-phi-4;
   }
   .prose-article h2 {
-    @apply text-2xl font-bold mt-6 mb-3;
+    @apply text-phi-2xl font-bold mt-phi-5 mb-phi-3;
   }
   .prose-article h3 {
-    @apply text-xl font-bold mt-4 mb-2;
+    @apply text-phi-xl font-bold mt-phi-4 mb-phi-2;
   }
   .prose-article h4 {
-    @apply text-lg font-bold mt-3 mb-2;
+    @apply text-phi-lg font-bold mt-phi-3 mb-phi-2;
   }
 
   .prose-article blockquote {
-    @apply border-l-4 border-base-300 pl-4 my-4 text-base-content/70;
+    @apply border-l-4 border-base-300 pl-phi-4 my-phi-4 text-base-content/70;
   }
 
   .prose-article table {
-    @apply w-full my-4 border-collapse;
+    @apply w-full my-phi-4 border-collapse;
   }
   .prose-article th,
   .prose-article td {
-    @apply border border-base-300 p-2 text-left;
+    @apply border border-base-300 p-phi-2 text-left;
   }
   .prose-article th {
     @apply bg-base-200;
   }
 
   .prose-article ul {
-    @apply pl-8 my-4 list-disc;
+    @apply pl-phi-5 my-phi-4 list-disc;
   }
   .prose-article ol {
-    @apply pl-8 my-4 list-decimal;
+    @apply pl-phi-5 my-phi-4 list-decimal;
   }
   .prose-article li {
-    @apply my-1;
+    @apply my-phi-1;
   }
   .prose-article p {
-    @apply my-4;
+    @apply my-phi-4;
   }
 
   .prose-article a {
@@ -89,7 +89,7 @@
   }
 
   .prose-article code:not(pre code) {
-    @apply bg-base-200 px-1.5 py-0.5 rounded text-sm font-mono text-error;
+    @apply bg-base-200 px-phi-2 py-phi-1 rounded text-sm font-mono text-error;
   }
 }
 

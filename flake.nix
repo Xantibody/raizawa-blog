@@ -16,42 +16,31 @@
       forAllSystems = f: nixpkgs.lib.genAttrs (import systems) (system: f system);
       treefmtEval = forAllSystems (
         system:
-        treefmt-nix.lib.evalModule nixpkgs.legacyPackages.${system} {
-          projectRootFile = "flake.nix";
-          settings.global.excludes = [
-            "node_modules/**"
-            "dist/**"
-            ".honox/**"
-          ];
-          programs.nixfmt.enable = true;
-          programs.oxfmt = {
-            enable = true;
-            includes = [
-              # JS/TS
-              "*.js"
-              "*.jsx"
-              "*.ts"
-              "*.tsx"
-              # Data formats
-              "*.json"
-              "*.jsonc"
-              "*.json5"
-              "*.toml"
-              "*.yaml"
-              "*.yml"
-              # Web
-              "*.html"
-              "*.vue"
-              "*.css"
-              "*.scss"
-              "*.less"
-              # Others
-              "*.graphql"
-              "*.md"
-              "*.mdx"
+        treefmt-nix.lib.evalModule nixpkgs.legacyPackages.${system} (
+          { pkgs, lib, ... }:
+          {
+            projectRootFile = "flake.nix";
+            settings.global.excludes = [
+              "node_modules/**"
+              "dist/**"
+              ".honox/**"
             ];
-          };
-        }
+            programs.nixfmt.enable = true;
+            programs.oxfmt.enable = true;
+            settings.formatter.mdsf = {
+              command = "${pkgs.bash}/bin/bash";
+              options = [
+                "-euc"
+                ''
+                  export PATH=${pkgs.rustfmt}/bin:${pkgs.shfmt}/bin:$PATH
+                  ${lib.getExe pkgs.mdsf} format "$@"
+                ''
+                "--"
+              ];
+              includes = [ "*.md" ];
+            };
+          }
+        )
       );
     in
     {
@@ -90,6 +79,9 @@
               oxfmt
               nodejs-slim_24
               typos
+              mdsf
+              rustfmt
+              shfmt
               (textlint.withPackages [
                 textlint-rule-preset-ja-technical-writing
                 textlint-rule-prh

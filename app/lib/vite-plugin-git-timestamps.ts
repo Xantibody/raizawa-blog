@@ -1,29 +1,94 @@
 import { execFileSync } from "node:child_process";
 import { readdirSync } from "node:fs";
-import { join, resolve } from "node:path";
+import { join, relative, resolve } from "node:path";
 import { type Plugin } from "vite";
 
 const VIRTUAL_MODULE_ID = "virtual:git-timestamps";
 const RESOLVED_VIRTUAL_MODULE_ID = `\0${VIRTUAL_MODULE_ID}`;
+const FRONTMATTER_CLOSE = "\n---\n";
 
-const getUpdatedAt = (filePath: string, repoRoot: string): string | undefined => {
+interface CommitEntry {
+  date: string;
+  hash: string;
+}
+
+const getRepoRoot = (): string =>
+  execFileSync("git", ["rev-parse", "--show-toplevel"], { encoding: "utf8" }).trim();
+
+const stripFrontmatter = (content: string): string => {
+  const endIndex = content.indexOf(FRONTMATTER_CLOSE, 1);
+  if (endIndex === -1) {
+    return content;
+  }
+  return content.slice(endIndex + FRONTMATTER_CLOSE.length);
+};
+
+const parseCommitLog = (output: string): CommitEntry[] =>
+  output.split("\n").map((line) => {
+    const spaceIdx = line.indexOf(" ");
+    return { date: line.slice(spaceIdx + 1), hash: line.slice(0, spaceIdx) };
+  });
+
+const getCommitLog = (filePath: string, repoRoot: string): CommitEntry[] => {
   try {
-    const output = execFileSync("git", ["log", "-1", "--format=%aI", "--", filePath], {
+    const output = execFileSync("git", ["log", "--format=%H %aI", "--", filePath], {
       cwd: repoRoot,
       encoding: "utf8",
     }).trim();
 
     if (output === "") {
-      return undefined;
+      return [];
     }
-    return output;
+    return parseCommitLog(output);
+  } catch {
+    return [];
+  }
+};
+
+const getBodyAtCommit = (ctx: FileContext, hash: string): string | undefined => {
+  try {
+    const content = execFileSync("git", ["show", `${hash}:${ctx.relativePath}`], {
+      cwd: ctx.repoRoot,
+      encoding: "utf8",
+    });
+    return stripFrontmatter(content);
   } catch {
     return undefined;
   }
 };
 
-const getRepoRoot = (): string =>
-  execFileSync("git", ["rev-parse", "--show-toplevel"], { encoding: "utf8" }).trim();
+interface FileContext {
+  relativePath: string;
+  repoRoot: string;
+}
+
+const hasBodyChanged = (ctx: FileContext, current: CommitEntry, older: CommitEntry): boolean => {
+  const currentBody = getBodyAtCommit(ctx, current.hash);
+  const olderBody = getBodyAtCommit(ctx, older.hash);
+  if (currentBody === undefined || olderBody === undefined) {
+    return true;
+  }
+  return currentBody !== olderBody;
+};
+
+const findLastBodyChange = (commits: CommitEntry[], ctx: FileContext): string | undefined => {
+  if (commits.length === 0) {
+    return undefined;
+  }
+
+  for (let idx = 0; idx < commits.length - 1; idx++) {
+    const current = commits[idx];
+    const older = commits[idx + 1];
+    if (current === undefined || older === undefined) {
+      break;
+    }
+    if (hasBodyChanged(ctx, current, older)) {
+      return current.date;
+    }
+  }
+
+  return commits.at(-1)?.date;
+};
 
 interface CollectContext {
   isDev: boolean;
@@ -33,7 +98,10 @@ interface CollectContext {
 
 const resolveUpdatedAt = (file: string, ctx: CollectContext): string => {
   const filePath = join(ctx.postsDir, file);
-  const updatedAt = getUpdatedAt(filePath, ctx.repoRoot);
+  const relativePath = relative(ctx.repoRoot, filePath);
+  const commits = getCommitLog(filePath, ctx.repoRoot);
+  const fileCtx: FileContext = { relativePath, repoRoot: ctx.repoRoot };
+  const updatedAt = findLastBodyChange(commits, fileCtx);
 
   if (updatedAt !== undefined) {
     return updatedAt;

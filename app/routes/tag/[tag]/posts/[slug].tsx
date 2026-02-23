@@ -8,6 +8,18 @@ import { type PostMeta, getAdjacentPosts, getAllPosts, getPostBySlug } from "../
 const isValidParam = (param: string | undefined): param is string =>
   param !== undefined && param !== "";
 
+const UpdatedAt = ({ createdAt, updatedAt }: { createdAt: string; updatedAt: string }) => {
+  if (updatedAt === createdAt) {
+    return <></>;
+  }
+  return (
+    <span>
+      {" "}
+      (更新: <time>{new Date(updatedAt).toLocaleDateString("ja-JP")}</time>)
+    </span>
+  );
+};
+
 const PrevPostLink = ({ prev, tag }: { prev: PostMeta | undefined; tag: string }) => {
   if (prev === undefined) {
     return <div />;
@@ -132,12 +144,7 @@ export default createRoute(
             <h1 class="text-2xl sm:text-3xl font-bold">{post.meta.title}</h1>
             <div class="text-sm opacity-70 mt-1">
               <time>{new Date(post.meta.createdAt).toLocaleDateString("ja-JP")}</time>
-              {post.meta.updatedAt !== post.meta.createdAt && (
-                <span>
-                  {" "}
-                  (更新: <time>{new Date(post.meta.updatedAt).toLocaleDateString("ja-JP")}</time>)
-                </span>
-              )}
+              <UpdatedAt createdAt={post.meta.createdAt} updatedAt={post.meta.updatedAt} />
               {post.meta.category !== "" && (
                 <span>
                   {" "}

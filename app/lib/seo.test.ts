@@ -147,7 +147,15 @@ describe("JSON-LD BlogPosting schema", () => {
   it("should have sorted keys", () => {
     const jsonLd = createBlogPostingJsonLd(testPost);
     const keys = Object.keys(jsonLd);
-    expect(keys).toEqual(["@context", "@type", "author", "dateModified", "datePublished", "headline", "url"]);
+    expect(keys).toEqual([
+      "@context",
+      "@type",
+      "author",
+      "dateModified",
+      "datePublished",
+      "headline",
+      "url",
+    ]);
   });
 
   describe("boundary tests", () => {

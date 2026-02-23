@@ -1,7 +1,7 @@
 import { execSync } from "node:child_process";
 import { readdirSync } from "node:fs";
 import { join, resolve } from "node:path";
-import type { Plugin } from "vite";
+import { type Plugin } from "vite";
 
 interface GitTimestamp {
   createdAt: string;
@@ -62,17 +62,17 @@ const gitTimestampsPlugin = (postsDir: string): Plugin => {
       }
     },
 
+    load(id) {
+      if (id === RESOLVED_VIRTUAL_MODULE_ID) {
+        return `export default ${JSON.stringify(timestamps)};`;
+      }
+    },
+
     name: "vite-plugin-git-timestamps",
 
     resolveId(id) {
       if (id === VIRTUAL_MODULE_ID) {
         return RESOLVED_VIRTUAL_MODULE_ID;
-      }
-    },
-
-    load(id) {
-      if (id === RESOLVED_VIRTUAL_MODULE_ID) {
-        return `export default ${JSON.stringify(timestamps)};`;
       }
     },
   };

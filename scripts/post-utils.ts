@@ -40,7 +40,7 @@ const formatCreatedAt = (now: Date): string => {
   const day = String(now.getDate()).padStart(PAD_WIDTH, "0");
   const hours = String(now.getHours()).padStart(PAD_WIDTH, "0");
   const minutes = String(now.getMinutes()).padStart(PAD_WIDTH, "0");
-  return `${year}-${month}-${day} ${hours}:${minutes}`;
+  return `${year}-${month}-${day}T${hours}:${minutes}`;
 };
 
 const processTemplate = (content: string, title: string): string =>

@@ -55,6 +55,9 @@ const getTagsField = (data: Record<string, unknown>): string[] => {
 const parsePostMeta = (slug: string, data: Record<string, unknown>): PostMeta => {
   const category = getStringField(data, "category", "");
   const createdAt = getStringField(data, "createdAt", "");
+  if (createdAt === "") {
+    throw new Error(`Missing required "createdAt" field for post slug "${slug}".`);
+  }
   const tags = getTagsField(data);
   const title = getStringField(data, "title", slug);
 

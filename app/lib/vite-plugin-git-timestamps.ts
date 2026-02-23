@@ -12,8 +12,15 @@ interface CommitEntry {
   hash: string;
 }
 
-const getRepoRoot = (): string =>
-  execFileSync("git", ["rev-parse", "--show-toplevel"], { encoding: "utf8" }).trim();
+const getRepoRoot = (): string => {
+  try {
+    return execFileSync("git", ["rev-parse", "--show-toplevel"], { encoding: "utf8" }).trim();
+  } catch {
+    throw new Error(
+      "Failed to find git repository root. Ensure git is installed and the project is a git repository.",
+    );
+  }
+};
 
 const stripFrontmatter = (content: string): string => {
   const endIndex = content.indexOf(FRONTMATTER_CLOSE, 1);
@@ -112,9 +119,8 @@ const resolveUpdatedAt = (file: string, ctx: CollectContext): string => {
   throw new Error(`No git history found for ${file}. Ensure the file is committed.`);
 };
 
-const collectTimestamps = (postsDir: string, isDev: boolean): Record<string, string> => {
+const collectTimestamps = (postsDir: string, ctx: CollectContext): Record<string, string> => {
   const files = readdirSync(postsDir).filter((file) => file.endsWith(".md"));
-  const ctx: CollectContext = { isDev, postsDir, repoRoot: getRepoRoot() };
 
   const entries = files.map((file) => {
     const slug = file.replace(/\.md$/, "");
@@ -127,17 +133,23 @@ const collectTimestamps = (postsDir: string, isDev: boolean): Record<string, str
 const gitTimestampsPlugin = (postsDir: string): Plugin => {
   const resolvedPostsDir = resolve(postsDir);
   let timestamps: Record<string, string> = {};
-  let isDev = false;
+  let ctx: CollectContext = { isDev: false, postsDir: resolvedPostsDir, repoRoot: "" };
 
   return {
     configResolved(config) {
-      isDev = config.command === "serve";
-      timestamps = collectTimestamps(resolvedPostsDir, isDev);
+      ctx = {
+        isDev: config.command === "serve",
+        postsDir: resolvedPostsDir,
+        repoRoot: getRepoRoot(),
+      };
+      timestamps = collectTimestamps(resolvedPostsDir, ctx);
     },
 
     handleHotUpdate({ file }) {
       if (file.startsWith(resolvedPostsDir) && file.endsWith(".md")) {
-        timestamps = collectTimestamps(resolvedPostsDir, isDev);
+        const fileName = file.slice(resolvedPostsDir.length + 1);
+        const slug = fileName.replace(/\.md$/, "");
+        timestamps[slug] = resolveUpdatedAt(fileName, ctx);
       }
     },
 

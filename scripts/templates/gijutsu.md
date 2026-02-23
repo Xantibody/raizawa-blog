@@ -1,8 +1,6 @@
 ---
-date:
 title:
 category: ぎじゅつ
-draft: true
 tags:
   -
 ---

@@ -34,22 +34,8 @@ const generateFilename = (): string => {
   return `${dateStr}_${suffix}.md`;
 };
 
-const formatDate = (): string => {
-  const now = new Date();
-  const date = getLocalDateStr(now);
-  const hours = String(now.getHours()).padStart(PAD_WIDTH, "0");
-  const minutes = String(now.getMinutes()).padStart(PAD_WIDTH, "0");
-  return `${date} ${hours}:${minutes}`;
-};
-
-const processTemplate = (content: string, title: string): string => {
-  const dateStr = formatDate();
-
-  return content
-    .replace(/^date:.*$/m, `date: ${dateStr}`)
-    .replace(/^title:.*$/m, `title: ${title}`)
-    .replace(/^draft:.*$/m, "draft: false");
-};
+const processTemplate = (content: string, title: string): string =>
+  content.replace(/^title:.*$/m, `title: ${title}`);
 
 const readTemplate = (templateFile: string): string => {
   const templatePath = join(TEMPLATES_DIR, templateFile);
@@ -75,7 +61,6 @@ const createPost = (templateFile: string, title: string): string => {
 const printResult = (outputPath: string, title: string): void => {
   console.log(`\nCreated: ${outputPath}`);
   console.log(`  Title: ${title}`);
-  console.log(`  Date: ${formatDate()}`);
 };
 
 export { createPost, getTemplateName, getTemplates, printResult };

@@ -1,8 +1,6 @@
 ---
-date:
 title:
 category: そのた
-draft: true
 tags:
   -
 ---

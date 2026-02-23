@@ -1,8 +1,6 @@
 ---
-date:
 title: Rustの勉強
 category: ぎじゅつ
-draft: true
 tags:
   - Rust
 ---

@@ -1,8 +1,6 @@
 ---
-date:
 title:
 category: しゅみ
-draft: true
 tags:
   -
 ---

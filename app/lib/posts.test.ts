@@ -23,7 +23,7 @@ describe("posts", () => {
     const posts = getAllPosts();
     for (const post of posts) {
       expect(post.title).toBeTruthy();
-      expect(post.date).toBeTruthy();
+      expect(post.createdAt).toBeTruthy();
       expect(post.slug).toBeTruthy();
     }
   });
@@ -43,14 +43,14 @@ describe("posts", () => {
     expect(post).toBeUndefined();
   });
 
-  it("posts should be sorted by date descending", () => {
+  it("posts should be sorted by createdAt descending", () => {
     const posts = getAllPosts();
     for (let idx = 1; idx < posts.length; idx++) {
       const prev = posts[idx - 1];
       const curr = posts[idx];
       if (prev !== undefined && curr !== undefined) {
-        const prevDate = new Date(prev.date);
-        const currDate = new Date(curr.date);
+        const prevDate = new Date(prev.createdAt);
+        const currDate = new Date(curr.createdAt);
         expect(prevDate.getTime()).toBeGreaterThanOrEqual(currDate.getTime());
       }
     }
@@ -61,17 +61,10 @@ describe("posts", () => {
     for (const post of posts) {
       expect(typeof post.slug).toBe("string");
       expect(typeof post.title).toBe("string");
-      expect(typeof post.date).toBe("string");
+      expect(typeof post.createdAt).toBe("string");
+      expect(typeof post.updatedAt).toBe("string");
       expect(typeof post.category).toBe("string");
       expect(Array.isArray(post.tags)).toBe(true);
-      expect(typeof post.draft).toBe("boolean");
-    }
-  });
-
-  it("should not include draft posts in getAllPosts", () => {
-    const posts = getAllPosts();
-    for (const post of posts) {
-      expect(post.draft).toBe(false);
     }
   });
 });

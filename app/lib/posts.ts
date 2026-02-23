@@ -1,14 +1,15 @@
 import { matter } from "gray-matter-es";
+import gitTimestamps from "virtual:git-timestamps";
 import renderMarkdown from "./markdown";
 
 // Type definitions
 interface PostMeta {
   category: string;
-  date: string;
-  draft: boolean;
+  createdAt: string;
   slug: string;
   tags: string[];
   title: string;
+  updatedAt: string;
 }
 
 interface Post {
@@ -42,18 +43,6 @@ const getStringField = (
   return defaultValue;
 };
 
-const getBooleanField = (
-  data: Record<string, unknown>,
-  key: string,
-  defaultValue: boolean,
-): boolean => {
-  const value = data[key];
-  if (typeof value === "boolean") {
-    return value;
-  }
-  return defaultValue;
-};
-
 const getTagsField = (data: Record<string, unknown>): string[] => {
   const value = data.tags;
   if (Array.isArray(value)) {
@@ -62,15 +51,18 @@ const getTagsField = (data: Record<string, unknown>): string[] => {
   return [];
 };
 
-// Parse post metadata from frontmatter
+// Parse post metadata from frontmatter + git timestamps
 const parsePostMeta = (slug: string, data: Record<string, unknown>): PostMeta => {
   const category = getStringField(data, "category", "");
-  const date = getStringField(data, "date", "");
-  const draft = getBooleanField(data, "draft", false);
   const tags = getTagsField(data);
   const title = getStringField(data, "title", slug);
 
-  return { category, date, draft, slug, tags, title };
+  const ts = gitTimestamps[slug];
+  const now = new Date().toISOString();
+  const createdAt = ts?.createdAt ?? now;
+  const updatedAt = ts?.updatedAt ?? now;
+
+  return { category, createdAt, slug, tags, title, updatedAt };
 };
 
 // Build posts metadata (synchronous, no HTML rendering)
@@ -87,15 +79,13 @@ const initMetaCache = (): void => {
     const { data } = matter(content);
     const meta = parsePostMeta(slug, data);
 
-    if (!meta.draft) {
-      postsMetaCache.push(meta);
-    }
+    postsMetaCache.push(meta);
   }
 
-  // Sort by date descending
+  // Sort by createdAt descending
   postsMetaCache.sort((postA, postB) => {
-    const dateA = new Date(postA.date.replace(" ", "T"));
-    const dateB = new Date(postB.date.replace(" ", "T"));
+    const dateA = new Date(postA.createdAt);
+    const dateB = new Date(postB.createdAt);
     return dateB.getTime() - dateA.getTime();
   });
 
@@ -118,10 +108,6 @@ const getPostBySlug = async (slug: string): Promise<Post | undefined> => {
 
   const { content: markdownContent, data } = matter(content);
   const meta = parsePostMeta(slug, data);
-
-  if (meta.draft) {
-    return undefined;
-  }
 
   const html = await renderMarkdown(markdownContent);
 

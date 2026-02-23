@@ -107,7 +107,8 @@ export default createRoute(
       "@context": "https://schema.org",
       "@type": "BlogPosting",
       author: { "@type": "Person", name: "r-aizawa" },
-      datePublished: post.meta.date,
+      dateModified: post.meta.updatedAt,
+      datePublished: post.meta.createdAt,
       headline: post.meta.title,
       url: `${SITE_URL}/posts/${slug}`,
     };
@@ -130,7 +131,13 @@ export default createRoute(
           <div class="card-body p-6">
             <h1 class="text-2xl sm:text-3xl font-bold">{post.meta.title}</h1>
             <div class="text-sm opacity-70 mt-1">
-              <time>{new Date(post.meta.date).toLocaleDateString("ja-JP")}</time>
+              <time>{new Date(post.meta.createdAt).toLocaleDateString("ja-JP")}</time>
+              {post.meta.updatedAt !== post.meta.createdAt && (
+                <span>
+                  {" "}
+                  (更新: <time>{new Date(post.meta.updatedAt).toLocaleDateString("ja-JP")}</time>)
+                </span>
+              )}
               {post.meta.category !== "" && (
                 <span>
                   {" "}

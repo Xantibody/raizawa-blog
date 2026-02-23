@@ -42,7 +42,7 @@ export default createRoute(
                     </a>
                   </h2>
                   <div class="text-sm text-base-content/70">
-                    <time>{new Date(post.date).toLocaleDateString("ja-JP")}</time>
+                    <time>{new Date(post.createdAt).toLocaleDateString("ja-JP")}</time>
                   </div>
                   {post.tags.length > 0 && (
                     <div class="flex flex-wrap gap-2 mt-2">

@@ -7,7 +7,7 @@ const formatPost = (post: Post): string => {
   const meta = [
     `## ${post.meta.title}`,
     "",
-    `- date: ${post.meta.date}`,
+    `- date: ${post.meta.createdAt}`,
     `- category: ${post.meta.category}`,
   ];
 

@@ -1,8 +1,10 @@
+import { resolve } from "node:path";
 import { defineConfig } from "vitest/config";
 import { defaultExtensionMap } from "hono/ssg";
 import honox from "honox/vite";
 import ssg from "@hono/vite-ssg";
 import tailwindcss from "@tailwindcss/vite";
+import gitTimestampsPlugin from "./app/lib/vite-plugin-git-timestamps";
 
 const entry = "./app/server.ts";
 
@@ -33,6 +35,7 @@ export default defineConfig(({ mode }) => {
     },
     plugins: [
       tailwindcss(),
+      gitTimestampsPlugin(resolve(import.meta.dirname, "app/posts")),
       honox(),
       ssg({
         entry,

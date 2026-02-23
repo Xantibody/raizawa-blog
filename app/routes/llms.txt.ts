@@ -18,7 +18,9 @@ export default createRoute((c) => {
   ];
 
   for (const post of posts) {
-    lines.push(`- [${post.title}](${SITE_URL}/posts/${post.slug}): ${post.date}, ${post.category}`);
+    lines.push(
+      `- [${post.title}](${SITE_URL}/posts/${post.slug}): ${post.createdAt}, ${post.category}`,
+    );
   }
 
   lines.push("");

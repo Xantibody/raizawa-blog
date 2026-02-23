@@ -2,6 +2,7 @@ import { ssgParams } from "hono/ssg";
 import { createRoute } from "honox/factory";
 import ArticleNav from "../../components/article-nav";
 import Layout from "../../components/layout";
+import UpdatedAt from "../../components/updated-at";
 import { SITE_TITLE, SITE_URL } from "../../lib/config";
 import { type PostMeta, getAdjacentPosts, getAllPosts, getPostBySlug } from "../../lib/posts";
 
@@ -83,7 +84,8 @@ export default createRoute(
       "@context": "https://schema.org",
       "@type": "BlogPosting",
       author: { "@type": "Person", name: "r-aizawa" },
-      datePublished: post.meta.date,
+      dateModified: post.meta.updatedAt,
+      datePublished: post.meta.createdAt,
       headline: post.meta.title,
       url: `${SITE_URL}/posts/${slug}`,
     };
@@ -101,7 +103,8 @@ export default createRoute(
           <div class="card-body p-6">
             <h1 class="text-2xl sm:text-3xl font-bold">{post.meta.title}</h1>
             <div class="text-sm opacity-70 mt-1">
-              <time>{new Date(post.meta.date).toLocaleDateString("ja-JP")}</time>
+              <time>{new Date(post.meta.createdAt).toLocaleDateString("ja-JP")}</time>
+              <UpdatedAt createdAt={post.meta.createdAt} updatedAt={post.meta.updatedAt} />
               {post.meta.category !== "" && (
                 <span>
                   {" "}

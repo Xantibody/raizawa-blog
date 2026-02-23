@@ -1,8 +1,7 @@
 ---
-date:
 title:
+createdAt:
 category: そのた
-draft: true
 tags:
   -
 ---

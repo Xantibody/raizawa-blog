@@ -15,7 +15,7 @@ const generateRssFeed = (posts: ReturnType<typeof getAllPosts>): string => {
   const items = posts
     .slice(0, MAX_FEED_ITEMS)
     .map((post) => {
-      const pubDate = new Date(post.date).toUTCString();
+      const pubDate = new Date(post.createdAt).toUTCString();
       return `    <item>
       <title>${escapeXml(post.title)}</title>
       <link>${SITE_URL}/posts/${post.slug}</link>

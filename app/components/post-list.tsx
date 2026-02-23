@@ -16,7 +16,7 @@ export default function PostList({ posts }: PostListProps) {
               </a>
             </h2>
             <div class="text-sm opacity-70 flex items-center gap-2">
-              <time>{new Date(post.date).toLocaleDateString("ja-JP")}</time>
+              <time>{new Date(post.createdAt).toLocaleDateString("ja-JP")}</time>
               {post.category !== "" && (
                 <>
                   <span class="divider divider-horizontal mx-0"></span>

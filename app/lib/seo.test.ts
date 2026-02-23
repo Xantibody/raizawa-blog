@@ -17,16 +17,18 @@ const createWebSiteJsonLd = () => ({
 
 // BlogPosting JSON-LD generation logic
 interface BlogPostingParams {
-  date: string;
+  createdAt: string;
   slug: string;
   title: string;
+  updatedAt: string;
 }
 
-const createBlogPostingJsonLd = ({ date, slug, title }: BlogPostingParams) => ({
+const createBlogPostingJsonLd = ({ createdAt, slug, title, updatedAt }: BlogPostingParams) => ({
   "@context": "https://schema.org",
   "@type": "BlogPosting",
   author: { "@type": "Person", name: "r-aizawa" },
-  datePublished: date,
+  dateModified: updatedAt,
+  datePublished: createdAt,
   headline: title,
   url: `${SITE_URL}/posts/${slug}`,
 });
@@ -101,9 +103,10 @@ describe("JSON-LD WebSite schema", () => {
 
 describe("JSON-LD BlogPosting schema", () => {
   const testPost = {
-    date: "2024-01-15 10:30",
+    createdAt: "2024-01-15T10:30:00+09:00",
     slug: "test-post",
     title: "Test Post Title",
+    updatedAt: "2024-02-20T15:00:00+09:00",
   };
 
   it("should have correct @context", () => {
@@ -123,7 +126,12 @@ describe("JSON-LD BlogPosting schema", () => {
 
   it("should include datePublished", () => {
     const jsonLd = createBlogPostingJsonLd(testPost);
-    expect(jsonLd.datePublished).toBe(testPost.date);
+    expect(jsonLd.datePublished).toBe(testPost.createdAt);
+  });
+
+  it("should include dateModified", () => {
+    const jsonLd = createBlogPostingJsonLd(testPost);
+    expect(jsonLd.dateModified).toBe(testPost.updatedAt);
   });
 
   it("should include author as Person", () => {
@@ -139,7 +147,7 @@ describe("JSON-LD BlogPosting schema", () => {
   it("should have sorted keys", () => {
     const jsonLd = createBlogPostingJsonLd(testPost);
     const keys = Object.keys(jsonLd);
-    expect(keys).toEqual(["@context", "@type", "author", "datePublished", "headline", "url"]);
+    expect(keys).toEqual(["@context", "@type", "author", "dateModified", "datePublished", "headline", "url"]);
   });
 
   describe("boundary tests", () => {
@@ -149,10 +157,10 @@ describe("JSON-LD BlogPosting schema", () => {
       expect(jsonLd.headline).toBe('Test <script> & "quotes"');
     });
 
-    it("should handle date without time", () => {
-      const post = { ...testPost, date: "2024-01-15" };
+    it("should handle ISO 8601 date", () => {
+      const post = { ...testPost, createdAt: "2024-01-15T00:00:00+09:00" };
       const jsonLd = createBlogPostingJsonLd(post);
-      expect(jsonLd.datePublished).toBe("2024-01-15");
+      expect(jsonLd.datePublished).toBe("2024-01-15T00:00:00+09:00");
     });
 
     it("should handle slug with special characters", () => {
@@ -172,9 +180,10 @@ describe("JSON-LD serialization", () => {
 
   it("should produce valid JSON for BlogPosting", () => {
     const jsonLd = createBlogPostingJsonLd({
-      date: "2024-01-15",
+      createdAt: "2024-01-15T00:00:00+09:00",
       slug: "test",
       title: "Test",
+      updatedAt: "2024-01-15T00:00:00+09:00",
     });
     const jsonString = JSON.stringify(jsonLd);
     expect(() => JSON.parse(jsonString) as unknown).not.toThrow();

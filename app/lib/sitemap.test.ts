@@ -5,7 +5,7 @@ import { type PostMeta, getAllPosts, getCategories, getTags, getTotalPages } fro
 const SECOND_PAGE = 2;
 
 const formatDate = (dateStr: string): string => {
-  const date = new Date(dateStr.replace(" ", "T"));
+  const date = new Date(dateStr);
   const [isoDate] = date.toISOString().split("T");
   return isoDate ?? "";
 };
@@ -35,7 +35,7 @@ const buildPostUrls = (posts: PostMeta[]): string[] =>
   posts.map(
     (post) => `  <url>
     <loc>${SITE_URL}/posts/${post.slug}</loc>
-    <lastmod>${formatDate(post.date)}</lastmod>
+    <lastmod>${formatDate(post.updatedAt)}</lastmod>
   </url>`,
   );
 
@@ -163,8 +163,8 @@ describe("sitemap.xml", () => {
       expect(formatDate("2024-01-15")).toBe("2024-01-15");
     });
 
-    it("should format date with time (space separator)", () => {
-      expect(formatDate("2024-01-15 10:30")).toBe("2024-01-15");
+    it("should format ISO 8601 date with timezone", () => {
+      expect(formatDate("2024-01-15T10:30:00+09:00")).toBe("2024-01-15");
     });
 
     it("should format date with time (T separator)", () => {

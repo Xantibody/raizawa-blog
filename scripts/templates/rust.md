@@ -1,5 +1,6 @@
 ---
 title: Rustの勉強
+createdAt:
 category: ぎじゅつ
 tags:
   - Rust

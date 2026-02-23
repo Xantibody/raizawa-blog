@@ -34,8 +34,19 @@ const generateFilename = (): string => {
   return `${dateStr}_${suffix}.md`;
 };
 
+const formatCreatedAt = (now: Date): string => {
+  const year = now.getFullYear();
+  const month = String(now.getMonth() + 1).padStart(PAD_WIDTH, "0");
+  const day = String(now.getDate()).padStart(PAD_WIDTH, "0");
+  const hours = String(now.getHours()).padStart(PAD_WIDTH, "0");
+  const minutes = String(now.getMinutes()).padStart(PAD_WIDTH, "0");
+  return `${year}-${month}-${day} ${hours}:${minutes}`;
+};
+
 const processTemplate = (content: string, title: string): string =>
-  content.replace(/^title:.*$/m, `title: ${title}`);
+  content
+    .replace(/^title:.*$/m, `title: ${title}`)
+    .replace(/^createdAt:.*$/m, `createdAt: ${formatCreatedAt(new Date())}`);
 
 const readTemplate = (templateFile: string): string => {
   const templatePath = join(TEMPLATES_DIR, templateFile);

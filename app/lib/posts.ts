@@ -54,14 +54,14 @@ const getTagsField = (data: Record<string, unknown>): string[] => {
 // Parse post metadata from frontmatter + git timestamps
 const parsePostMeta = (slug: string, data: Record<string, unknown>): PostMeta => {
   const category = getStringField(data, "category", "");
+  const createdAt = getStringField(data, "createdAt", "");
   const tags = getTagsField(data);
   const title = getStringField(data, "title", slug);
 
-  const ts = gitTimestamps[slug];
-  if (ts === undefined) {
+  const updatedAt = gitTimestamps[slug];
+  if (updatedAt === undefined) {
     throw new Error(`Missing git timestamps for post slug "${slug}".`);
   }
-  const { createdAt, updatedAt } = ts;
 
   return { category, createdAt, slug, tags, title, updatedAt };
 };

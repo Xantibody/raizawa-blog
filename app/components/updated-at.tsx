@@ -5,13 +5,15 @@ export default function UpdatedAt({
   createdAt: string;
   updatedAt: string;
 }) {
-  if (updatedAt === createdAt) {
+  const createdDate = new Date(createdAt).toLocaleDateString("ja-JP");
+  const updatedDate = new Date(updatedAt).toLocaleDateString("ja-JP");
+  if (updatedDate === createdDate) {
     return <></>;
   }
   return (
     <span>
       {" "}
-      (更新: <time>{new Date(updatedAt).toLocaleDateString("ja-JP")}</time>)
+      (更新: <time>{updatedDate}</time>)
     </span>
   );
 }

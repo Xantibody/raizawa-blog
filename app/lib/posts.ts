@@ -58,9 +58,10 @@ const parsePostMeta = (slug: string, data: Record<string, unknown>): PostMeta =>
   const title = getStringField(data, "title", slug);
 
   const ts = gitTimestamps[slug];
-  const now = new Date().toISOString();
-  const createdAt = ts?.createdAt ?? now;
-  const updatedAt = ts?.updatedAt ?? now;
+  if (ts === undefined) {
+    throw new Error(`Missing git timestamps for post slug "${slug}".`);
+  }
+  const { createdAt, updatedAt } = ts;
 
   return { category, createdAt, slug, tags, title, updatedAt };
 };

@@ -2,6 +2,7 @@ import { ssgParams } from "hono/ssg";
 import { createRoute } from "honox/factory";
 import ArticleNav from "../../components/article-nav";
 import Layout from "../../components/layout";
+import UpdatedAt from "../../components/updated-at";
 import { SITE_TITLE, SITE_URL } from "../../lib/config";
 import { type PostMeta, getAdjacentPosts, getAllPosts, getPostBySlug } from "../../lib/posts";
 
@@ -103,12 +104,7 @@ export default createRoute(
             <h1 class="text-2xl sm:text-3xl font-bold">{post.meta.title}</h1>
             <div class="text-sm opacity-70 mt-1">
               <time>{new Date(post.meta.createdAt).toLocaleDateString("ja-JP")}</time>
-              {post.meta.updatedAt !== post.meta.createdAt && (
-                <span>
-                  {" "}
-                  (更新: <time>{new Date(post.meta.updatedAt).toLocaleDateString("ja-JP")}</time>)
-                </span>
-              )}
+              <UpdatedAt createdAt={post.meta.createdAt} updatedAt={post.meta.updatedAt} />
               {post.meta.category !== "" && (
                 <span>
                   {" "}

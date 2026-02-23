@@ -2,23 +2,12 @@ import { ssgParams } from "hono/ssg";
 import { createRoute } from "honox/factory";
 import ArticleNav from "../../../../components/article-nav";
 import Layout from "../../../../components/layout";
+import UpdatedAt from "../../../../components/updated-at";
 import { SITE_TITLE, SITE_URL } from "../../../../lib/config";
 import { type PostMeta, getAdjacentPosts, getAllPosts, getPostBySlug } from "../../../../lib/posts";
 
 const isValidParam = (param: string | undefined): param is string =>
   param !== undefined && param !== "";
-
-const UpdatedAt = ({ createdAt, updatedAt }: { createdAt: string; updatedAt: string }) => {
-  if (updatedAt === createdAt) {
-    return <></>;
-  }
-  return (
-    <span>
-      {" "}
-      (更新: <time>{new Date(updatedAt).toLocaleDateString("ja-JP")}</time>)
-    </span>
-  );
-};
 
 const PrevPostLink = ({ prev, category }: { prev: PostMeta | undefined; category: string }) => {
   if (prev === undefined) {

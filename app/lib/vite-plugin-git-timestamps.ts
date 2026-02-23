@@ -1,4 +1,4 @@
-import { execSync } from "node:child_process";
+import { execFileSync } from "node:child_process";
 import { readdirSync } from "node:fs";
 import { join, resolve } from "node:path";
 import { type Plugin } from "vite";
@@ -11,9 +11,10 @@ interface GitTimestamp {
 const VIRTUAL_MODULE_ID = "virtual:git-timestamps";
 const RESOLVED_VIRTUAL_MODULE_ID = `\0${VIRTUAL_MODULE_ID}`;
 
-const getGitTimestamps = (filePath: string): GitTimestamp | undefined => {
+const getGitTimestamps = (filePath: string, repoRoot: string): GitTimestamp | undefined => {
   try {
-    const output = execSync(`git log --follow --format=%aI -- "${filePath}"`, {
+    const output = execFileSync("git", ["log", "--follow", "--format=%aI", "--", filePath], {
+      cwd: repoRoot,
       encoding: "utf8",
     }).trim();
 
@@ -31,34 +32,61 @@ const getGitTimestamps = (filePath: string): GitTimestamp | undefined => {
   }
 };
 
-const collectTimestamps = (postsDir: string): Record<string, GitTimestamp> => {
-  const timestamps: Record<string, GitTimestamp> = {};
+const getRepoRoot = (): string =>
+  execFileSync("git", ["rev-parse", "--show-toplevel"], { encoding: "utf8" }).trim();
+
+interface CollectContext {
+  fallback: GitTimestamp;
+  isDev: boolean;
+  postsDir: string;
+  repoRoot: string;
+}
+
+const resolveTimestamp = (file: string, ctx: CollectContext): GitTimestamp => {
+  const filePath = join(ctx.postsDir, file);
+  const gitTimestamp = getGitTimestamps(filePath, ctx.repoRoot);
+
+  if (gitTimestamp !== undefined) {
+    return gitTimestamp;
+  }
+  if (ctx.isDev) {
+    return ctx.fallback;
+  }
+  throw new Error(`No git history found for ${file}. Ensure the file is committed.`);
+};
+
+const collectTimestamps = (postsDir: string, isDev: boolean): Record<string, GitTimestamp> => {
   const files = readdirSync(postsDir).filter((file) => file.endsWith(".md"));
   const now = new Date().toISOString();
+  const ctx: CollectContext = {
+    fallback: { createdAt: now, updatedAt: now },
+    isDev,
+    postsDir,
+    repoRoot: getRepoRoot(),
+  };
 
-  for (const file of files) {
+  const entries = files.map((file) => {
     const slug = file.replace(/\.md$/, "");
-    const filePath = join(postsDir, file);
-    const gitTimestamp = getGitTimestamps(filePath);
+    return [slug, resolveTimestamp(file, ctx)] as const;
+  });
 
-    timestamps[slug] = gitTimestamp ?? { createdAt: now, updatedAt: now };
-  }
-
-  return timestamps;
+  return Object.fromEntries(entries);
 };
 
 const gitTimestampsPlugin = (postsDir: string): Plugin => {
   const resolvedPostsDir = resolve(postsDir);
   let timestamps: Record<string, GitTimestamp> = {};
+  let isDev = false;
 
   return {
-    configResolved() {
-      timestamps = collectTimestamps(resolvedPostsDir);
+    configResolved(config) {
+      isDev = config.command === "serve";
+      timestamps = collectTimestamps(resolvedPostsDir, isDev);
     },
 
     handleHotUpdate({ file }) {
       if (file.startsWith(resolvedPostsDir) && file.endsWith(".md")) {
-        timestamps = collectTimestamps(resolvedPostsDir);
+        timestamps = collectTimestamps(resolvedPostsDir, isDev);
       }
     },
 

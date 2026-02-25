@@ -7,8 +7,17 @@ const SECOND_PAGE = 2;
 
 const formatDate = (dateStr: string): string => {
   const date = new Date(dateStr);
-  const [isoDate] = date.toISOString().split("T");
-  return isoDate ?? "";
+  const formatter = new Intl.DateTimeFormat("en", {
+    day: "2-digit",
+    month: "2-digit",
+    timeZone: "Asia/Tokyo",
+    year: "numeric",
+  });
+  const parts = formatter.formatToParts(date);
+  const year = parts.find((part) => part.type === "year")?.value ?? "";
+  const month = parts.find((part) => part.type === "month")?.value ?? "";
+  const day = parts.find((part) => part.type === "day")?.value ?? "";
+  return `${year}-${month}-${day}`;
 };
 
 const buildPaginationUrls = (totalPages: number): string[] =>

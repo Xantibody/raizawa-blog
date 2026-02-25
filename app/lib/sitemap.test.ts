@@ -6,8 +6,17 @@ const SECOND_PAGE = 2;
 
 const formatDate = (dateStr: string): string => {
   const date = new Date(dateStr);
-  const [isoDate] = date.toISOString().split("T");
-  return isoDate ?? "";
+  const formatter = new Intl.DateTimeFormat("en", {
+    day: "2-digit",
+    month: "2-digit",
+    timeZone: "Asia/Tokyo",
+    year: "numeric",
+  });
+  const parts = formatter.formatToParts(date);
+  const year = parts.find((part) => part.type === "year")?.value ?? "";
+  const month = parts.find((part) => part.type === "month")?.value ?? "";
+  const day = parts.find((part) => part.type === "day")?.value ?? "";
+  return `${year}-${month}-${day}`;
 };
 
 const buildPaginationUrls = (totalPages: number): string[] =>
@@ -165,6 +174,22 @@ describe("sitemap.xml", () => {
 
     it("should format ISO 8601 date with timezone", () => {
       expect(formatDate("2024-01-15T10:30:00+09:00")).toBe("2024-01-15");
+    });
+
+    it("should format JST early morning without shifting to previous day", () => {
+      expect(formatDate("2024-01-15T02:00:00+09:00")).toBe("2024-01-15");
+    });
+
+    it("should format JST midnight without shifting to previous day", () => {
+      expect(formatDate("2024-01-15T00:30:00+09:00")).toBe("2024-01-15");
+    });
+
+    it("should format JST start of day boundary", () => {
+      expect(formatDate("2024-01-15T00:00:00+09:00")).toBe("2024-01-15");
+    });
+
+    it("should format JST end of day boundary", () => {
+      expect(formatDate("2024-01-15T23:59:59+09:00")).toBe("2024-01-15");
     });
 
     it("should format date with time (T separator)", () => {

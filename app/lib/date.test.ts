@@ -49,7 +49,7 @@ describe("isSameDay", () => {
   });
 
   it("should return false for adjacent days across year boundary", () => {
-    expect(isSameDay("2024-12-31T23:00", "2025-01-01T10:00:00+09:00")).toBe(false);
+    expect(isSameDay("2024-12-31T23:00:00+09:00", "2025-01-01T10:00:00+09:00")).toBe(false);
   });
 
   it("should return false for day boundary in JST", () => {

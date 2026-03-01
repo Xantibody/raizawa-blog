@@ -153,5 +153,46 @@ describe("markdown rendering", () => {
       expect(toc).toHaveLength(3);
       expect(toc[2]).toEqual({ id: "deep", level: 4, text: "Deep" });
     });
+
+    it("should generate unique slugs for duplicate headings", async () => {
+      const markdown = "## Setup\n## Setup\n## Setup";
+      const { toc } = await renderMarkdown(markdown);
+      const ids = toc.map((item) => item.id);
+      const uniqueIds = new Set(ids);
+      expect(uniqueIds.size).toBe(toc.length);
+    });
+
+    it("should generate slugs for Japanese headings", async () => {
+      const markdown = "## はじめに\n## まとめ";
+      const { toc } = await renderMarkdown(markdown);
+      expect(toc).toHaveLength(2);
+      expect(toc[0]?.id).not.toBe("");
+      expect(toc[1]?.id).not.toBe("");
+      expect(toc[0]?.text).toBe("はじめに");
+      expect(toc[1]?.text).toBe("まとめ");
+    });
+
+    it("should not include headings inside code blocks", async () => {
+      const markdown = "## Real Heading\n```\n## Not A Heading\n```";
+      const { toc } = await renderMarkdown(markdown);
+      expect(toc).toHaveLength(1);
+      expect(toc[0]?.text).toBe("Real Heading");
+    });
+
+    it("should include h1 headings in toc data", async () => {
+      const markdown = "# Title\n## Section";
+      const { toc } = await renderMarkdown(markdown);
+      expect(toc).toHaveLength(2);
+      expect(toc[0]).toEqual({ id: "title", level: 1, text: "Title" });
+    });
+
+    it("should not leak toc items between consecutive renders", async () => {
+      const first = await renderMarkdown("## Alpha\n## Beta");
+      expect(first.toc).toHaveLength(2);
+
+      const second = await renderMarkdown("## Gamma");
+      expect(second.toc).toHaveLength(1);
+      expect(second.toc[0]?.text).toBe("Gamma");
+    });
   });
 });

@@ -1,11 +1,26 @@
+import anchor from "markdown-it-anchor";
 import { fetchOGP, generateOGPCard } from "./ogp";
 import { SHIKI_THEME, getHighlighter, shikiTransformers } from "./shiki";
+import { type RenderResult, type TocItem } from "./toc";
 import MarkdownIt from "markdown-it";
 
 const REGEX_CAPTURE_GROUP_INDEX = 1;
 
 // Initialize markdown-it
 const md = MarkdownIt({ breaks: true, html: true });
+
+let currentTocItems: TocItem[] = [];
+
+md.use(anchor, {
+  callback: (token: { tag: string }, info: { slug: string; title: string }) => {
+    currentTocItems.push({
+      id: info.slug,
+      level: Number(token.tag.slice(1)),
+      text: info.title,
+    });
+  },
+  permalink: false,
+});
 
 // Shiki plugin (initialized lazily)
 let shikiInitialized = false;
@@ -80,7 +95,23 @@ const detectStandaloneURLs = (markdown: string): string[] => {
   return [...new Set([...autolinkUrls, ...standaloneUrls])];
 };
 
-const renderMarkdown = async (markdown: string): Promise<string> => {
+const replaceUrlsWithOGPCards = (
+  markdown: string,
+  ogpResults: { ogp: Awaited<ReturnType<typeof fetchOGP>>; url: string }[],
+): string => {
+  let processedMarkdown = markdown;
+  for (const { url, ogp } of ogpResults) {
+    const ogpCard = generateOGPCard(ogp);
+    const escapedUrl = url.replaceAll(/[.*+?^${}()|[\]\\]/g, String.raw`\$&`);
+    // Replace only standalone URLs (on their own line)
+    processedMarkdown = processedMarkdown
+      .replaceAll(new RegExp(`^<${escapedUrl}>$`, "gm"), ogpCard)
+      .replaceAll(new RegExp(`^${escapedUrl}$`, "gm"), ogpCard);
+  }
+  return processedMarkdown;
+};
+
+const renderMarkdown = async (markdown: string): Promise<RenderResult> => {
   await initShiki();
 
   // Detect all standalone URLs
@@ -94,18 +125,11 @@ const renderMarkdown = async (markdown: string): Promise<string> => {
     })),
   );
 
-  // Replace standalone URLs with OGP cards
-  let processedMarkdown = markdown;
-  for (const { url, ogp } of ogpResults) {
-    const ogpCard = generateOGPCard(ogp);
-    const escapedUrl = url.replaceAll(/[.*+?^${}()|[\]\\]/g, String.raw`\$&`);
-    // Replace only standalone URLs (on their own line)
-    processedMarkdown = processedMarkdown
-      .replaceAll(new RegExp(`^<${escapedUrl}>$`, "gm"), ogpCard)
-      .replaceAll(new RegExp(`^${escapedUrl}$`, "gm"), ogpCard);
-  }
+  const processedMarkdown = replaceUrlsWithOGPCards(markdown, ogpResults);
 
-  return md.render(processedMarkdown);
+  currentTocItems = [];
+  const html = md.render(processedMarkdown);
+  return { html, toc: [...currentTocItems] };
 };
 
 export default renderMarkdown;

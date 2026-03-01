@@ -24,6 +24,7 @@
     "hono": "^4.11.3",
     "honox": "^0.1.53",
     "markdown-it": "^14.1.0",
+    "markdown-it-anchor": "^9.2.0",
     "shiki": "^3.21.0",
     "tailwindcss": "^4.1.18"
   },

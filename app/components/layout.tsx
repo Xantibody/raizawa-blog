@@ -2,6 +2,13 @@ import { type Child } from "hono/jsx";
 import { Link } from "honox/server";
 import { FAVICON_URL, SITE_TITLE } from "../lib/config";
 
+const containerWidth = (wide: boolean): string => {
+  if (wide) {
+    return "max-w-6xl";
+  }
+  return "max-w-3xl";
+};
+
 interface JsonLd {
   "@context": string;
   "@type": string;
@@ -14,6 +21,7 @@ interface LayoutProps {
   ogType?: "website" | "article";
   ogUrl: string;
   jsonLd?: JsonLd;
+  wide?: boolean;
   children: Child;
 }
 
@@ -23,6 +31,7 @@ export default function Layout({
   ogType = "website",
   ogUrl,
   jsonLd,
+  wide = false,
   children,
 }: LayoutProps) {
   return (
@@ -50,7 +59,7 @@ export default function Layout({
         )}
       </head>
       <body class="min-h-screen bg-base-200">
-        <div class="container mx-auto max-w-3xl px-4 py-6">{children}</div>
+        <div class={`container mx-auto ${containerWidth(wide)} px-4 py-6`}>{children}</div>
       </body>
     </html>
   );

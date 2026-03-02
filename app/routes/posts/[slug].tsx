@@ -2,6 +2,7 @@ import { ssgParams } from "hono/ssg";
 import { createRoute } from "honox/factory";
 import ArticleNav from "../../components/article-nav";
 import Layout from "../../components/layout";
+import { TocLayout, shouldShowToc } from "../../components/toc";
 import UpdatedAt from "../../components/updated-at";
 import { SITE_TITLE, SITE_URL } from "../../lib/config";
 import { type PostMeta, getAdjacentPosts, getAllPosts, getPostBySlug } from "../../lib/posts";
@@ -77,7 +78,6 @@ export default createRoute(
       return c.notFound();
     }
 
-    const htmlContent = post.html;
     const { prev, next } = getAdjacentPosts(slug);
 
     const jsonLd = {
@@ -97,43 +97,46 @@ export default createRoute(
         ogType="article"
         ogUrl={`${SITE_URL}/posts/${slug}`}
         jsonLd={jsonLd}
+        wide={shouldShowToc(post.toc)}
       >
-        <ArticleNav />
-        <header class="card bg-base-100 shadow-sm mb-6">
-          <div class="card-body p-6">
-            <h1 class="text-2xl sm:text-3xl font-bold">{post.meta.title}</h1>
-            <div class="text-sm opacity-70 mt-1">
-              <time>{new Date(post.meta.createdAt).toLocaleDateString("ja-JP")}</time>
-              <UpdatedAt createdAt={post.meta.createdAt} updatedAt={post.meta.updatedAt} />
-              {post.meta.category !== "" && (
-                <span>
-                  {" "}
-                  •{" "}
-                  <a href={`/category/${post.meta.category}`} class="link link-hover">
-                    {post.meta.category}
-                  </a>
-                </span>
+        <TocLayout items={post.toc}>
+          <ArticleNav />
+          <header class="card bg-base-100 shadow-sm mb-6">
+            <div class="card-body p-6">
+              <h1 class="text-2xl sm:text-3xl font-bold">{post.meta.title}</h1>
+              <div class="text-sm opacity-70 mt-1">
+                <time>{new Date(post.meta.createdAt).toLocaleDateString("ja-JP")}</time>
+                <UpdatedAt createdAt={post.meta.createdAt} updatedAt={post.meta.updatedAt} />
+                {post.meta.category !== "" && (
+                  <span>
+                    {" "}
+                    •{" "}
+                    <a href={`/category/${post.meta.category}`} class="link link-hover">
+                      {post.meta.category}
+                    </a>
+                  </span>
+                )}
+              </div>
+              {post.meta.tags.length > 0 && (
+                <div class="flex flex-wrap gap-2 mt-3">
+                  {post.meta.tags.map((tag) => (
+                    <a class="badge badge-primary badge-outline" key={tag} href={`/tag/${tag}`}>
+                      {tag}
+                    </a>
+                  ))}
+                </div>
               )}
             </div>
-            {post.meta.tags.length > 0 && (
-              <div class="flex flex-wrap gap-2 mt-3">
-                {post.meta.tags.map((tag) => (
-                  <a class="badge badge-primary badge-outline" key={tag} href={`/tag/${tag}`}>
-                    {tag}
-                  </a>
-                ))}
-              </div>
-            )}
-          </div>
-        </header>
+          </header>
 
-        <article class="card bg-base-100 shadow-sm">
-          <div
-            class="card-body p-6 prose-article"
-            dangerouslySetInnerHTML={{ __html: htmlContent }}
-          ></div>
-        </article>
-        <PostNav next={next} prev={prev} />
+          <article class="card bg-base-100 shadow-sm">
+            <div
+              class="card-body p-6 prose-article"
+              dangerouslySetInnerHTML={{ __html: post.html }}
+            ></div>
+          </article>
+          <PostNav next={next} prev={prev} />
+        </TocLayout>
         <script dangerouslySetInnerHTML={{ __html: copyScript }} />
       </Layout>,
     );

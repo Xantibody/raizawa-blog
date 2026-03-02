@@ -11,10 +11,10 @@ describe("markdown rendering with fixtures", () => {
     const content = readFileSync(join(fixturesDir, "test-post.md"), "utf-8");
     const { content: markdown } = matter(content);
 
-    const html = await renderMarkdown(markdown);
+    const { html } = await renderMarkdown(markdown);
 
     // Check basic rendering
-    expect(html).toContain("<h2>");
+    expect(html).toContain("<h2 ");
     expect(html).toContain("テスト記事です");
 
     // Check code blocks with Shiki

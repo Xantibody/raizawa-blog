@@ -1,6 +1,10 @@
 @import "tailwindcss" source("../app");
 @plugin "daisyui";
 
+html {
+  scroll-behavior: smooth;
+}
+
 @theme {
   /* Golden Ratio (phi = 1.618) Design Tokens */
 
@@ -202,6 +206,18 @@ pre.shiki .line.highlighted.warning {
 }
 .ogp-site {
   @apply block text-xs text-base-content/50;
+}
+
+/* Heading scroll offset for anchor links */
+.prose-article h2[id],
+.prose-article h3[id],
+.prose-article h4[id] {
+  scroll-margin-top: 1.5rem;
+}
+
+/* TOC active link */
+.toc-link.active {
+  @apply font-bold text-primary;
 }
 
 /* Post navigation */

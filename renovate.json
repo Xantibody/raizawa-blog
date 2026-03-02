@@ -3,5 +3,7 @@
   "extends": ["config:recommended"],
   "nix": {
     "enabled": true
-  }
+  },
+  "minimumReleaseAge": "3 days",
+  "automerge": true
 }

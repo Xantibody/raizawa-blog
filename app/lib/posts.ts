@@ -1,6 +1,7 @@
 import { matter } from "gray-matter-es";
 import gitTimestamps from "virtual:git-timestamps";
 import renderMarkdown from "./markdown";
+import { type TocItem } from "./toc";
 
 // Type definitions
 interface PostMeta {
@@ -16,6 +17,7 @@ interface Post {
   content: string;
   html: string;
   meta: PostMeta;
+  toc: TocItem[];
 }
 
 // Import all markdown files at build time
@@ -113,9 +115,9 @@ const getPostBySlug = async (slug: string): Promise<Post | undefined> => {
   const { content: markdownContent, data } = matter(content);
   const meta = parsePostMeta(slug, data);
 
-  const html = await renderMarkdown(markdownContent);
+  const { html, toc } = await renderMarkdown(markdownContent);
 
-  return { content: markdownContent, html, meta };
+  return { content: markdownContent, html, meta, toc };
 };
 
 const getPostsByCategory = (category: string): PostMeta[] => {
@@ -187,7 +189,7 @@ const getPostsForPage = (page: number): PostMeta[] => {
   return posts.slice(start, end);
 };
 
-export type { AdjacentPosts, Post, PostMeta };
+export type { AdjacentPosts, Post, PostMeta, TocItem };
 export {
   getAdjacentPosts,
   getAllPosts,

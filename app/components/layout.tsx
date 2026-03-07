@@ -81,17 +81,22 @@ export default function Layout({
       <body class="min-h-screen bg-base-200">
         <div class="drawer">
           <input id={DRAWER_ID} type="checkbox" class="drawer-toggle" />
-          <div class="drawer-content flex flex-col">
-            <div class="navbar bg-base-100 shadow-sm">
-              <div class="flex-none">
-                <label for={DRAWER_ID} aria-label="open sidebar" class="btn btn-square btn-ghost">
-                  <HamburgerIcon />
-                </label>
-              </div>
-              <div class="flex-1">
-                <a href="/" class="btn btn-ghost text-xl">
-                  {SITE_TITLE}
-                </a>
+          <div class="drawer-content flex flex-col pt-16">
+            <div
+              id="header-wrapper"
+              class="fixed top-0 left-0 right-0 z-40 transition-opacity duration-300"
+            >
+              <div class="navbar bg-base-100 shadow-sm">
+                <div class="flex-none">
+                  <label for={DRAWER_ID} aria-label="open sidebar" class="btn btn-square btn-ghost">
+                    <HamburgerIcon />
+                  </label>
+                </div>
+                <div class="flex-1">
+                  <a href="/" class="btn btn-ghost text-xl">
+                    {SITE_TITLE}
+                  </a>
+                </div>
               </div>
             </div>
             <div class={`container mx-auto ${containerClass} px-4 py-6`}>{children}</div>

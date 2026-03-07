@@ -212,7 +212,7 @@ pre.shiki .line.highlighted.warning {
 .prose-article h2[id],
 .prose-article h3[id],
 .prose-article h4[id] {
-  scroll-margin-top: 1.5rem;
+  scroll-margin-top: 5rem; /* navbar(4rem) + margin(1rem) */
 }
 
 /* TOC active link */

@@ -221,11 +221,13 @@ pre.shiki .line.highlighted.warning {
   }
 }
 
-/* Heading scroll offset for anchor links */
-.prose-article h2[id],
-.prose-article h3[id],
-.prose-article h4[id] {
-  scroll-margin-top: 5rem; /* navbar(4rem) + margin(1rem) */
+/* Heading scroll offset for anchor links (mobile only, header stays visible) */
+@media (max-width: 1023px) {
+  .prose-article h2[id],
+  .prose-article h3[id],
+  .prose-article h4[id] {
+    scroll-margin-top: 5rem; /* navbar(4rem) + margin(1rem) */
+  }
 }
 
 /* TOC active link */

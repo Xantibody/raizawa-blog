@@ -208,11 +208,36 @@ pre.shiki .line.highlighted.warning {
   @apply block text-xs text-base-content/50;
 }
 
-/* Heading scroll offset for anchor links */
-.prose-article h2[id],
-.prose-article h3[id],
-.prose-article h4[id] {
-  scroll-margin-top: 1.5rem;
+/* Auto-hide header on scroll (desktop only) */
+@media (min-width: 1024px) {
+  #header-wrapper[data-scrolled] {
+    opacity: 0;
+    pointer-events: none;
+  }
+  /* Thin hover zone at viewport top to detect cursor */
+  #header-wrapper::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 1rem;
+    pointer-events: auto;
+  }
+  #header-wrapper[data-scrolled]:hover,
+  #header-wrapper:focus-within {
+    opacity: 1;
+    pointer-events: auto;
+  }
+}
+
+/* Heading scroll offset for anchor links (mobile only, header stays visible) */
+@media (max-width: 1023px) {
+  .prose-article h2[id],
+  .prose-article h3[id],
+  .prose-article h4[id] {
+    scroll-margin-top: 5rem; /* navbar(4rem) + margin(1rem) */
+  }
 }
 
 /* TOC active link */

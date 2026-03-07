@@ -2,26 +2,26 @@ import { describe, expect, it } from "vitest";
 import { getPageHref, getPageNumbers, getPrevHref } from "./pagination";
 
 describe("getPrevHref", () => {
-  it("should return / for page 2", () => {
-    expect(getPrevHref(2)).toBe("/");
+  it("should return /posts/ for page 2", () => {
+    expect(getPrevHref(2)).toBe("/posts");
   });
 
-  it("should return /page/{n-1} for page 3+", () => {
-    expect(getPrevHref(3)).toBe("/page/2");
-    expect(getPrevHref(5)).toBe("/page/4");
-    expect(getPrevHref(100)).toBe("/page/99");
+  it("should return /posts/page/{n-1} for page 3+", () => {
+    expect(getPrevHref(3)).toBe("/posts/page/2");
+    expect(getPrevHref(5)).toBe("/posts/page/4");
+    expect(getPrevHref(100)).toBe("/posts/page/99");
   });
 });
 
 describe("getPageHref", () => {
-  it("should return / for page 1", () => {
-    expect(getPageHref(1)).toBe("/");
+  it("should return /posts/ for page 1", () => {
+    expect(getPageHref(1)).toBe("/posts");
   });
 
-  it("should return /page/{n} for page 2+", () => {
-    expect(getPageHref(2)).toBe("/page/2");
-    expect(getPageHref(5)).toBe("/page/5");
-    expect(getPageHref(100)).toBe("/page/100");
+  it("should return /posts/page/{n} for page 2+", () => {
+    expect(getPageHref(2)).toBe("/posts/page/2");
+    expect(getPageHref(5)).toBe("/posts/page/5");
+    expect(getPageHref(100)).toBe("/posts/page/100");
   });
 });
 

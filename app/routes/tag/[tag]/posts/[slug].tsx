@@ -1,6 +1,5 @@
 import { ssgParams } from "hono/ssg";
 import { createRoute } from "honox/factory";
-import ArticleNav from "../../../../components/article-nav";
 import Layout from "../../../../components/layout";
 import { TocLayout, shouldShowToc } from "../../../../components/toc";
 import UpdatedAt from "../../../../components/updated-at";
@@ -125,12 +124,6 @@ export default createRoute(
         wide={shouldShowToc(post.toc)}
       >
         <TocLayout items={post.toc}>
-          <ArticleNav
-            breadcrumbs={[
-              { href: "/tag", label: "タグ一覧" },
-              { href: `/tag/${tag}`, label: tag },
-            ]}
-          />
           <header class="card bg-base-100 shadow-sm mb-6">
             <div class="card-body p-6">
               <h1 class="text-2xl sm:text-3xl font-bold">{post.meta.title}</h1>

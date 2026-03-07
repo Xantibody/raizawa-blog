@@ -20,7 +20,7 @@ const scrollspyScript = `{
         if (activeLink) activeLink.classList.add('active');
       }
     }
-  }, { rootMargin: '-5rem 0px -80% 0px' });
+  }, { rootMargin: '0px 0px -80% 0px' });
 
   headings.forEach(h => observer.observe(h));
 }`;

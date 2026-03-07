@@ -15,7 +15,7 @@ export default createRoute((c) => {
     <Layout
       title={`ブログ記事一覧 - ${SITE_TITLE}`}
       description={SITE_DESCRIPTION}
-      ogUrl={`${SITE_URL}/posts/`}
+      ogUrl={`${SITE_URL}/posts`}
     >
       <ArticleNav />
       <header class="card bg-base-100 shadow-sm mb-6">

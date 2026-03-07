@@ -103,7 +103,7 @@ export default function Layout({
                 <a href="/">ホーム</a>
               </li>
               <li>
-                <a href="/posts/">ブログ</a>
+                <a href="/posts">ブログ</a>
               </li>
               <li>
                 <a href="/category">カテゴリ</a>

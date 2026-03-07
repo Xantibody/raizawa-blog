@@ -20,7 +20,7 @@ export default createRoute((c) => {
             <p class="text-base-content/70 mt-2">{SITE_DESCRIPTION}</p>
             <div class="divider" />
             <div class="flex flex-col gap-3 w-full">
-              <a href="/posts/" class="btn btn-primary">
+              <a href="/posts" class="btn btn-primary">
                 ブログ記事一覧
               </a>
               <a

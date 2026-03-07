@@ -3,7 +3,7 @@ import { getPageHref, getPageNumbers, getPrevHref } from "./pagination";
 
 describe("getPrevHref", () => {
   it("should return /posts/ for page 2", () => {
-    expect(getPrevHref(2)).toBe("/posts/");
+    expect(getPrevHref(2)).toBe("/posts");
   });
 
   it("should return /posts/page/{n-1} for page 3+", () => {
@@ -15,7 +15,7 @@ describe("getPrevHref", () => {
 
 describe("getPageHref", () => {
   it("should return /posts/ for page 1", () => {
-    expect(getPageHref(1)).toBe("/posts/");
+    expect(getPageHref(1)).toBe("/posts");
   });
 
   it("should return /posts/page/{n} for page 2+", () => {

@@ -3,7 +3,7 @@ const SECOND_PAGE = 2;
 
 /**
  * Get the href for the previous page button.
- * Page 1 is at "/" and page 2+ is at "/page/{n}".
+ * Page 1 is at "/posts" and page 2+ is at "/posts/page/{n}".
  *
  * @param {number} currentPage - The current page number
  * @returns {string} The href string for the previous page
@@ -17,7 +17,7 @@ const getPrevHref = (currentPage: number): string => {
 
 /**
  * Get the href for a specific page number.
- * Page 1 is at "/" and page 2+ is at "/page/{n}".
+ * Page 1 is at "/posts" and page 2+ is at "/posts/page/{n}".
  *
  * @param {number} page - The page number to get the href for
  * @returns {string} The href string for the page

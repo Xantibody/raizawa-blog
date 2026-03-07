@@ -1,6 +1,5 @@
 import { ssgParams } from "hono/ssg";
 import { createRoute } from "honox/factory";
-import ArticleNav from "../../components/article-nav";
 import Layout from "../../components/layout";
 import { SITE_TITLE, SITE_URL } from "../../lib/config";
 import { getPostsByTag, getTags } from "../../lib/posts";
@@ -24,7 +23,6 @@ export default createRoute(
         description={`${tag}の記事一覧`}
         ogUrl={`${SITE_URL}/tag/${tag}`}
       >
-        <ArticleNav breadcrumbs={[{ href: "/tag", label: "タグ一覧" }]} />
         <header class="card bg-base-100 shadow-sm mb-6">
           <div class="card-body p-6">
             <h1 class="text-2xl sm:text-3xl font-bold">{tag}</h1>

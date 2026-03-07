@@ -40,7 +40,7 @@ export default function Pagination({ currentPage, totalPages }: PaginationProps)
           );
         })}
         {currentPage < totalPages && (
-          <a href={`/page/${currentPage + 1}`} class="join-item btn btn-sm">
+          <a href={`/posts/page/${currentPage + 1}`} class="join-item btn btn-sm">
             »
           </a>
         )}

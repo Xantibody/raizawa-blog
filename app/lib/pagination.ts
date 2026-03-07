@@ -10,9 +10,9 @@ const SECOND_PAGE = 2;
  */
 const getPrevHref = (currentPage: number): string => {
   if (currentPage === SECOND_PAGE) {
-    return "/";
+    return "/posts/";
   }
-  return `/page/${currentPage - 1}`;
+  return `/posts/page/${currentPage - 1}`;
 };
 
 /**
@@ -24,9 +24,9 @@ const getPrevHref = (currentPage: number): string => {
  */
 const getPageHref = (page: number): string => {
   if (page === FIRST_PAGE) {
-    return "/";
+    return "/posts/";
   }
-  return `/page/${page}`;
+  return `/posts/page/${page}`;
 };
 
 /**

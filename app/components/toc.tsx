@@ -62,14 +62,7 @@ const MobileToc = ({ items }: { items: TocItem[] }) => (
   </details>
 );
 
-const DesktopToc = ({ items }: { items: TocItem[] }) => (
-  <aside class="hidden lg:block">
-    <div class="sticky top-6 max-h-[calc(100vh-3rem)] overflow-y-auto bg-base-100 rounded-lg shadow-sm p-4">
-      <h2 class="font-bold mb-2 text-sm">目次</h2>
-      <TocList items={items} />
-    </div>
-  </aside>
-);
+const TOC_DRAWER_ID = "toc-drawer";
 
 const TocLayout = ({ items, children }: { items: TocItem[]; children: Child }) => {
   if (!shouldShowToc(items)) {
@@ -77,11 +70,18 @@ const TocLayout = ({ items, children }: { items: TocItem[]; children: Child }) =
   }
   return (
     <>
-      <div class="lg:grid lg:grid-cols-[240px_1fr] lg:gap-8">
-        <DesktopToc items={items} />
-        <div>
+      <div class="drawer drawer-end lg:drawer-open">
+        <input id={TOC_DRAWER_ID} type="checkbox" class="drawer-toggle" />
+        <div class="drawer-content">
           <MobileToc items={items} />
           {children}
+        </div>
+        <div class="drawer-side z-40">
+          <label for={TOC_DRAWER_ID} aria-label="close table of contents" class="drawer-overlay" />
+          <div class="bg-base-200 min-h-full w-60 p-4">
+            <h2 class="font-bold mb-2 text-sm">目次</h2>
+            <TocList items={items} />
+          </div>
         </div>
       </div>
       <script dangerouslySetInnerHTML={{ __html: scrollspyScript }} />

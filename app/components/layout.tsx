@@ -43,6 +43,17 @@ const HamburgerIcon = () => (
 
 const DRAWER_ID = "nav-drawer";
 
+const headerScrollScript = `{
+  const h = document.getElementById('header-wrapper');
+  if (h) {
+    let s = false;
+    addEventListener('scroll', () => {
+      const n = scrollY > 0;
+      if (n !== s) { s = n; s ? h.dataset.scrolled = '' : delete h.dataset.scrolled; }
+    }, { passive: true });
+  }
+}`;
+
 export default function Layout({
   title,
   description,
@@ -119,6 +130,7 @@ export default function Layout({
             </ul>
           </div>
         </div>
+        <script dangerouslySetInnerHTML={{ __html: headerScrollScript }} />
       </body>
     </html>
   );

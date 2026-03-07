@@ -214,6 +214,16 @@ pre.shiki .line.highlighted.warning {
     opacity: 0;
     pointer-events: none;
   }
+  /* Thin hover zone at viewport top to detect cursor */
+  #header-wrapper::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 1rem;
+    pointer-events: auto;
+  }
   #header-wrapper[data-scrolled]:hover,
   #header-wrapper:focus-within {
     opacity: 1;

@@ -76,7 +76,7 @@ const TocLayout = ({ items, children }: { items: TocItem[]; children: Child }) =
           <MobileToc items={items} />
           {children}
         </div>
-        <div class="drawer-side z-40">
+        <div class="drawer-side z-30">
           <label for={TOC_DRAWER_ID} aria-label="close table of contents" class="drawer-overlay" />
           <div class="bg-base-200 min-h-full w-60 p-4">
             <h2 class="font-bold mb-2 text-sm">目次</h2>

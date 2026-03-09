@@ -19,7 +19,14 @@ md.use(anchor, {
       text: info.title,
     });
   },
-  permalink: false,
+  permalink: anchor.permalink.linkAfterHeader({
+    assistiveText: (title: string) => `「${title}」へのリンク`,
+    class: "header-anchor",
+    placement: "after",
+    style: "aria-label",
+    symbol: "#",
+    wrapper: ['<div class="heading-wrapper">', "</div>"],
+  }),
 });
 
 // Shiki plugin (initialized lazily)

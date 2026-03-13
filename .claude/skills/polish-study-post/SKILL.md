@@ -1,75 +1,92 @@
 ---
 name: polish-study-post
-description: Format study blog posts with section hierarchy, author comments, and quotes.
+description: Format and create Rust study blog posts from raw memo text. Use this skill when the user pastes raw study notes, asks to format a study post, mentions "勉強" post formatting, or wants to create a new blog post from their study memo. Also triggers when the user provides a file path to an existing study post that needs polishing.
 ---
 
 # Polish Study Post
 
-Format study blog posts into clean, well-structured markdown following the established patterns of this blog.
+Transform raw study memos into well-structured blog posts, or polish existing study posts.
 
 ## Absolute Rule: Never Modify Original Text
 
-**The original text must NEVER be changed, reworded, or rephrased. Only markdown formatting may be added around the original text.**
-
-Markdown syntax (`` ` ``, `>`, `-`, `#`, etc.) may be **added** to the text, but the words themselves must remain exactly as the author wrote them.
+The original text must NEVER be changed, reworded, or rephrased. Only markdown formatting may be added around the original text. Markdown syntax (`` ` ``, `>`, `-`, `#`, etc.) may be **added**, but the words themselves must remain exactly as the author wrote them.
 
 ## Workflow
 
-1. **Identify the file**: If the user provides a file path as an argument, use that. Otherwise, ask which file to process.
+### Mode A: Raw memo → New post (primary)
 
-2. **Read the file**: Read the specified file to understand its content.
+The user pastes raw study notes directly in the conversation or provides a raw text file.
 
-3. **Apply formatting rules**: Apply all formatting rules below (both generic markdown and study-post-specific).
+1. Read the raw memo text
+2. Ask the user for the post title (e.g., "Rustの勉強[unsafe その1]") — suggest one based on the content
+3. Apply formatting rules to the memo content
+4. Create the post file:
+   - Directory: `app/posts/`
+   - Filename: `YYYY-MM-DD_N.md` (N increments if the date already has posts)
+   - Frontmatter: use the rust template format (title, createdAt, category: ぎじゅつ, tags: [Rust])
+   - `createdAt`: current timestamp in `YYYY-MM-DDTHH:MM` format
+5. Show the formatted content to the user for review
+6. After approval, write the file
 
-4. **Show the diff**: Present the changes to the user for review before writing.
+### Mode B: Polish existing file
 
-5. **Write the result**: After user approval, write the formatted content back to the file.
+The user provides a path to an existing post file.
+
+1. Read the file
+2. Apply formatting rules
+3. Show the diff for review
+4. After approval, write back
 
 ## Section Structure
 
-Study posts follow this fixed section hierarchy. The author may write content as a stream without proper section placement. Place the section headers at appropriate positions based on the content flow.
+Place content into these fixed sections based on the content flow:
 
 ```markdown
 ## はじめに
 
-<!-- Intro: what the author is studying, context, general thoughts -->
-<!-- Contains: study link, "を読んでいる", and general comments like "光らせる" thoughts -->
+<!-- Study reference link + "を読んでいる" -->
 
 ## お勉強
 
-<!-- Study URL for the day and opening thoughts about the session -->
-<!-- Contains: today's study URL, "今日はここ", review of previous session -->
+<!-- Today's study URL, session comments (mood, time, what to study today) -->
 
 ### メモ
 
-<!-- Study notes: observations, code examples, quotes from study material -->
-<!-- This is the main body of the post -->
-<!-- Optional #### subsections for distinct topics within notes -->
+<!-- Main body: notes, code, quotes, reactions -->
 
 ## まとめ
 
-<!-- Summary: key takeaways, reflections -->
-<!-- End with: next study URL, optional quiz/問題 -->
+<!-- Key takeaways, reflections, next study URL -->
 ```
 
-- Do not add, remove, or reorder these sections.
-- `####` subsections under `### メモ` are optional and author-driven; do not create them.
-- If the author wrote "まとめ" as plain text (not a header), convert it to `## まとめ`.
+Rules:
+- If the author wrote "まとめ" as plain text, convert it to `## まとめ`
+- `####` subsections under `### メモ` are author-driven; do not create them
+- The first URL in the memo (the overall study reference like `doc.rust-jp.rs/book-ja/`) goes in `## はじめに`
+- A more specific URL (with anchors/subsections) that appears before the main notes goes in `## お勉強`
+- A URL at the end (after "まとめ" / "次ここ" / "つぎここ") goes in `## まとめ`
 
-## Formatting Rules
+## Content Classification
 
-### Author Comments → `-` List Items
+The raw memo is a stream of text mixing the author's thoughts with material from the study source. The core challenge is distinguishing between them. Use these heuristics:
 
-Lines where the author writes their own thoughts, reactions, or observations should be formatted as unordered list items using `-`.
+### Author comments → `-` list items
+
+The author's own thoughts, reactions, observations. Characteristics:
+- Casual, first-person tone ("なるほど", "うげ", "ほんとそれ", "理解", "ここ大事そう")
+- Short reactions or opinions
+- Questions or doubts ("〜って出てきたんだっけ", "記憶ねぇ")
+- Judgments about the material ("便利そう", "やらないほうがよさそう", "クソコードやな")
+- Comments about their own state ("体しんどいなー", "ヤバい全然頭が働かない")
 
 ```markdown
-- なるほど、何がなるほどかはなぞだが
-- ここ大事そうか
+- なるほどな、`&`でいい
+- 先回りされてる
 ```
 
-### Related Sub-thoughts → `  -` Nested List Items
+### Follow-up thoughts → `  -` nested list items (2-space indent)
 
-When an author comment is a follow-up or elaboration of the previous comment, indent it as a nested list item (2-space indent).
+When a comment elaborates on or directly follows up the previous comment:
 
 ```markdown
 - ここから
@@ -77,54 +94,86 @@ When an author comment is a follow-up or elaboration of the previous comment, in
   - 真相は謎
 ```
 
-### Reference/Book Quotes → `>` Block Quotes
+Pattern: if the raw text has a short comment followed immediately by related sub-thoughts (often with indentation or on the next line), nest them.
 
-Text quoted from the study material (book, documentation, articles) should be formatted as block quotes using `>`.
+### Study material quotes → `>` block quotes
+
+Text from the book, documentation, or reference material. Characteristics:
+- Formal, explanatory tone — reads like documentation or textbook prose
+- Long sentences with technical explanations
+- Often contains phrases like "〜ことです", "〜ください", "〜でしょう", "〜ません"
+- Descriptions of how something works, rather than reactions to it
+- Lists of concepts from the source (e.g., enumerated capabilities of a feature)
 
 ```markdown
-> 値と`List`を指す`Rc<T>`を保持するようになりました
+> `unsafe`は、借用チェッカーや他のRustの安全性チェックを無効にしないことを理解するのは重要なことです
 ```
 
-### Distinguishing Comments from Quotes
+Indented lists from the source material (like feature enumerations) also become block quotes:
 
-- If the line is the author's own words → `-` list item
-- If the line is copied/referenced from the study material → `>` block quote
-- When uncertain, leave the line as-is and ask the user
+```markdown
+> 生ポインタを参照外しすること
+> `unsafe`な関数やメソッドを呼ぶこと
+> 可変で静的な変数にアクセスしたり変更すること
+> `unsafe`なトレイトを実装すること
+```
 
-### Code
+### When uncertain
 
-- Inline code for technical terms: wrap Rust keywords, types, macros, etc. in backticks (e.g., `Rc<T>`, `RefCell<T>`, `mut`, `panic!`, `move`, `unsafe`, `Box<T>`)
-- Apply inline code in both author comments and book quotes
-- Code blocks should use triple backticks with `rust` language identifier
-- Terminal/error output should use triple backticks with `bash` language identifier
+If a line could be either, look at the surrounding context:
+- Does it follow a block quote and react to it? → author comment
+- Does it explain a concept in textbook-like language? → block quote
+- Still ambiguous? → leave as-is and ask the user about the specific lines
+
+## Code Formatting
+
+### Code blocks
+
+Raw memos contain Rust code without fences. Detect code by looking for:
+- `let`, `fn`, `match`, `struct`, `enum`, `impl`, `use`, `mod`, `pub`, `trait`
+- Rust syntax patterns: `=>`, `::`, `println!`, `vec![]`, type annotations
+- Multiple consecutive lines that form a coherent code block
+
+Wrap in fenced code blocks:
+
+````markdown
+```rust
+let robot_name = Some(String::from("Bors"));
+```
+````
+
+- Terminal/error output uses ````bash`` language identifier
+- Preserve code indentation as-is
 - Fix markdown escapes inside code fences (e.g., `\*` → `*`)
-- Preserve code indentation as-is; do not fix inconsistent indentation
 
-### Block Quotes
+### Inline code
 
-- Ensure `>` block quotes have proper spacing: `> text` (space after `>`)
-- Multi-line block quotes should have `>` on each line, including blank lines (`>`)
+Wrap technical terms in backticks: Rust keywords, types, macros, functions, operators.
+Examples: `Rc<T>`, `RefCell<T>`, `mut`, `panic!`, `move`, `unsafe`, `Box<T>`, `ref`, `ref mut`, `Some`, `None`, `&`
+
+Apply inline code in both author comments and block quotes.
+
+## General Formatting
+
+### URLs
+- Bare URLs → wrap in angle brackets: `<https://example.com>`
+- Fix broken link syntax
+
+### Block quotes
+- Space after `>`: `> text`
+- Multi-line quotes: `>` on each line including blank lines
 
 ### Lists
-
-- Unordered lists should use `-` with a single space: `- item`
-- Nested lists should be indented with 2 spaces per level
-- Ensure blank lines before and after list blocks for proper rendering
+- Use `-` with single space: `- item`
+- Nested: 2-space indent per level
+- Blank lines before and after list blocks
 
 ### Headings
+- Space after `#`
+- Blank line before and after headings
 
-- Ensure space after `#`: `# Heading` not `#Heading`
-- Ensure blank line before and after headings
-- Do not change the heading hierarchy chosen by the author
-
-### Links
-
-- Bare URLs should be wrapped in angle brackets: `<https://example.com>`
-- Fix broken markdown link syntax: `[text](url)`
-
-### General Cleanup
-
+### Cleanup
 - Remove trailing whitespace
-- Ensure file ends with a single newline
-- Normalize multiple consecutive blank lines to a single blank line
-- Preserve frontmatter (YAML between `---` fences) as-is, but ensure `---` is on its own line
+- File ends with single newline
+- Normalize multiple blank lines to one
+- Preserve frontmatter as-is

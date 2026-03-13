@@ -60,6 +60,7 @@ Place content into these fixed sections based on the content flow:
 ```
 
 Rules:
+
 - If the author wrote "まとめ" as plain text, convert it to `## まとめ`
 - `####` subsections under `### メモ` are author-driven; do not create them
 - The first URL in the memo (the overall study reference like `doc.rust-jp.rs/book-ja/`) goes in `## はじめに`
@@ -73,6 +74,7 @@ The raw memo is a stream of text mixing the author's thoughts with material from
 ### Author comments → `-` list items
 
 The author's own thoughts, reactions, observations. Characteristics:
+
 - Casual, first-person tone ("なるほど", "うげ", "ほんとそれ", "理解", "ここ大事そう")
 - Short reactions or opinions
 - Questions or doubts ("〜って出てきたんだっけ", "記憶ねぇ")
@@ -99,6 +101,7 @@ Pattern: if the raw text has a short comment followed immediately by related sub
 ### Study material quotes → `>` block quotes
 
 Text from the book, documentation, or reference material. Characteristics:
+
 - Formal, explanatory tone — reads like documentation or textbook prose
 - Long sentences with technical explanations
 - Often contains phrases like "〜ことです", "〜ください", "〜でしょう", "〜ません"
@@ -121,6 +124,7 @@ Indented lists from the source material (like feature enumerations) also become 
 ### When uncertain
 
 If a line could be either, look at the surrounding context:
+
 - Does it follow a block quote and react to it? → author comment
 - Does it explain a concept in textbook-like language? → block quote
 - Still ambiguous? → leave as-is and ask the user about the specific lines
@@ -130,6 +134,7 @@ If a line could be either, look at the surrounding context:
 ### Code blocks
 
 Raw memos contain Rust code without fences. Detect code by looking for:
+
 - `let`, `fn`, `match`, `struct`, `enum`, `impl`, `use`, `mod`, `pub`, `trait`
 - Rust syntax patterns: `=>`, `::`, `println!`, `vec![]`, type annotations
 - Multiple consecutive lines that form a coherent code block
@@ -142,7 +147,7 @@ let robot_name = Some(String::from("Bors"));
 ```
 ````
 
-- Terminal/error output uses ````bash`` language identifier
+- Terminal/error output uses ```bash` language identifier
 - Preserve code indentation as-is
 - Fix markdown escapes inside code fences (e.g., `\*` → `*`)
 
@@ -156,23 +161,28 @@ Apply inline code in both author comments and block quotes.
 ## General Formatting
 
 ### URLs
+
 - Bare URLs → wrap in angle brackets: `<https://example.com>`
 - Fix broken link syntax
 
 ### Block quotes
+
 - Space after `>`: `> text`
 - Multi-line quotes: `>` on each line including blank lines
 
 ### Lists
+
 - Use `-` with single space: `- item`
 - Nested: 2-space indent per level
 - Blank lines before and after list blocks
 
 ### Headings
+
 - Space after `#`
 - Blank line before and after headings
 
 ### Cleanup
+
 - Remove trailing whitespace
 - File ends with single newline
 - Normalize multiple blank lines to one

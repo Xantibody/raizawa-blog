@@ -90,7 +90,7 @@ const main = async (): Promise<void> => {
 
   if (args.length === 1) {
     console.error("Usage: bun run new-post -- <template> <title>");
-    console.error("Example: bun run new-post -- rust \"Rustの勉強[unsafe その3]\"");
+    console.error('Example: bun run new-post -- rust "Rustの勉強[unsafe その3]"');
     process.exit(1);
   }
 

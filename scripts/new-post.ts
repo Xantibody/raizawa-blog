@@ -55,6 +55,19 @@ const runInteractive = async (rl: Interface, templates: string[]): Promise<void>
   openInEditor(outputPath);
 };
 
+const runNonInteractive = (templates: string[], templateName: string, title: string): void => {
+  const templateFile = `${templateName}.md`;
+  if (!templates.includes(templateFile)) {
+    const validNames = templates.map(getTemplateName).join(", ");
+    console.error(`Error: Unknown template "${templateName}"`);
+    console.error(`Valid templates: ${validNames}`);
+    process.exit(1);
+  }
+
+  const outputPath = createPost(templateFile, title);
+  printResult(outputPath, title);
+};
+
 const main = async (): Promise<void> => {
   const templates = getTemplates();
 
@@ -62,14 +75,28 @@ const main = async (): Promise<void> => {
     throw new Error("No templates found. Create a *.md file in scripts/templates/");
   }
 
-  const rl = createInterface({ input: process.stdin, output: process.stdout });
+  const args = process.argv.slice(2);
 
-  try {
-    await runInteractive(rl, templates);
-  } catch (error) {
-    rl.close();
-    throw error;
+  if (args.length === 0) {
+    const rl = createInterface({ input: process.stdin, output: process.stdout });
+    try {
+      await runInteractive(rl, templates);
+    } catch (error) {
+      rl.close();
+      throw error;
+    }
+    return;
   }
+
+  if (args.length === 1) {
+    console.error("Usage: bun run new-post -- <template> <title>");
+    console.error("Example: bun run new-post -- rust \"Rustの勉強[unsafe その3]\"");
+    process.exit(1);
+  }
+
+  const templateName = args[0];
+  const title = args.slice(1).join(" ");
+  runNonInteractive(templates, templateName, title);
 };
 
 await main();

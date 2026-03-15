@@ -20,13 +20,13 @@ The user pastes raw study notes directly in the conversation or provides a raw t
 1. Read the raw memo text
 2. Ask the user for the post title (e.g., "Rustの勉強[unsafe その1]") — suggest one based on the content
 3. Apply formatting rules to the memo content
-4. Create the post file:
-   - Directory: `app/posts/`
-   - Filename: `YYYY-MM-DD_N.md` (N increments if the date already has posts)
-   - Frontmatter: use the rust template format (title, createdAt, category: ぎじゅつ, tags: [Rust])
-   - `createdAt`: current timestamp in `YYYY-MM-DDTHH:MM` format
-5. Show the formatted content to the user for review
-6. After approval, write the file
+4. Show the formatted content to the user for review
+5. After approval, create the post file using the CLI:
+   ```bash
+   bun run new-post -- rust "<title>"
+   ```
+   This creates `app/posts/YYYY-MM-DD_N.md` with correct frontmatter (title, createdAt, category, tags) automatically. The template name corresponds to a file in `scripts/templates/` (e.g., `rust`, `gijutsu`, `shumi`, `sonota`).
+6. Replace the body of the created file (everything after the frontmatter `---`) with the formatted content
 
 ### Mode B: Polish existing file
 

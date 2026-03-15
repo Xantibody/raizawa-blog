@@ -163,6 +163,7 @@ Apply inline code in both author comments and block quotes.
 ### URLs
 
 - Bare URLs → wrap in angle brackets: `<https://example.com>`
+- URLs must be on their own line (for OGP card rendering). Do not place URLs on the same line as other text
 - Fix broken link syntax
 
 ### Block quotes

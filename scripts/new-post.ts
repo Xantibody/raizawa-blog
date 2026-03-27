@@ -6,7 +6,8 @@ const RADIX = 10;
 
 const prompt = (rl: Interface, question: string): Promise<string> =>
   new Promise((resolve) => {
-    rl.question(question, resolve);
+    rl.once("line", (line: string) => resolve(line.trim()));
+    process.stdout.write(question);
   });
 
 const displayTemplates = (templates: string[]): void => {
@@ -38,10 +39,17 @@ const getTitle = async (rl: Interface, templateFile: string): Promise<string> =>
   return defaultTitle;
 };
 
+const generateDefaultSlug = (): string => {
+  const now = new Date();
+  const pad = (n: number): string => n.toString().padStart(2, "0");
+  return `draft-${now.getFullYear()}${pad(now.getMonth() + 1)}${pad(now.getDate())}-${pad(now.getHours())}${pad(now.getMinutes())}${pad(now.getSeconds())}`;
+};
+
 const getSlug = async (rl: Interface): Promise<string> => {
-  const input = await prompt(rl, "Slug (e.g. rust-study-unsafe-7): ");
+  const defaultSlug = generateDefaultSlug();
+  const input = await prompt(rl, `Slug [${defaultSlug}]: `);
   if (input.length === 0) {
-    throw new Error("Slug is required");
+    return defaultSlug;
   }
   if (!/^[a-z0-9]+(?:-[a-z0-9]+)*$/.test(input)) {
     throw new Error("Slug must contain only lowercase alphanumeric characters and hyphens");

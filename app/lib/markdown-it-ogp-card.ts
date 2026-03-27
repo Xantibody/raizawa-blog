@@ -51,4 +51,4 @@ const preprocessOgpCards = async (markdown: string): Promise<string> => {
   return replaceUrlsWithOGPCards(markdown, ogpResults);
 };
 
-export { preprocessOgpCards };
+export default preprocessOgpCards;

@@ -1,5 +1,5 @@
 import anchor from "markdown-it-anchor";
-import { preprocessOgpCards } from "./markdown-it-ogp-card";
+import preprocessOgpCards from "./markdown-it-ogp-card";
 import { SHIKI_THEME, getHighlighter, shikiTransformers } from "./shiki";
 import { type RenderResult, type TocItem } from "./toc";
 import MarkdownIt from "markdown-it";

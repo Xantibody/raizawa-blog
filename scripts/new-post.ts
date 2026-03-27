@@ -67,7 +67,12 @@ const runInteractive = async (rl: Interface, templates: string[]): Promise<void>
   openInEditor(outputPath);
 };
 
-const runNonInteractive = (templates: string[], templateName: string, title: string, slug: string): void => {
+const runNonInteractive = (
+  templates: string[],
+  templateName: string,
+  title: string,
+  slug: string,
+): void => {
   const templateFile = `${templateName}.md`;
   if (!templates.includes(templateFile)) {
     const validNames = templates.map(getTemplateName).join(", ");
@@ -102,7 +107,9 @@ const main = async (): Promise<void> => {
 
   if (args.length < 3) {
     console.error("Usage: bun run new-post -- <template> <slug> <title>");
-    console.error('Example: bun run new-post -- rust rust-study-unsafe-3 "Rustの勉強[unsafe その3]"');
+    console.error(
+      'Example: bun run new-post -- rust rust-study-unsafe-3 "Rustの勉強[unsafe その3]"',
+    );
     process.exit(1);
   }
 

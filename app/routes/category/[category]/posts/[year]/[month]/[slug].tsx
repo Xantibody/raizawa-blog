@@ -4,7 +4,12 @@ import Layout from "../../../../../../components/layout";
 import { TocLayout, shouldShowToc } from "../../../../../../components/toc";
 import UpdatedAt from "../../../../../../components/updated-at";
 import { SITE_TITLE, SITE_URL } from "../../../../../../lib/config";
-import { type PostMeta, getAdjacentPosts, getAllPosts, getPostBySlug } from "../../../../../../lib/posts";
+import {
+  type PostMeta,
+  getAdjacentPosts,
+  getAllPosts,
+  getPostBySlug,
+} from "../../../../../../lib/posts";
 
 const isValidParam = (param: string | undefined): param is string =>
   param !== undefined && param !== "";

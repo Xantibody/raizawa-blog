@@ -4,7 +4,14 @@ import Layout from "../../../../components/layout";
 import { TocLayout, shouldShowToc } from "../../../../components/toc";
 import UpdatedAt from "../../../../components/updated-at";
 import { SITE_TITLE, SITE_URL } from "../../../../lib/config";
-import { type PostMeta, getAdjacentPosts, getAllPosts, getPostBySlug } from "../../../../lib/posts";
+import {
+  type PostMeta,
+  getAdjacentPosts,
+  getAllPosts,
+  getPostBySlug,
+  isValidParam,
+  parseSlugParts,
+} from "../../../../lib/posts";
 
 const PrevPostLink = ({ prev }: { prev: PostMeta | undefined }) => {
   if (prev === undefined) {
@@ -65,17 +72,12 @@ const copyScript = `document.querySelectorAll('.copy-button').forEach(button => 
 });`;
 
 export default createRoute(
-  ssgParams(() =>
-    getAllPosts().map((post) => {
-      const [year, month, slug] = post.slug.split("/");
-      return { month, slug, year };
-    }),
-  ),
+  ssgParams(() => getAllPosts().map((post) => parseSlugParts(post.slug))),
   async (c) => {
     const year = c.req.param("year");
     const month = c.req.param("month");
     const slug = c.req.param("slug");
-    if (!year || !month || !slug) {
+    if (!isValidParam(year) || !isValidParam(month) || !isValidParam(slug)) {
       return c.notFound();
     }
 

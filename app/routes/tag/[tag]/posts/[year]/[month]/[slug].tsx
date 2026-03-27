@@ -9,10 +9,9 @@ import {
   getAdjacentPosts,
   getAllPosts,
   getPostBySlug,
+  isValidParam,
+  parseSlugParts,
 } from "../../../../../../lib/posts";
-
-const isValidParam = (param: string | undefined): param is string =>
-  param !== undefined && param !== "";
 
 const PrevPostLink = ({ prev, tag }: { prev: PostMeta | undefined; tag: string }) => {
   if (prev === undefined) {
@@ -89,8 +88,7 @@ export default createRoute(
     for (const tag of tags) {
       const posts = allPosts.filter((post) => post.tags.includes(tag));
       for (const post of posts) {
-        const [year, month, slug] = post.slug.split("/");
-        params.push({ month, slug, tag, year });
+        params.push({ tag, ...parseSlugParts(post.slug) });
       }
     }
 
@@ -101,7 +99,7 @@ export default createRoute(
     const year = c.req.param("year");
     const month = c.req.param("month");
     const slug = c.req.param("slug");
-    if (!isValidParam(tag) || !year || !month || !slug) {
+    if (!isValidParam(tag) || !isValidParam(year) || !isValidParam(month) || !isValidParam(slug)) {
       return c.notFound();
     }
 

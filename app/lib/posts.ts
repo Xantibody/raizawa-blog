@@ -20,6 +20,26 @@ interface Post {
   toc: TocItem[];
 }
 
+interface SlugParts {
+  month: string;
+  slug: string;
+  year: string;
+}
+
+const parseSlugParts = (fullSlug: string): SlugParts => {
+  const parts = fullSlug.split("/");
+  const year = parts[0];
+  const month = parts[1];
+  const slug = parts[2];
+  if (year === undefined || month === undefined || slug === undefined) {
+    throw new Error(`Invalid slug format: ${fullSlug}`);
+  }
+  return { month, slug, year };
+};
+
+const isValidParam = (param: string | undefined): param is string =>
+  param !== undefined && param !== "";
+
 // Import all markdown files at build time
 const markdownFiles = import.meta.glob<string>("../posts/**/*.md", {
   eager: true,
@@ -30,7 +50,7 @@ const markdownFiles = import.meta.glob<string>("../posts/**/*.md", {
 // Extract slug from file path
 const getSlugFromPath = (path: string): string => {
   const match = path.match(/\.\.\/posts\/(\d{4})\/(\d{2})\/(.+)\.md$/);
-  if (!match) throw new Error(`Invalid post path: ${path}`);
+  if (match === null) throw new Error(`Invalid post path: ${path}`);
   return `${match[1]}/${match[2]}/${match[3]}`;
 };
 
@@ -190,7 +210,7 @@ const getPostsForPage = (page: number): PostMeta[] => {
   return posts.slice(start, end);
 };
 
-export type { AdjacentPosts, Post, PostMeta, TocItem };
+export type { AdjacentPosts, Post, PostMeta, SlugParts, TocItem };
 export {
   getAdjacentPosts,
   getAllPosts,
@@ -201,5 +221,7 @@ export {
   getPostsForPage,
   getTags,
   getTotalPages,
+  isValidParam,
+  parseSlugParts,
   POSTS_PER_PAGE,
 };

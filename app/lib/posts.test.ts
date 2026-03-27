@@ -7,6 +7,8 @@ import {
   getPostsByCategory,
   getPostsByTag,
   getTags,
+  isValidParam,
+  parseSlugParts,
 } from "./posts";
 
 const MINIMUM_POSTS = 0;
@@ -158,6 +160,33 @@ describe("code blocks", () => {
     );
 
     expect(results.flat()).toEqual([]);
+  });
+});
+
+describe("parseSlugParts", () => {
+  it("should parse valid slug", () => {
+    const result = parseSlugParts("2026/03/my-post");
+    expect(result).toEqual({ year: "2026", month: "03", slug: "my-post" });
+  });
+
+  it("should throw for invalid slug format", () => {
+    expect(() => parseSlugParts("invalid")).toThrow("Invalid slug format");
+    expect(() => parseSlugParts("2026/03")).toThrow("Invalid slug format");
+    expect(() => parseSlugParts("")).toThrow("Invalid slug format");
+  });
+});
+
+describe("isValidParam", () => {
+  it("should return true for non-empty string", () => {
+    expect(isValidParam("hello")).toBe(true);
+  });
+
+  it("should return false for undefined", () => {
+    expect(isValidParam(undefined)).toBe(false);
+  });
+
+  it("should return false for empty string", () => {
+    expect(isValidParam("")).toBe(false);
   });
 });
 

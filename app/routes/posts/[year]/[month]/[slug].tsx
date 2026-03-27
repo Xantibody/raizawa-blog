@@ -6,16 +6,13 @@ import UpdatedAt from "../../../../components/updated-at";
 import { SITE_TITLE, SITE_URL } from "../../../../lib/config";
 import { type PostMeta, getAdjacentPosts, getAllPosts, getPostBySlug } from "../../../../lib/posts";
 
-const isValidParam = (param: string | undefined): param is string =>
-  param !== undefined && param !== "";
-
-const PrevPostLink = ({ prev, tag }: { prev: PostMeta | undefined; tag: string }) => {
+const PrevPostLink = ({ prev }: { prev: PostMeta | undefined }) => {
   if (prev === undefined) {
     return <div />;
   }
   return (
     <a
-      href={`/tag/${tag}/posts/${prev.slug}`}
+      href={`/posts/${prev.slug}`}
       class="card bg-base-100 shadow-sm hover:shadow-md transition-shadow"
     >
       <div class="card-body p-4">
@@ -26,13 +23,13 @@ const PrevPostLink = ({ prev, tag }: { prev: PostMeta | undefined; tag: string }
   );
 };
 
-const NextPostLink = ({ next, tag }: { next: PostMeta | undefined; tag: string }) => {
+const NextPostLink = ({ next }: { next: PostMeta | undefined }) => {
   if (next === undefined) {
     return <></>;
   }
   return (
     <a
-      href={`/tag/${tag}/posts/${next.slug}`}
+      href={`/posts/${next.slug}`}
       class="card bg-base-100 shadow-sm hover:shadow-md transition-shadow sm:text-right"
     >
       <div class="card-body p-4">
@@ -43,22 +40,14 @@ const NextPostLink = ({ next, tag }: { next: PostMeta | undefined; tag: string }
   );
 };
 
-const PostNav = ({
-  next,
-  prev,
-  tag,
-}: {
-  next: PostMeta | undefined;
-  prev: PostMeta | undefined;
-  tag: string;
-}) => {
+const PostNav = ({ next, prev }: { next: PostMeta | undefined; prev: PostMeta | undefined }) => {
   if (prev === undefined && next === undefined) {
     return <></>;
   }
   return (
     <nav class="grid grid-cols-1 sm:grid-cols-2 gap-4 mt-8 pt-6 border-t border-base-300">
-      <PrevPostLink prev={prev} tag={tag} />
-      <NextPostLink next={next} tag={tag} />
+      <PrevPostLink prev={prev} />
+      <NextPostLink next={next} />
     </nav>
   );
 };
@@ -76,33 +65,27 @@ const copyScript = `document.querySelectorAll('.copy-button').forEach(button => 
 });`;
 
 export default createRoute(
-  ssgParams(() => {
-    const params: { slug: string; tag: string }[] = [];
-    const allPosts = getAllPosts();
-    const tags = [...new Set(allPosts.flatMap((post) => post.tags))];
-
-    for (const tag of tags) {
-      const posts = allPosts.filter((post) => post.tags.includes(tag));
-      for (const post of posts) {
-        params.push({ slug: post.slug, tag });
-      }
-    }
-
-    return params;
-  }),
+  ssgParams(() =>
+    getAllPosts().map((post) => {
+      const [year, month, slug] = post.slug.split("/");
+      return { month, slug, year };
+    }),
+  ),
   async (c) => {
-    const tag = c.req.param("tag");
+    const year = c.req.param("year");
+    const month = c.req.param("month");
     const slug = c.req.param("slug");
-    if (!isValidParam(tag) || !isValidParam(slug)) {
+    if (!year || !month || !slug) {
       return c.notFound();
     }
 
-    const post = await getPostBySlug(slug);
-    if (post === undefined || !post.meta.tags.includes(tag)) {
+    const fullSlug = `${year}/${month}/${slug}`;
+    const post = await getPostBySlug(fullSlug);
+    if (post === undefined) {
       return c.notFound();
     }
 
-    const { prev, next } = getAdjacentPosts(slug, { tag });
+    const { prev, next } = getAdjacentPosts(fullSlug);
 
     const jsonLd = {
       "@context": "https://schema.org",
@@ -111,7 +94,7 @@ export default createRoute(
       dateModified: post.meta.updatedAt,
       datePublished: post.meta.createdAt,
       headline: post.meta.title,
-      url: `${SITE_URL}/posts/${slug}`,
+      url: `${SITE_URL}/posts/${fullSlug}`,
     };
 
     return c.render(
@@ -119,7 +102,7 @@ export default createRoute(
         title={`${post.meta.title} - ${SITE_TITLE}`}
         description={`${post.meta.title} - ${SITE_TITLE}`}
         ogType="article"
-        ogUrl={`${SITE_URL}/tag/${tag}/posts/${slug}`}
+        ogUrl={`${SITE_URL}/posts/${fullSlug}`}
         jsonLd={jsonLd}
         wide={shouldShowToc(post.toc)}
       >
@@ -142,13 +125,9 @@ export default createRoute(
               </div>
               {post.meta.tags.length > 0 && (
                 <div class="flex flex-wrap gap-2 mt-3">
-                  {post.meta.tags.map((tagName) => (
-                    <a
-                      class="badge badge-primary badge-outline"
-                      key={tagName}
-                      href={`/tag/${tagName}`}
-                    >
-                      {tagName}
+                  {post.meta.tags.map((tag) => (
+                    <a class="badge badge-primary badge-outline" key={tag} href={`/tag/${tag}`}>
+                      {tag}
                     </a>
                   ))}
                 </div>
@@ -162,7 +141,7 @@ export default createRoute(
               dangerouslySetInnerHTML={{ __html: post.html }}
             ></div>
           </article>
-          <PostNav next={next} prev={prev} tag={tag} />
+          <PostNav next={next} prev={prev} />
         </TocLayout>
         <script dangerouslySetInnerHTML={{ __html: copyScript }} />
       </Layout>,

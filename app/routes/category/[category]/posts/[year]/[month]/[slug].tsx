@@ -1,18 +1,21 @@
 import { ssgParams } from "hono/ssg";
 import { createRoute } from "honox/factory";
-import Layout from "../../components/layout";
-import { TocLayout, shouldShowToc } from "../../components/toc";
-import UpdatedAt from "../../components/updated-at";
-import { SITE_TITLE, SITE_URL } from "../../lib/config";
-import { type PostMeta, getAdjacentPosts, getAllPosts, getPostBySlug } from "../../lib/posts";
+import Layout from "../../../../../../components/layout";
+import { TocLayout, shouldShowToc } from "../../../../../../components/toc";
+import UpdatedAt from "../../../../../../components/updated-at";
+import { SITE_TITLE, SITE_URL } from "../../../../../../lib/config";
+import { type PostMeta, getAdjacentPosts, getAllPosts, getPostBySlug } from "../../../../../../lib/posts";
 
-const PrevPostLink = ({ prev }: { prev: PostMeta | undefined }) => {
+const isValidParam = (param: string | undefined): param is string =>
+  param !== undefined && param !== "";
+
+const PrevPostLink = ({ prev, category }: { prev: PostMeta | undefined; category: string }) => {
   if (prev === undefined) {
     return <div />;
   }
   return (
     <a
-      href={`/posts/${prev.slug}`}
+      href={`/category/${category}/posts/${prev.slug}`}
       class="card bg-base-100 shadow-sm hover:shadow-md transition-shadow"
     >
       <div class="card-body p-4">
@@ -23,13 +26,13 @@ const PrevPostLink = ({ prev }: { prev: PostMeta | undefined }) => {
   );
 };
 
-const NextPostLink = ({ next }: { next: PostMeta | undefined }) => {
+const NextPostLink = ({ next, category }: { next: PostMeta | undefined; category: string }) => {
   if (next === undefined) {
     return <></>;
   }
   return (
     <a
-      href={`/posts/${next.slug}`}
+      href={`/category/${category}/posts/${next.slug}`}
       class="card bg-base-100 shadow-sm hover:shadow-md transition-shadow sm:text-right"
     >
       <div class="card-body p-4">
@@ -40,14 +43,22 @@ const NextPostLink = ({ next }: { next: PostMeta | undefined }) => {
   );
 };
 
-const PostNav = ({ next, prev }: { next: PostMeta | undefined; prev: PostMeta | undefined }) => {
+const PostNav = ({
+  category,
+  next,
+  prev,
+}: {
+  category: string;
+  next: PostMeta | undefined;
+  prev: PostMeta | undefined;
+}) => {
   if (prev === undefined && next === undefined) {
     return <></>;
   }
   return (
     <nav class="grid grid-cols-1 sm:grid-cols-2 gap-4 mt-8 pt-6 border-t border-base-300">
-      <PrevPostLink prev={prev} />
-      <NextPostLink next={next} />
+      <PrevPostLink prev={prev} category={category} />
+      <NextPostLink next={next} category={category} />
     </nav>
   );
 };
@@ -65,19 +76,37 @@ const copyScript = `document.querySelectorAll('.copy-button').forEach(button => 
 });`;
 
 export default createRoute(
-  ssgParams(() => getAllPosts().map((post) => ({ slug: post.slug }))),
+  ssgParams(() => {
+    const params: { category: string; month: string; slug: string; year: string }[] = [];
+    const allPosts = getAllPosts();
+    const categories = [...new Set(allPosts.map((post) => post.category))];
+
+    for (const category of categories) {
+      const posts = allPosts.filter((post) => post.category === category);
+      for (const post of posts) {
+        const [year, month, slug] = post.slug.split("/");
+        params.push({ category, month, slug, year });
+      }
+    }
+
+    return params;
+  }),
   async (c) => {
+    const category = c.req.param("category");
+    const year = c.req.param("year");
+    const month = c.req.param("month");
     const slug = c.req.param("slug");
-    if (slug === undefined || slug === "") {
+    if (!isValidParam(category) || !year || !month || !slug) {
       return c.notFound();
     }
 
-    const post = await getPostBySlug(slug);
-    if (post === undefined) {
+    const fullSlug = `${year}/${month}/${slug}`;
+    const post = await getPostBySlug(fullSlug);
+    if (post === undefined || post.meta.category !== category) {
       return c.notFound();
     }
 
-    const { prev, next } = getAdjacentPosts(slug);
+    const { prev, next } = getAdjacentPosts(fullSlug, { category });
 
     const jsonLd = {
       "@context": "https://schema.org",
@@ -86,7 +115,7 @@ export default createRoute(
       dateModified: post.meta.updatedAt,
       datePublished: post.meta.createdAt,
       headline: post.meta.title,
-      url: `${SITE_URL}/posts/${slug}`,
+      url: `${SITE_URL}/posts/${fullSlug}`,
     };
 
     return c.render(
@@ -94,7 +123,7 @@ export default createRoute(
         title={`${post.meta.title} - ${SITE_TITLE}`}
         description={`${post.meta.title} - ${SITE_TITLE}`}
         ogType="article"
-        ogUrl={`${SITE_URL}/posts/${slug}`}
+        ogUrl={`${SITE_URL}/category/${category}/posts/${fullSlug}`}
         jsonLd={jsonLd}
         wide={shouldShowToc(post.toc)}
       >
@@ -133,7 +162,7 @@ export default createRoute(
               dangerouslySetInnerHTML={{ __html: post.html }}
             ></div>
           </article>
-          <PostNav next={next} prev={prev} />
+          <PostNav category={category} next={next} prev={prev} />
         </TocLayout>
         <script dangerouslySetInnerHTML={{ __html: copyScript }} />
       </Layout>,

@@ -21,7 +21,7 @@ interface Post {
 }
 
 // Import all markdown files at build time
-const markdownFiles = import.meta.glob<string>("../posts/*.md", {
+const markdownFiles = import.meta.glob<string>("../posts/**/*.md", {
   eager: true,
   import: "default",
   query: "?raw",
@@ -29,8 +29,9 @@ const markdownFiles = import.meta.glob<string>("../posts/*.md", {
 
 // Extract slug from file path
 const getSlugFromPath = (path: string): string => {
-  const filename = path.split("/").pop() ?? "";
-  return filename.replace(/\.md$/, "");
+  const match = path.match(/\.\.\/posts\/(\d{4})\/(\d{2})\/(.+)\.md$/);
+  if (!match) throw new Error(`Invalid post path: ${path}`);
+  return `${match[1]}/${match[2]}/${match[3]}`;
 };
 
 const getStringField = (

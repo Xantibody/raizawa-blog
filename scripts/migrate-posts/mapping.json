@@ -1,0 +1,578 @@
+[
+  {
+    "old_path": "2024-12-29.md",
+    "title": "くっそ雑にブログを作った",
+    "created_at": "2024-12-29T00:00",
+    "new_slug": "rough-blog-creation"
+  },
+  {
+    "old_path": "2024-12-30.md",
+    "title": "根性論と根性",
+    "created_at": "2024-12-30T00:00",
+    "new_slug": "grit-vs-grit-mentality"
+  },
+  {
+    "old_path": "2024-12-31.md",
+    "title": "最初で最後のVim初年度",
+    "created_at": "2024-12-31T00:00",
+    "new_slug": "first-year-of-vim"
+  },
+  {
+    "old_path": "2025-01-02.md",
+    "title": "Textlintのmdx問題が解決した",
+    "created_at": "2025-01-02T00:00",
+    "new_slug": "textlint-mdx-resolved"
+  },
+  {
+    "old_path": "2025-01-03.md",
+    "title": "抽象的思考おじさん",
+    "created_at": "2025-01-03T00:00",
+    "new_slug": "abstract-thinking"
+  },
+  {
+    "old_path": "2025-01-04.md",
+    "title": "格闘ゲームを諦めた話",
+    "created_at": "2025-01-04T00:00",
+    "new_slug": "giving-up-fighting-games"
+  },
+  {
+    "old_path": "2025-01-13.md",
+    "title": "習得の速さについて思うこと",
+    "created_at": "2025-01-13T00:00",
+    "new_slug": "thoughts-on-learning-speed"
+  },
+  {
+    "old_path": "2025-02-15.md",
+    "title": "4つのポケットすら操れない男",
+    "created_at": "2025-02-15T00:00",
+    "new_slug": "four-pockets-problem"
+  },
+  {
+    "old_path": "2025-05-05.md",
+    "title": "hugoにblogを移行した",
+    "created_at": "2025-05-05T01:35",
+    "new_slug": "migrated-to-hugo"
+  },
+  {
+    "old_path": "2025-05-07.md",
+    "title": "NixOSの指紋認証できた",
+    "created_at": "2025-05-07T05:58",
+    "new_slug": "nixos-fingerprint-auth"
+  },
+  {
+    "old_path": "2025-12-13_1.md",
+    "title": "Rustの勉強[構造体編]",
+    "created_at": "2025-12-13T05:58",
+    "new_slug": "rust-study-structs"
+  },
+  {
+    "old_path": "2025-12-28_1.md",
+    "title": "Rustの勉強[エラー編]",
+    "created_at": "2025-12-28T05:58",
+    "new_slug": "rust-study-errors-1"
+  },
+  {
+    "old_path": "2025-12-29_1.md",
+    "title": "Rustの勉強[エラー編 その2]",
+    "created_at": "2025-12-29T05:58",
+    "new_slug": "rust-study-errors-2"
+  },
+  {
+    "old_path": "2025-12-31_1.md",
+    "title": "Rustの勉強[エラー編 その3]",
+    "created_at": "2025-12-31T05:58",
+    "new_slug": "rust-study-errors-3"
+  },
+  {
+    "old_path": "2026-01-01_1.md",
+    "title": "Rustの勉強[エラー編 その4]",
+    "created_at": "2026-01-01T05:58",
+    "new_slug": "rust-study-errors-4"
+  },
+  {
+    "old_path": "2026-01-02_1.md",
+    "title": "Rustの勉強[ジェネリクス型、トレイト、ライフタイム編]",
+    "created_at": "2026-01-02T05:58",
+    "new_slug": "rust-study-generics-traits-lifetimes"
+  },
+  {
+    "old_path": "2026-01-03_1.md",
+    "title": "Rustの勉強[トレイト その2]",
+    "created_at": "2026-01-03T05:58",
+    "new_slug": "rust-study-traits-2"
+  },
+  {
+    "old_path": "2026-01-04_1.md",
+    "title": "Rustの勉強[トレイト その3]",
+    "created_at": "2026-01-04T05:58",
+    "new_slug": "rust-study-traits-3"
+  },
+  {
+    "old_path": "2026-01-05_1.md",
+    "title": "Rustの勉強[トレイト その4]",
+    "created_at": "2026-01-05T02:27",
+    "new_slug": "rust-study-traits-4"
+  },
+  {
+    "old_path": "2026-01-06_1.md",
+    "title": "Rustの勉強[トレイト その5]",
+    "created_at": "2026-01-06T02:29",
+    "new_slug": "rust-study-traits-5"
+  },
+  {
+    "old_path": "2026-01-07_1.md",
+    "title": "Rustの勉強[ライフタイム その1]",
+    "created_at": "2026-01-07T02:29",
+    "new_slug": "rust-study-lifetimes-1"
+  },
+  {
+    "old_path": "2026-01-08_1.md",
+    "title": "Rustの勉強[ライフタイム その2]",
+    "created_at": "2026-01-09T02:00",
+    "new_slug": "rust-study-lifetimes-2"
+  },
+  {
+    "old_path": "2026-01-10_1.md",
+    "title": "Rustの勉強[ライフタイム その3]",
+    "created_at": "2026-01-10T15:18",
+    "new_slug": "rust-study-lifetimes-3"
+  },
+  {
+    "old_path": "2026-01-10_2.md",
+    "title": "Blogをバイブコーディングした",
+    "created_at": "2026-01-10T19:12",
+    "new_slug": "blog-vibe-coding"
+  },
+  {
+    "old_path": "2026-01-11_1.md",
+    "title": "Rustの勉強[ライフタイム その4]",
+    "created_at": "2026-01-12T04:17",
+    "new_slug": "rust-study-lifetimes-4"
+  },
+  {
+    "old_path": "2026-01-12_1.md",
+    "title": "NARUTOを読破した",
+    "created_at": "2026-01-12T08:37",
+    "new_slug": "finished-reading-naruto"
+  },
+  {
+    "old_path": "2026-01-12_2.md",
+    "title": "Rustの勉強[ライフタイム その5]",
+    "created_at": "2026-01-12T09:55",
+    "new_slug": "rust-study-lifetimes-5"
+  },
+  {
+    "old_path": "2026-01-13_1.md",
+    "title": "Rustの勉強[自動テスト その1]",
+    "created_at": "2026-01-13T21:48",
+    "new_slug": "rust-study-testing-1"
+  },
+  {
+    "old_path": "2026-01-14_1.md",
+    "title": "Rustの勉強[自動テスト その2]",
+    "created_at": "2026-01-14T22:38",
+    "new_slug": "rust-study-testing-2"
+  },
+  {
+    "old_path": "2026-01-15_1.md",
+    "title": "Rustの勉強[自動テスト その3]",
+    "created_at": "2026-01-15T22:30",
+    "new_slug": "rust-study-testing-3"
+  },
+  {
+    "old_path": "2026-01-16_1.md",
+    "title": "Rustの勉強[自動テスト その4]",
+    "created_at": "2026-01-17T04:24",
+    "new_slug": "rust-study-testing-4"
+  },
+  {
+    "old_path": "2026-01-17_1.md",
+    "title": "Rustの勉強[CLI作成編 その1]",
+    "created_at": "2026-01-17T19:52",
+    "new_slug": "rust-study-cli-1"
+  },
+  {
+    "old_path": "2026-01-18_1.md",
+    "title": "Rustの勉強[CLI作成編 その2]",
+    "created_at": "2026-01-18T15:18",
+    "new_slug": "rust-study-cli-2"
+  },
+  {
+    "old_path": "2026-01-19_1.md",
+    "title": "Rustの勉強[CLI作成編 その3]",
+    "created_at": "2026-01-19T23:57",
+    "new_slug": "rust-study-cli-3"
+  },
+  {
+    "old_path": "2026-01-20_1.md",
+    "title": "EVO2026に出場することにした",
+    "created_at": "2026-01-20T00:38",
+    "new_slug": "entering-evo-2026"
+  },
+  {
+    "old_path": "2026-01-20_2.md",
+    "title": "Rustの勉強[CLI作成編 その4]",
+    "created_at": "2026-01-20T23:50",
+    "new_slug": "rust-study-cli-4"
+  },
+  {
+    "old_path": "2026-01-22_1.md",
+    "title": "Rustの勉強[CLI作成編 その5]",
+    "created_at": "2026-01-22T00:59",
+    "new_slug": "rust-study-cli-5"
+  },
+  {
+    "old_path": "2026-01-22_2.md",
+    "title": "Rustの勉強[CLI作成編 その6]",
+    "created_at": "2026-01-22T22:56",
+    "new_slug": "rust-study-cli-6"
+  },
+  {
+    "old_path": "2026-01-25_1.md",
+    "title": "Rustの勉強[CLI作成編 その7]",
+    "created_at": "2026-01-25T01:57",
+    "new_slug": "rust-study-cli-7"
+  },
+  {
+    "old_path": "2026-01-25_2.md",
+    "title": "Rustの勉強[CLI作成編 その8]",
+    "created_at": "2026-01-25T17:08",
+    "new_slug": "rust-study-cli-8"
+  },
+  {
+    "old_path": "2026-01-25_3.md",
+    "title": "格ゲーに復帰して一週間がたった",
+    "created_at": "2026-01-25T18:20",
+    "new_slug": "fighting-game-comeback-one-week"
+  },
+  {
+    "old_path": "2026-01-27_1.md",
+    "title": "Rustの勉強[CLI作成編 その9]",
+    "created_at": "2026-01-27T00:37",
+    "new_slug": "rust-study-cli-9"
+  },
+  {
+    "old_path": "2026-01-27_2.md",
+    "title": "Rustの勉強[CLI作成編 その10]",
+    "created_at": "2026-01-27T18:56",
+    "new_slug": "rust-study-cli-10"
+  },
+  {
+    "old_path": "2026-01-29_1.md",
+    "title": "Rustの勉強[CLI作成編 その11]",
+    "created_at": "2026-01-29T03:23",
+    "new_slug": "rust-study-cli-11"
+  },
+  {
+    "old_path": "2026-01-29_2.md",
+    "title": "Rustの勉強[CLI作成編 その12 & クロージャ その1]",
+    "created_at": "2026-01-29T21:56",
+    "new_slug": "rust-study-cli-12-closures-1"
+  },
+  {
+    "old_path": "2026-02-01_1.md",
+    "title": "Rustの勉強[クロージャ その2]",
+    "created_at": "2026-02-01T07:08",
+    "new_slug": "rust-study-closures-2"
+  },
+  {
+    "old_path": "2026-02-02_1.md",
+    "title": "Rustの勉強[クロージャ その3]",
+    "created_at": "2026-02-02T02:15",
+    "new_slug": "rust-study-closures-3"
+  },
+  {
+    "old_path": "2026-02-03_1.md",
+    "title": "Rustの勉強[クロージャ その4]",
+    "created_at": "2026-02-03T03:27",
+    "new_slug": "rust-study-closures-4"
+  },
+  {
+    "old_path": "2026-02-03_2.md",
+    "title": "Rustの勉強[イテレータその 2]",
+    "created_at": "2026-02-03T18:50",
+    "new_slug": "rust-study-iterators-2"
+  },
+  {
+    "old_path": "2026-02-06_1.md",
+    "title": "Rustの勉強[イテレータその 3]",
+    "created_at": "2026-02-06T01:50",
+    "new_slug": "rust-study-iterators-3"
+  },
+  {
+    "old_path": "2026-02-07_1.md",
+    "title": "Rustの勉強[イテレータその 4]",
+    "created_at": "2026-02-07T06:32",
+    "new_slug": "rust-study-iterators-4"
+  },
+  {
+    "old_path": "2026-02-08_1.md",
+    "title": "Rustの勉強[Cargo、Crates.io その1]",
+    "created_at": "2026-02-08T00:10",
+    "new_slug": "rust-study-cargo-crates-io-1"
+  },
+  {
+    "old_path": "2026-02-08_2.md",
+    "title": "Rustの勉強[Box<T> その1]",
+    "created_at": "2026-02-08T18:57",
+    "new_slug": "rust-study-box-1"
+  },
+  {
+    "old_path": "2026-02-09_1.md",
+    "title": "Rustの勉強[Box<T> その2]",
+    "created_at": "2026-02-09T14:16",
+    "new_slug": "rust-study-box-2"
+  },
+  {
+    "old_path": "2026-02-11_1.md",
+    "title": "Rustの勉強[Derefトレイト その1]",
+    "created_at": "2026-02-11T12:06",
+    "new_slug": "rust-study-deref-1"
+  },
+  {
+    "old_path": "2026-02-11_2.md",
+    "title": "Rustの勉強[Derefトレイト その2]",
+    "created_at": "2026-02-11T20:17",
+    "new_slug": "rust-study-deref-2"
+  },
+  {
+    "old_path": "2026-02-12_1.md",
+    "title": "Rustの勉強[Dropトレイト その1]",
+    "created_at": "2026-02-12T19:58",
+    "new_slug": "rust-study-drop-1"
+  },
+  {
+    "old_path": "2026-02-14_1.md",
+    "title": "Rustの勉強[Rc<T> その1]",
+    "created_at": "2026-02-14T02:27",
+    "new_slug": "rust-study-rc-1"
+  },
+  {
+    "old_path": "2026-02-16_1.md",
+    "title": "Rustの勉強[Rc<T> その2]",
+    "created_at": "2026-02-16T02:20",
+    "new_slug": "rust-study-rc-2"
+  },
+  {
+    "old_path": "2026-02-17_1.md",
+    "title": "Rustの勉強[RefCell<T> その1]",
+    "created_at": "2026-02-17T02:24",
+    "new_slug": "rust-study-refcell-1"
+  },
+  {
+    "old_path": "2026-02-18_1.md",
+    "title": "Rustの勉強[RefCell<T> その2]",
+    "created_at": "2026-02-18T00:58",
+    "new_slug": "rust-study-refcell-2"
+  },
+  {
+    "old_path": "2026-02-18_2.md",
+    "title": "Rustの勉強[RefCell<T> その3 & Weak<T> その1]",
+    "created_at": "2026-02-18T23:58",
+    "new_slug": "rust-study-refcell-3-weak-1"
+  },
+  {
+    "old_path": "2026-02-19_1.md",
+    "title": "Rustの勉強[Weak<T> その2]",
+    "created_at": "2026-02-19T15:22",
+    "new_slug": "rust-study-weak-2"
+  },
+  {
+    "old_path": "2026-02-21_1.md",
+    "title": "Rustの勉強[並行性 その1]",
+    "created_at": "2026-02-21T02:10",
+    "new_slug": "rust-study-concurrency-1"
+  },
+  {
+    "old_path": "2026-02-22_1.md",
+    "title": "Rustの勉強[並行性 その2]",
+    "created_at": "2026-02-22T03:30",
+    "new_slug": "rust-study-concurrency-2"
+  },
+  {
+    "old_path": "2026-02-24_1.md",
+    "title": "Rustの勉強[並行性 その3]",
+    "created_at": "2026-02-24T01:40",
+    "new_slug": "rust-study-concurrency-3"
+  },
+  {
+    "old_path": "2026-02-24_2.md",
+    "title": "Rustの勉強[並行性 その3.5]",
+    "created_at": "2026-02-24T02:05",
+    "new_slug": "rust-study-concurrency-3-5"
+  },
+  {
+    "old_path": "2026-02-25_1.md",
+    "title": "Rustの勉強[並行性 その4]",
+    "created_at": "2026-02-25T03:07",
+    "new_slug": "rust-study-concurrency-4"
+  },
+  {
+    "old_path": "2026-02-26_1.md",
+    "title": "Rustの勉強[並行性 その5]",
+    "created_at": "2026-02-26T05:18",
+    "new_slug": "rust-study-concurrency-5"
+  },
+  {
+    "old_path": "2026-02-27_1.md",
+    "title": "Rustの勉強[並行性 その6]",
+    "created_at": "2026-02-27T02:37",
+    "new_slug": "rust-study-concurrency-6"
+  },
+  {
+    "old_path": "2026-02-28_1.md",
+    "title": "Rustの勉強[並行性 その7]",
+    "created_at": "2026-02-28T01:07",
+    "new_slug": "rust-study-concurrency-7"
+  },
+  {
+    "old_path": "2026-03-01_1.md",
+    "title": "Rustの勉強[並行性 その8, RustのOOP その1]",
+    "created_at": "2026-03-01T12:54",
+    "new_slug": "rust-study-concurrency-8-oop-1"
+  },
+  {
+    "old_path": "2026-03-02_1.md",
+    "title": "Rustの勉強[RustのOOP その2]",
+    "created_at": "2026-03-02T23:56",
+    "new_slug": "rust-study-oop-2"
+  },
+  {
+    "old_path": "2026-03-04_1.md",
+    "title": "Rustの勉強[RustのOOP その3]",
+    "created_at": "2026-03-04T02:41",
+    "new_slug": "rust-study-oop-3"
+  },
+  {
+    "old_path": "2026-03-06_1.md",
+    "title": "Rustの勉強[RustのOOP その3 & パターンとマッチング その1]",
+    "created_at": "2026-03-06T02:26",
+    "new_slug": "rust-study-oop-3-patterns-1"
+  },
+  {
+    "old_path": "2026-03-06_2.md",
+    "title": "Rustの勉強[パターンとマッチング その2]",
+    "created_at": "2026-03-06T02:29",
+    "new_slug": "rust-study-patterns-2"
+  },
+  {
+    "old_path": "2026-03-07_1.md",
+    "title": "Rustの勉強[パターンとマッチング その3]",
+    "created_at": "2026-03-07T16:22",
+    "new_slug": "rust-study-patterns-3"
+  },
+  {
+    "old_path": "2026-03-07_2.md",
+    "title": "Rustの勉強[パターンとマッチング その4]",
+    "created_at": "2026-03-07T16:24",
+    "new_slug": "rust-study-patterns-4"
+  },
+  {
+    "old_path": "2026-03-09_1.md",
+    "title": "Rustの勉強[パターンとマッチング その5]",
+    "created_at": "2026-03-09T01:14",
+    "new_slug": "rust-study-patterns-5"
+  },
+  {
+    "old_path": "2026-03-09_2.md",
+    "title": "Rustの勉強[パターンとマッチング その6]",
+    "created_at": "2026-03-09T10:16",
+    "new_slug": "rust-study-patterns-6"
+  },
+  {
+    "old_path": "2026-03-11_1.md",
+    "title": "Rustの勉強[パターンとマッチング その7]",
+    "created_at": "2026-03-11T02:37",
+    "new_slug": "rust-study-patterns-7"
+  },
+  {
+    "old_path": "2026-03-13_1.md",
+    "title": "Rustの勉強[パターンとマッチング その8]",
+    "created_at": "2026-03-13T02:07",
+    "new_slug": "rust-study-patterns-8"
+  },
+  {
+    "old_path": "2026-03-13_2.md",
+    "title": "Rustの勉強[unsafe その1]",
+    "created_at": "2026-03-13T02:08",
+    "new_slug": "rust-study-unsafe-1"
+  },
+  {
+    "old_path": "2026-03-14_1.md",
+    "title": "Rustの勉強[unsafe その2]",
+    "created_at": "2026-03-14T01:03",
+    "new_slug": "rust-study-unsafe-2"
+  },
+  {
+    "old_path": "2026-03-16_1.md",
+    "title": "Rustの勉強[unsafe その3]",
+    "created_at": "2026-03-16T01:45",
+    "new_slug": "rust-study-unsafe-3"
+  },
+  {
+    "old_path": "2026-03-17_1.md",
+    "title": "Rustの勉強[unsafe その4]",
+    "created_at": "2026-03-17T03:12",
+    "new_slug": "rust-study-unsafe-4"
+  },
+  {
+    "old_path": "2026-03-19_1.md",
+    "title": "Rustの勉強[unsafe その5]",
+    "created_at": "2026-03-19T12:04",
+    "new_slug": "rust-study-unsafe-5"
+  },
+  {
+    "old_path": "2026-03-19_2.md",
+    "title": "Rustの勉強[unsafe その6]",
+    "created_at": "2026-03-19T12:08",
+    "new_slug": "rust-study-unsafe-6"
+  },
+  {
+    "old_path": "2026-03-20_1.md",
+    "title": "Rustの勉強[高度なトレイト その1]",
+    "created_at": "2026-03-20T16:28",
+    "new_slug": "rust-study-advanced-traits-1"
+  },
+  {
+    "old_path": "2026-03-20_2.md",
+    "title": "Rustの勉強[高度なトレイト その2]",
+    "created_at": "2026-03-20T17:11",
+    "new_slug": "rust-study-advanced-traits-2"
+  },
+  {
+    "old_path": "2026-03-23_1.md",
+    "title": "Rustの勉強[高度なトレイト その2.5]",
+    "created_at": "2026-03-23T02:40",
+    "new_slug": "rust-study-advanced-traits-2-5"
+  },
+  {
+    "old_path": "2026-03-23_2.md",
+    "title": "一週間後にある広島の格ゲー大会への取り組み",
+    "created_at": "2026-03-23T02:51",
+    "new_slug": "hiroshima-fighting-game-tournament-prep"
+  },
+  {
+    "old_path": "2026-03-24_1.md",
+    "title": "Rustの勉強[高度なトレイト その3]",
+    "created_at": "2026-03-24T02:05",
+    "new_slug": "rust-study-advanced-traits-3"
+  },
+  {
+    "old_path": "2026-03-26_1.md",
+    "title": "Rustの勉強[高度なトレイト その4]",
+    "created_at": "2026-03-26T04:11",
+    "new_slug": "rust-study-advanced-traits-4"
+  },
+  {
+    "old_path": "2026-03-26_2.md",
+    "title": "Rustの勉強[高度な型 その1]",
+    "created_at": "2026-03-26T04:15",
+    "new_slug": "rust-study-advanced-types-1"
+  },
+  {
+    "old_path": "2026-03-27_1.md",
+    "title": "Rustの勉強[高度な型 その2]",
+    "created_at": "2026-03-27T02:58",
+    "new_slug": "rust-study-advanced-types-2"
+  }
+]

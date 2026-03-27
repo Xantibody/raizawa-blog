@@ -1,4 +1,4 @@
-import { existsSync, readFileSync, readdirSync, writeFileSync } from "node:fs";
+import { existsSync, mkdirSync, readFileSync, writeFileSync } from "node:fs";
 import { join } from "node:path";
 
 const PAD_WIDTH = 2;
@@ -18,20 +18,16 @@ const getLocalDateStr = (now: Date): string => {
   return `${year}-${month}-${day}`;
 };
 
-const generateFilename = (): string => {
+interface GeneratedPath {
+  dir: string;
+  filename: string;
+}
+
+const generateFilePath = (slug: string): GeneratedPath => {
   const now = new Date();
-  const dateStr = getLocalDateStr(now);
-  const files = readdirSync(POSTS_DIR);
-  const todayFiles = new Set(
-    files.filter((file) => file.startsWith(dateStr) && file.endsWith(".md")),
-  );
-
-  let suffix = 1;
-  while (todayFiles.has(`${dateStr}_${suffix}.md`)) {
-    suffix++;
-  }
-
-  return `${dateStr}_${suffix}.md`;
+  const year = String(now.getFullYear());
+  const month = String(now.getMonth() + 1).padStart(PAD_WIDTH, "0");
+  return { dir: join(year, month), filename: `${slug}.md` };
 };
 
 const formatCreatedAt = (now: Date): string => {
@@ -55,11 +51,13 @@ const readTemplate = (templateFile: string): string => {
 
 const getTemplateName = (templateFile: string): string => templateFile.replace(".md", "");
 
-const createPost = (templateFile: string, title: string): string => {
+const createPost = (templateFile: string, title: string, slug: string): string => {
   const templateContent = readTemplate(templateFile);
   const newContent = processTemplate(templateContent, title);
-  const filename = generateFilename();
-  const outputPath = join(POSTS_DIR, filename);
+  const { dir, filename } = generateFilePath(slug);
+  const outputDir = join(POSTS_DIR, dir);
+  mkdirSync(outputDir, { recursive: true });
+  const outputPath = join(outputDir, filename);
 
   if (existsSync(outputPath)) {
     throw new Error(`File already exists: ${outputPath}`);

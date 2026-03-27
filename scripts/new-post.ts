@@ -38,6 +38,17 @@ const getTitle = async (rl: Interface, templateFile: string): Promise<string> =>
   return defaultTitle;
 };
 
+const getSlug = async (rl: Interface): Promise<string> => {
+  const input = await prompt(rl, "Slug (e.g. rust-study-unsafe-7): ");
+  if (input.length === 0) {
+    throw new Error("Slug is required");
+  }
+  if (!/^[a-z0-9]+(?:-[a-z0-9]+)*$/.test(input)) {
+    throw new Error("Slug must contain only lowercase alphanumeric characters and hyphens");
+  }
+  return input;
+};
+
 const openInEditor = (filePath: string): void => {
   const editor = process.env["EDITOR"] ?? "vi";
   console.log(`\nOpening with ${editor}...`);
@@ -48,14 +59,15 @@ const runInteractive = async (rl: Interface, templates: string[]): Promise<void>
   displayTemplates(templates);
   const templateFile = await selectTemplate(rl, templates);
   const title = await getTitle(rl, templateFile);
+  const slug = await getSlug(rl);
   rl.close();
 
-  const outputPath = createPost(templateFile, title);
+  const outputPath = createPost(templateFile, title, slug);
   printResult(outputPath, title);
   openInEditor(outputPath);
 };
 
-const runNonInteractive = (templates: string[], templateName: string, title: string): void => {
+const runNonInteractive = (templates: string[], templateName: string, title: string, slug: string): void => {
   const templateFile = `${templateName}.md`;
   if (!templates.includes(templateFile)) {
     const validNames = templates.map(getTemplateName).join(", ");
@@ -64,7 +76,7 @@ const runNonInteractive = (templates: string[], templateName: string, title: str
     process.exit(1);
   }
 
-  const outputPath = createPost(templateFile, title);
+  const outputPath = createPost(templateFile, title, slug);
   printResult(outputPath, title);
 };
 
@@ -88,15 +100,16 @@ const main = async (): Promise<void> => {
     return;
   }
 
-  if (args.length === 1) {
-    console.error("Usage: bun run new-post -- <template> <title>");
-    console.error('Example: bun run new-post -- rust "Rustの勉強[unsafe その3]"');
+  if (args.length < 3) {
+    console.error("Usage: bun run new-post -- <template> <slug> <title>");
+    console.error('Example: bun run new-post -- rust rust-study-unsafe-3 "Rustの勉強[unsafe その3]"');
     process.exit(1);
   }
 
   const templateName = args[0];
-  const title = args.slice(1).join(" ");
-  runNonInteractive(templates, templateName, title);
+  const slug = args[1];
+  const title = args.slice(2).join(" ");
+  runNonInteractive(templates, templateName, title, slug);
 };
 
 await main();

@@ -38,7 +38,7 @@ const parseCommitLog = (output: string): CommitEntry[] =>
 
 const getCommitLog = (filePath: string, repoRoot: string): CommitEntry[] => {
   try {
-    const output = execFileSync("git", ["log", "--format=%H %aI", "--", filePath], {
+    const output = execFileSync("git", ["log", "--follow", "--format=%H %aI", "--", filePath], {
       cwd: repoRoot,
       encoding: "utf8",
     }).trim();
@@ -120,7 +120,9 @@ const resolveUpdatedAt = (file: string, ctx: CollectContext): string => {
 };
 
 const collectTimestamps = (postsDir: string, ctx: CollectContext): Record<string, string> => {
-  const files = readdirSync(postsDir).filter((file) => file.endsWith(".md"));
+  const files = readdirSync(postsDir, { recursive: true })
+    .map(String)
+    .filter((file) => file.endsWith(".md"));
 
   const entries = files.map((file) => {
     const slug = file.replace(/\.md$/, "");
@@ -147,9 +149,9 @@ const gitTimestampsPlugin = (postsDir: string): Plugin => {
 
     handleHotUpdate({ file }) {
       if (file.startsWith(resolvedPostsDir) && file.endsWith(".md")) {
-        const fileName = file.slice(resolvedPostsDir.length + 1);
-        const slug = fileName.replace(/\.md$/, "");
-        timestamps[slug] = resolveUpdatedAt(fileName, ctx);
+        const relativePath = file.slice(resolvedPostsDir.length + 1);
+        const slug = relativePath.replace(/\.md$/, "");
+        timestamps[slug] = resolveUpdatedAt(relativePath, ctx);
       }
     },
 

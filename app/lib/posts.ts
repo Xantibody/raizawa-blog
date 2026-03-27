@@ -27,10 +27,7 @@ interface SlugParts {
 }
 
 const parseSlugParts = (fullSlug: string): SlugParts => {
-  const parts = fullSlug.split("/");
-  const year = parts[0];
-  const month = parts[1];
-  const slug = parts[2];
+  const [year, month, slug] = fullSlug.split("/");
   if (year === undefined || month === undefined || slug === undefined) {
     throw new Error(`Invalid slug format: ${fullSlug}`);
   }
@@ -50,8 +47,11 @@ const markdownFiles = import.meta.glob<string>("../posts/**/*.md", {
 // Extract slug from file path
 const getSlugFromPath = (path: string): string => {
   const match = path.match(/\.\.\/posts\/(\d{4})\/(\d{2})\/(.+)\.md$/);
-  if (match === null) throw new Error(`Invalid post path: ${path}`);
-  return `${match[1]}/${match[2]}/${match[3]}`;
+  if (match === null) {
+    throw new Error(`Invalid post path: ${path}`);
+  }
+  const [, year, month, slug] = match;
+  return `${year}/${month}/${slug}`;
 };
 
 const getStringField = (

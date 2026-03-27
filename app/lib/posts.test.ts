@@ -166,7 +166,7 @@ describe("code blocks", () => {
 describe("parseSlugParts", () => {
   it("should parse valid slug", () => {
     const result = parseSlugParts("2026/03/my-post");
-    expect(result).toEqual({ year: "2026", month: "03", slug: "my-post" });
+    expect(result).toEqual({ month: "03", slug: "my-post", year: "2026" });
   });
 
   it("should throw for invalid slug format", () => {
@@ -182,6 +182,7 @@ describe("isValidParam", () => {
   });
 
   it("should return false for undefined", () => {
+    // eslint-disable-next-line unicorn/no-useless-undefined -- testing undefined input explicitly
     expect(isValidParam(undefined)).toBe(false);
   });
 

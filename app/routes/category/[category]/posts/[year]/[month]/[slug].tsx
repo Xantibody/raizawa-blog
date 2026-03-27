@@ -1,11 +1,8 @@
 import { ssgParams } from "hono/ssg";
 import { createRoute } from "honox/factory";
-import Layout from "../../../../../../components/layout";
-import { TocLayout, shouldShowToc } from "../../../../../../components/toc";
-import UpdatedAt from "../../../../../../components/updated-at";
-import { SITE_TITLE, SITE_URL } from "../../../../../../lib/config";
+import PostDetail from "../../../../../../components/post-detail";
+import { SITE_URL } from "../../../../../../lib/config";
 import {
-  type PostMeta,
   getAdjacentPosts,
   getAllPosts,
   getPostBySlug,
@@ -13,71 +10,22 @@ import {
   parseSlugParts,
 } from "../../../../../../lib/posts";
 
-const PrevPostLink = ({ prev, category }: { prev: PostMeta | undefined; category: string }) => {
-  if (prev === undefined) {
-    return <div />;
+const validateParams = (params: {
+  category: string | undefined;
+  month: string | undefined;
+  slug: string | undefined;
+  year: string | undefined;
+}): { category: string; fullSlug: string } | undefined => {
+  if (
+    !isValidParam(params.category) ||
+    !isValidParam(params.year) ||
+    !isValidParam(params.month) ||
+    !isValidParam(params.slug)
+  ) {
+    return undefined;
   }
-  return (
-    <a
-      href={`/category/${category}/posts/${prev.slug}`}
-      class="card bg-base-100 shadow-sm hover:shadow-md transition-shadow"
-    >
-      <div class="card-body p-4">
-        <span class="text-xs opacity-60">← 前の記事</span>
-        <span class="text-sm font-medium">{prev.title}</span>
-      </div>
-    </a>
-  );
+  return { category: params.category, fullSlug: `${params.year}/${params.month}/${params.slug}` };
 };
-
-const NextPostLink = ({ next, category }: { next: PostMeta | undefined; category: string }) => {
-  if (next === undefined) {
-    return <></>;
-  }
-  return (
-    <a
-      href={`/category/${category}/posts/${next.slug}`}
-      class="card bg-base-100 shadow-sm hover:shadow-md transition-shadow sm:text-right"
-    >
-      <div class="card-body p-4">
-        <span class="text-xs opacity-60">次の記事 →</span>
-        <span class="text-sm font-medium">{next.title}</span>
-      </div>
-    </a>
-  );
-};
-
-const PostNav = ({
-  category,
-  next,
-  prev,
-}: {
-  category: string;
-  next: PostMeta | undefined;
-  prev: PostMeta | undefined;
-}) => {
-  if (prev === undefined && next === undefined) {
-    return <></>;
-  }
-  return (
-    <nav class="grid grid-cols-1 sm:grid-cols-2 gap-4 mt-8 pt-6 border-t border-base-300">
-      <PrevPostLink prev={prev} category={category} />
-      <NextPostLink next={next} category={category} />
-    </nav>
-  );
-};
-
-const copyScript = `document.querySelectorAll('.copy-button').forEach(button => {
-  button.addEventListener('click', async () => {
-    const wrapper = button.closest('.code-block-wrapper');
-    const code = wrapper.querySelector('code');
-    const text = code.innerText.replace(/^\\d+\\s*/gm, '');
-    await navigator.clipboard.writeText(text);
-    button.textContent = 'Copied!';
-    button.classList.add('copied');
-    setTimeout(() => { button.textContent = 'Copy'; button.classList.remove('copied'); }, 2000);
-  });
-});`;
 
 export default createRoute(
   ssgParams(() => {
@@ -95,20 +43,17 @@ export default createRoute(
     return params;
   }),
   async (c) => {
-    const category = c.req.param("category");
-    const year = c.req.param("year");
-    const month = c.req.param("month");
-    const slug = c.req.param("slug");
-    if (
-      !isValidParam(category) ||
-      !isValidParam(year) ||
-      !isValidParam(month) ||
-      !isValidParam(slug)
-    ) {
+    const validated = validateParams({
+      category: c.req.param("category"),
+      month: c.req.param("month"),
+      slug: c.req.param("slug"),
+      year: c.req.param("year"),
+    });
+    if (validated === undefined) {
       return c.notFound();
     }
 
-    const fullSlug = `${year}/${month}/${slug}`;
+    const { category, fullSlug } = validated;
     const post = await getPostBySlug(fullSlug);
     if (post === undefined || post.meta.category !== category) {
       return c.notFound();
@@ -116,64 +61,14 @@ export default createRoute(
 
     const { prev, next } = getAdjacentPosts(fullSlug, { category });
 
-    const jsonLd = {
-      "@context": "https://schema.org",
-      "@type": "BlogPosting",
-      author: { "@type": "Person", name: "r-aizawa" },
-      dateModified: post.meta.updatedAt,
-      datePublished: post.meta.createdAt,
-      headline: post.meta.title,
-      url: `${SITE_URL}/posts/${fullSlug}`,
-    };
-
     return c.render(
-      <Layout
-        title={`${post.meta.title} - ${SITE_TITLE}`}
-        description={`${post.meta.title} - ${SITE_TITLE}`}
-        ogType="article"
+      <PostDetail
+        post={post}
+        prev={prev}
+        next={next}
+        linkPrefix={`/category/${category}/posts/`}
         ogUrl={`${SITE_URL}/category/${category}/posts/${fullSlug}`}
-        jsonLd={jsonLd}
-        wide={shouldShowToc(post.toc)}
-      >
-        <TocLayout items={post.toc}>
-          <header class="card bg-base-100 shadow-sm mb-6">
-            <div class="card-body p-6">
-              <h1 class="text-2xl sm:text-3xl font-bold">{post.meta.title}</h1>
-              <div class="text-sm opacity-70 mt-1">
-                <time>{new Date(post.meta.createdAt).toLocaleDateString("ja-JP")}</time>
-                <UpdatedAt createdAt={post.meta.createdAt} updatedAt={post.meta.updatedAt} />
-                {post.meta.category !== "" && (
-                  <span>
-                    {" "}
-                    •{" "}
-                    <a href={`/category/${post.meta.category}`} class="link link-hover">
-                      {post.meta.category}
-                    </a>
-                  </span>
-                )}
-              </div>
-              {post.meta.tags.length > 0 && (
-                <div class="flex flex-wrap gap-2 mt-3">
-                  {post.meta.tags.map((tag) => (
-                    <a class="badge badge-primary badge-outline" key={tag} href={`/tag/${tag}`}>
-                      {tag}
-                    </a>
-                  ))}
-                </div>
-              )}
-            </div>
-          </header>
-
-          <article class="card bg-base-100 shadow-sm">
-            <div
-              class="card-body p-6 prose-article"
-              dangerouslySetInnerHTML={{ __html: post.html }}
-            ></div>
-          </article>
-          <PostNav category={category} next={next} prev={prev} />
-        </TocLayout>
-        <script dangerouslySetInnerHTML={{ __html: copyScript }} />
-      </Layout>,
+      />,
     );
   },
 );

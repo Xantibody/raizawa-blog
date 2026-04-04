@@ -11,6 +11,11 @@ Transform raw study memos into well-structured blog posts, or polish existing st
 
 The original text must NEVER be changed, reworded, or rephrased. Only markdown formatting may be added around the original text. Markdown syntax (`` ` ``, `>`, `-`, `#`, etc.) may be **added**, but the words themselves must remain exactly as the author wrote them.
 
+### Handling textlint suggestions
+
+- **Template headings** (`## はじめに`, etc.): Keep as-is. Ignore textlint suggestions on these
+- **Author's original text**: Do not auto-fix. Present textlint suggestions to the user as recommendations and let them decide whether to apply each change
+
 ## Workflow
 
 ### Mode A: Raw memo → New post (primary)

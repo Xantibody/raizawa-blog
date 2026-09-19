@@ -1,0 +1,49 @@
+name: Renovate
+
+on:
+  # 03:00 JST。ここで指定するのは実行の起点だけで、どの更新をいつ出すかは
+  # renovate.jsonのschedule側が持つ(timezoneもそちらに書いてある)
+  schedule:
+    - cron: "0 18 * * *"
+  workflow_dispatch:
+
+# 前の回が長引いているところへ次が重なると、同じブランチを両方が触る
+concurrency:
+  group: renovate
+  cancel-in-progress: false
+
+jobs:
+  renovate:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@v4
+
+      # Renovateはlockを自分で読み直さない。flake.lockは`nix flake update`、
+      # bun.lockは`bun install`を実際に叩いて作り直すので、どちらの実物も要る。
+      # CIの他ジョブと同じ`.#toolchain`から採れば、更新後のlockが検査に使う
+      # bunと同じもので生成される
+      - uses: ./.github/actions/setup
+        with:
+          cachix_auth_token: ${{ secrets.CACHIX_AUTH_TOKEN }}
+
+      # 公式のrenovatebot/github-actionは採らない。あれはRenovateをDocker
+      # コンテナの中で走らせるので、上で入れたnixもbunもコンテナからは見えず、
+      # flake.lockの更新が動かない。nixpkgs#renovateを直接走らせれば同じPATHに乗る。
+      # --inputs-fromでflake.lockのnixpkgsに固定する(道具の版がここだけ別、を防ぐ)
+      - name: Run Renovate
+        run: nix run --inputs-from . nixpkgs#renovate
+        env:
+          # secrets.GITHUB_TOKENで作ったPRはワークフローを起動しない。CIが
+          # 走らなければautomergeの判定材料が出ないので、別のトークンで動かす
+          RENOVATE_TOKEN: ${{ secrets.RENOVATE_TOKEN }}
+          RENOVATE_REPOSITORIES: ${{ github.repository }}
+          RENOVATE_PLATFORM: github
+          # 既にrenovate.jsonがある。onboarding PRを出させない
+          RENOVATE_ONBOARDING: "false"
+          RENOVATE_REQUIRE_CONFIG: required
+          # 既定のinstallはContainerbaseの中で道具を取ってくる前提。
+          # ここは素のランナーなので、PATHにあるもの(=nixで入れた分)を使わせる
+          RENOVATE_BINARY_SOURCE: global
+          LOG_LEVEL: info

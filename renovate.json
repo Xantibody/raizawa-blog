@@ -1,9 +1,32 @@
 {
   "$schema": "https://docs.renovatebot.com/renovate-schema.json",
   "extends": ["config:recommended"],
+  "timezone": "Asia/Tokyo",
   "nix": {
     "enabled": true
   },
   "minimumReleaseAge": "3 days",
-  "automerge": true
+  "prHourlyLimit": 0,
+  "lockFileMaintenance": {
+    "description": "個別の更新だけでは間接依存が古いまま残る。週1でlockごと引き直す",
+    "enabled": true,
+    "schedule": ["* * * * 1"]
+  },
+  "packageRules": [
+    {
+      "description": "壊れてもCI(format/lint/typecheck/knip/test/build)が止める範囲。ここは自動で入れる",
+      "matchUpdateTypes": ["minor", "patch", "digest", "pin", "lockFileMaintenance"],
+      "automerge": true
+    },
+    {
+      "description": "majorは手動。mainへのmergeがそのまま本番デプロイなので、破壊的変更をCIの緑だけで通さない",
+      "matchUpdateTypes": ["major"],
+      "automerge": false
+    },
+    {
+      "description": "flakeの入力は全部ブランチ参照で、revが動くたび個別にPRが立つ。まとめて1本にする",
+      "matchManagers": ["nix"],
+      "groupName": "flake inputs"
+    }
+  ]
 }
